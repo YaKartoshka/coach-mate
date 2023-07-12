@@ -1,14 +1,25 @@
+// npm start demo1 - start app
+
 var args = process.argv.slice(2);
 run_mode = args[0];
 require("../config/"+run_mode); //global config -> conf
 
-
+const fdb = require('../libs/firebase_db');
 var app = require("../app");
 var http = require("http");
 var server = http.createServer(app);
+
+
 server.listen(conf.port);
 server.on("error", onError);
 console.log(`App is listening at host http://localhost:${conf.port}`);
+
+
+
+
+
+
+
 
 generateSK = () => {
     var sk = crypto.randomBytes(20).toString("hex");
