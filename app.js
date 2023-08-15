@@ -16,12 +16,18 @@ app.set('views', path.join(__dirname, 'views'));
 //html ejs
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-// -------- used packages --------
+// -- used packages --
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 app.use(cookieParser());
+app.use("/public/css", express.static(__dirname + "/public/css"));
+app.use("/js", express.static(__dirname + "/public"));
+app.use("/public", express.static(__dirname + "/public"));
+app.set("trust proxy", true);
 app.use(express.static(path.join(__dirname, 'public')))
 
+
+// -- routes --
 app.use('/', index);
 app.use('/students', students);
 app.use('/coachers', coachers);
