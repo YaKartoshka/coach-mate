@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoachMate</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="shortcut icon" href="../public/images/welcome.png" type="image/x-icon">
+    <link rel="stylesheet" href="../public/css/style.css">
 </head>
 
 <body>
@@ -14,6 +15,7 @@
         <div class="sign_in">
             <div class="title">
                 <p>CoachMate</p>
+                <div class="title_line"></div>
             </div>
 
             <div class="sign_in_form">
@@ -22,13 +24,21 @@
                 </div>
 
                 <div class="form">
-                    <input type="text" name="email" id="email" placeholder="Email">
-                    <div class="password">
-                        <input type="text" name="password" id="password" placeholder="Password">
-                        <p>Forgot a password?</p>
+                    <div class="email">
+                        <input type="text" name="email" id="email" placeholder="Email">
                     </div>
 
-                    <button type="button">Login</button>
+                    <div class="password">
+                        <input type="text" name="password" id="password" placeholder="Password">
+                        <div class="forgot">
+                            <a href="#">Forgot a password ?</a>
+                        </div>
+                    </div>
+
+                    <div class="login_btn">
+                        <button type="button">Login</button>
+                    </div>
+                    
                 </div>
 
             </div>
@@ -36,7 +46,7 @@
 
         <div class="welcome_screen">
             <div class="welcome_img">
-                <img src="../public/images/welcome.png" alt="">
+                <img src="../public/images/welcome.png" alt="" width="350px">
             </div>
 
             <div class="welcome_text">
