@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200"
+        rel="stylesheet" />
 
 
     <link rel="stylesheet" href="/public/css/style.css">
@@ -51,21 +52,72 @@
         <div class="news-content">
             <div class="nav-bar">
                 <ul>
-                    <li class="active"><a href=""><span class="material-symbols-outlined" style="font-size: 25px; font-weight: 500;">home</span>Home</a></li>
-                    <li><a href=""><span class="material-symbols-outlined" style="font-size: 25px; font-weight: 500;">group</span>Members</a></li>
-                    <li><a href=""><span class="material-symbols-outlined" style="font-size: 25px; font-weight: 500;">today</span>Schedule</a></li>
-                    <li><a href=""><span class="material-symbols-outlined" style="font-size: 25px; font-weight: 500;">settings</span>Settings</a></li>
-                
+                    <li class="active"><a href=""><span class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 500;">home</span>Home</a></li>
+                    <li><a href=""><span class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 500;">group</span>Members</a></li>
+                    <li><a href=""><span class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 500;">today</span>Schedule</a></li>
+                    <li><a href=""><span class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 500;">settings</span>Settings</a></li>
+
                 </ul>
             </div>
             <div class="content">
-    
+                <div class="content-head">
+                    <h1>News</h1>
+                    <button><span class="material-symbols-outlined"
+                        style="font-size: 25px; font-weight: 700;">add</span>Add News</button>
+                </div>
+                <div class="divider"></div>
+                <div class="content-body">
+                    <div class="news">
+                        <img src="https://i.ytimg.com/vi/GZoMbg0q2Uc/maxresdefault.jpg" alt="">
+                        <div class="news-title">
+                            <h3> КАЗАХСТАНСКИЕ ГРЭППЛЕРЫ ЗАВОЕВАЛИ ЕЩЕ 3 ЛИЦЕНЗИИ НА ВСЕМИРНЫЕ ИГРЫ БОЕВЫХ ИСКУССТВО
+                            </h3>
+                        </div>
+                        <div class="news-text">
+                            В Узбекистане завершился квалификационный турнир по грэпплингу на Всемирные игры боевых
+                            искусств (World Combat Games).
+                            Соревнование проходило 30 апреля и 1 мая в г. Ташкент, где взрослая сборная Казахстана
+                            представила шесть спортсменов в трех весовых категориях. По итогам результатов турнира
+                            следующие спортсмены квалифицировались на Всемирные игры боевых искусств:
+                            Талбудин Нурбек 84 кг.
+                            Узбекова Шынар 71 кг.
+                            Кусаинов Рамазан 92 кг.
+                        </div>
+                    </div>
+                    <div class="news">
+                        <img src="https://static.tildacdn.com/tild3935-6632-4938-b037-646435326132/depositphotos_585726.jpg" alt="">
+                        <div class="news-title">
+                            <h3> Тренировки не будет </h3>
+                        </div>
+                        <div class="news-text">
+                            В связи с погодными условиями тренировки сегодня не будет. Зал закрыт
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ad-content">
+              
+                <div class="hot-links">
+                    <ul>
+                        <li><a href="">Competition schedule</a></li>
+                        <li><a href="">Winners Asia 2023</a></li>
+                        <li><a href="">List of documents for the CMS</a></li>
+                        <li><a href="">Full Karate schedule</a></li>
+                        <li><a href="">Full Judo schedule</a></li>
+                    </ul>
+                    <button><span class="material-symbols-outlined"
+                        style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
-        $('#profile-data').on('click', ()=>{
+        $('#profile-data').on('click', () => {
             $('.dropdown-content').slideToggle(300)
         })
 
@@ -73,4 +125,5 @@
 
     </script>
 </body>
+
 </html>
