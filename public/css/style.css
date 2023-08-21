@@ -9,9 +9,16 @@
 }
 
 @font-face {
+    font-family: RedHatDisplayReg;
+    src: url(../fonts//RedHatDisplay-Regular.ttf);
+}
+
+
+@font-face {
     font-family: InterReg;
     src: url(../fonts/Inter-Regular.ttf);
 }
+
 
 body {
     margin: 0;
@@ -358,6 +365,7 @@ button {
 .sign_in_form input {
     padding: 10px 20px;
     width: 250px;
+    transition: 0.5s;
 }
 
 .form .email input {
@@ -411,15 +419,52 @@ button {
     border: none;
     outline: none;
     border: 2px solid #2079FF;
+    border-color: #4f86ca;
+    box-shadow: 0 0 5px 3px rgba(102, 170, 255, 0.5);
 }
 
 .sign_in_form input:focus::placeholder {
     color: #727477;
-    font-size: 15px;
 }
 
 .sign_in_form .login_btn button:hover {
     box-shadow: 0 0 5px 0 #408CFF, 0 0 5px 0 #00FFC2;
+}
+
+.sign_in_buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    bottom: 70px;
+}
+
+.sign_in_btn {
+    box-shadow: 0 0 5px 0px gray;
+    border-radius: 10px;
+    padding: 6px 6px 4px 7px;
+    cursor: pointer;
+}
+
+.sign_in_btn img {
+    border-radius: 10px;
+}
+
+.google, .apple {
+    margin-right: 50px;
+}
+
+.text_or {
+    position: relative;
+    top: 10px;
+}
+
+.continue_text {
+    text-align: center;
+    font-family: RedHatDisplayReg;
+    font-size: 13px;
+    position: relative;
+    bottom: 45px;
 }
 
 /* ---- End Login Page ---- */
