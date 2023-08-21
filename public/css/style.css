@@ -407,7 +407,7 @@ button {
     border-radius: 7px;
     padding: 10px 40px;
     cursor: pointer;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 .sign_in_form ::placeholder {
