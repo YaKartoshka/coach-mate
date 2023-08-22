@@ -2,11 +2,20 @@ const express = require('express');
 const router = express.Router();
 
 
+function isAuthenticated(req, res, next) {
+    if (!req.session.isAuthenticated) {
+        return res.redirect('login'); // redirect to sign-in route
+    }
+    next();
+};
+
 router.get('/login', (req,res)=>{
+    req.session.isAuthenticated = true
     res.render('login')
 })
 
-router.get('/', (req,res)=>{
+router.get('/', isAuthenticated, (req,res,next)=>{
+   
     res.render('index')
 })
 
