@@ -5,8 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoachMate</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="shortcut icon" href="../public/images/welcome.png" type="image/x-icon">
     <link rel="stylesheet" href="../public/css/style.css">
+    <style>
+        #ambiance-r1{
+            
+        }
+    </style>
 </head>
 
 <body>
@@ -22,7 +28,9 @@
                 <div class="sign_in_heading">
                     <p>Sign In</p>
                 </div>
-
+                <div id="ambiance">
+                     
+                </div>
                 <div class="form">
                     <div class="email">
                         <input type="text" autocomplete="off" name="email" id="email" placeholder="Email">
@@ -36,7 +44,7 @@
                     </div>
 
                     <div class="login_btn">
-                        <button type="button">Login</button>
+                        <button type="button" onclick="signIn()">Login</button>
                     </div>
 
 
@@ -79,6 +87,38 @@
             </div>
         </div>
     </div>
+    <script>
+
+        load(1)
+
+        function signIn() {
+            let email = $('#email').val();
+            let password = $('#password').val();
+
+            $.ajax({
+                method: 'post',
+                url: '/auth/sign-in',
+                data: {
+                    email: email,
+                    password: password
+                }, success: function (res) {
+                    let data = JSON.parse(res)
+                    if(data.r==1){
+                        $('#ambiance').html('<h1>Sucess</h1>')
+                        setTimeout(()=>{
+                            window.location='/';
+                        }, 3000)
+                        load(0)
+                    }
+
+
+                }, error: function(err){
+                    console.log(err)
+                } 
+            })
+        }
+
+    </script>
 </body>
 
 </html>

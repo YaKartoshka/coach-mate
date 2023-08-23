@@ -4,7 +4,9 @@ const async = require("async");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const session = require("express-session");
-var r = {"r":200};
+const firebase = require("../libs/firebase_db");
+
+var r = { "r": 200 };
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -45,29 +47,44 @@ passport.use(
   )
 );
 
-router.get(
-  "/auth/google_sign_in",
-  passport.authenticate("google_sign_in", { scope: ["profile"] }, () => {})
-);
+/* ---- Basic Auth ----    */
 
-router.post("/login", (req, res) => {
+router.post("/sign-in", async (req, res) => {
   const email = req.body.email.toLowerCase().trim();
+  const password = req.body.password.toLowerCase().trim();
+
+  firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then((userCredential) => {
+      const user = userCredential.user.uid
+      console.log(user)
+      req.session.isAuthenticated = true;
+      r['r'] = 1; 
+      res.send(JSON.stringify(r))
+ 
+  }, (err)=>{
+    console.log(err.code)
+    if(err.code == 'auth/user-not-found'){
+      r['r'] = 2; // user not found
+    } else if(err.code == 'auth/wrong-password'){
+      r['r'] = 0; // wrond password
+    }
+    res.send(JSON.stringify(r))
+  })
+
+
+ 
 });
 
 
-router.post("/auth/sign-up-with-google", (req, res) => {
-  var r = {};
-  
-  
-});
+
+/* ---- Google Auth ----    */
 
 router.get(
-  "/auth/google_sign_up",
-  passport.authenticate("google_sign_up", () => {})
+  "/google_sign_in",
+  passport.authenticate("google_sign_in", { scope: ["profile"] }, () => { })
 );
 
 router.get(
-  "/auth/google_sign_in/index",
+  "/google_sign_in/index",
   passport.authenticate("google_sign_in", { failureRedirect: "/login" }),
   function (req, res) {
     const google_id = req.user.id;
@@ -75,17 +92,6 @@ router.get(
   }
 );
 
-router.get(
-  "/auth/google_sign_up/index",
-  passport.authenticate("google_sign_up", { failureRedirect: "/login" }),
-  function (req, res) {
-    const google_id = req.user.id;
-    
-    
-  }
-);
-
-
-
+/* ---- End Google Auth ----    */
 
 module.exports = router;

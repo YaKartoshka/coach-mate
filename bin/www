@@ -4,7 +4,9 @@ var args = process.argv.slice(2);
 run_mode = args[0];
 require("../config/"+run_mode); //global config -> conf
 
-const fdb = require('../libs/firebase_db');
+const firebase = require('../libs/firebase_db');
+const fdb = firebase.fdb;
+const fauth = firebase.fauth
 var app = require("../app");
 var http = require("http");
 var server = http.createServer(app);

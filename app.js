@@ -19,6 +19,7 @@ var auth = require('./routes/auth')
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', path.join(__dirname, 'views'));
+
 // -- used packages --
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
@@ -29,7 +30,7 @@ app.use("/public", express.static(__dirname + "/public"));
 app.set("trust proxy", true);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret: "coachmate-token-123",
+    secret: "coachmate-token-123-t7r2j689",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -38,17 +39,13 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 // -- routes --
 app.use('/', index);
 app.use('/students', students);
 app.use('/coachers', coachers);
-app.use('/', auth);
+app.use('/auth', auth);
 
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
 
 module.exports = app;
 

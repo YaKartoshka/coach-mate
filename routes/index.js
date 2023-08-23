@@ -10,7 +10,6 @@ function isAuthenticated(req, res, next) {
 };
 
 router.get('/login', (req,res)=>{
-    req.session.isAuthenticated = true
     res.render('login')
 })
 
