@@ -5,14 +5,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
-var passport = require('passport')
+var passport = require('passport');
 // -------- routes --------
 
 var index = require('./routes/index');
 var students = require('./routes/students');
 var coachers = require('./routes/coachers');
-var auth = require('./routes/auth')
-
+var auth = require('./routes/auth');
+var news = require('./routes/news');
 
 
 //html ejs
@@ -45,7 +45,7 @@ app.use('/', index);
 app.use('/students', students);
 app.use('/coachers', coachers);
 app.use('/auth', auth);
-
+app.use('/news', news);
 
 module.exports = app;
 

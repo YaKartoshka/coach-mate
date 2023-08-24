@@ -1,1 +1,0 @@
-for (let t = '*'; t.length < 4; t += '*') console.log(t);

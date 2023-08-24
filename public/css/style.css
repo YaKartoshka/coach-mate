@@ -157,6 +157,27 @@ button {
     color: black;
 }
 
+/* ---- Modals ---- */
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    overflow: hidden;
+    outline: 0;
+    font-family: InterReg;
+}
+
+.modal label{
+    font-size: 14px;
+}
+
+
+
+
+
 
 /* ---- News Page ---- */
 
@@ -196,6 +217,7 @@ button {
 
 .content .divider {
     height: 1px;
+    margin-top: 5px;
     background-color: #2079FF;
 }
 
@@ -204,7 +226,7 @@ button {
     box-shadow: 0 0 5px black;
     border-radius: 20px;
     padding: 20px;
-    min-height: 220px;
+    min-height: 250px;
 }
 
 .news img {
@@ -265,25 +287,6 @@ button {
 
 
 /* ---- End News Page ---- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* ---- Login Page ---- */
