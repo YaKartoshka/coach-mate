@@ -9,10 +9,53 @@
     <link rel="shortcut icon" href="../public/images/welcome.png" type="image/x-icon">
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
-        #ambiance-r1{
-            
+        /* Existing styles for ambiance */
+        #ambiance {
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: InterReg;
+            transition: background-color 0.5s, transform 0.5s;
+            cursor: default;
+            position: relative;
+            bottom: 25px;
+        }
+
+        #ambiance:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        /* New styles for different cases */
+        #ambiance.success {
+            background-color: #2ecc71;
+            /* Green for success */
+        }
+
+        #ambiance.error {
+            background-color: #e74c3c;
+            /* Red for errors */
+        }
+
+        #ambiance.info {
+            background-color: #3498db;
+            /* Blue for info */
+        }
+
+        #ambiance.warning {
+            background-color: #f39c12;
+            /* Yellow for warning */
+        }
+
+        /* New style for invalid email */
+        #ambiance.invalid-email {
+            background-color: #c0392b;
+            /* Dark red for invalid email */
         }
     </style>
+
 </head>
 
 <body>
@@ -29,7 +72,7 @@
                     <p>Sign In</p>
                 </div>
                 <div id="ambiance">
-                     
+
                 </div>
                 <div class="form">
                     <div class="email">
@@ -87,13 +130,35 @@
             </div>
         </div>
     </div>
-    <script>
 
-        load(1)
+    <script>
+        function isValidEmail(email) {
+            // Simple email validation using a regular expression
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
 
         function signIn() {
             let email = $('#email').val();
             let password = $('#password').val();
+            let ambianceElement = $('#ambiance');
+
+            if (!email || !password) {
+                ambianceElement.html('<p>Enter login data</p>').addClass('warning');
+                ambianceElement.addClass('show');
+                setTimeout(function () {
+                    ambianceElement.removeClass('show').removeClass('warning').html('');
+                }, 3000);
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                ambianceElement.html('<p>Invalid Email</p>').addClass('invalid-email');
+                ambianceElement.addClass('show');
+                setTimeout(function () {
+                    ambianceElement.removeClass('show').removeClass('invalid-email').html('');
+                }, 3000);
+                return;
+            }
 
             $.ajax({
                 method: 'post',
@@ -102,23 +167,30 @@
                     email: email,
                     password: password
                 }, success: function (res) {
-                    let data = JSON.parse(res)
-                    if(data.r==1){
-                        $('#ambiance').html('<h1>Sucess</h1>')
-                        setTimeout(()=>{
-                            window.location='/';
-                        }, 3000)
-                        
+                    let data = JSON.parse(res);
+
+                    if (data.r == 1) {
+                        ambianceElement.html('<p>Success!</p>').addClass('success');
+                    } else if (data.r == 0) {
+                        ambianceElement.html('<p>Wrong Password</p>').addClass('error');
+                    } else if (data.r == 2) {
+                        ambianceElement.html('<p>User not found</p>').addClass('info');
                     }
 
-
-                }, error: function(err){
-                    console.log(err)
-                } 
-            })
+                    ambianceElement.addClass('show');
+                    setTimeout(function () {
+                        ambianceElement.removeClass('show').removeClass('success').removeClass('error').removeClass('info').html('');
+                        if (data.r == 1) {
+                            window.location = '/';
+                        }
+                    }, 3000);
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
         }
-
     </script>
+
 </body>
 
 </html>

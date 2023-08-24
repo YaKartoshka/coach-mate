@@ -65,8 +65,9 @@
             <div class="content">
                 <div class="content-head">
                     <h1>News</h1>
-                    <button data-bs-toggle="modal" data-bs-target="#create_news-modal"><span class="material-symbols-outlined"
-                        style="font-size: 25px; font-weight: 700;" >add</span>Add News</button>
+                    <button data-bs-toggle="modal" data-bs-target="#create_news-modal"><span
+                            class="material-symbols-outlined" style="font-size: 25px; font-weight: 700;">add</span>Add
+                        News</button>
                 </div>
                 <div class="divider"></div>
                 <div class="content-body">
@@ -88,7 +89,8 @@
                         </div>
                     </div>
                     <div class="news">
-                        <img src="https://static.tildacdn.com/tild3935-6632-4938-b037-646435326132/depositphotos_585726.jpg" alt="">
+                        <img src="https://static.tildacdn.com/tild3935-6632-4938-b037-646435326132/depositphotos_585726.jpg"
+                            alt="">
                         <div class="news-title">
                             <h3> Тренировки не будет </h3>
                         </div>
@@ -99,7 +101,7 @@
                 </div>
             </div>
             <div class="ad-content">
-              
+
                 <div class="hot-links">
                     <ul>
                         <li><a href="">Competition schedule</a></li>
@@ -109,7 +111,7 @@
                         <li><a href="">Full Judo schedule</a></li>
                     </ul>
                     <button><span class="material-symbols-outlined"
-                        style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                            style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
                 </div>
             </div>
         </div>
@@ -120,34 +122,34 @@
     <div class="modal fade" id="create_news-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Add News</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                <form>
-                    <div class="mb-3 mt-2">
-                        <label class="mb-2">News Image</label>
-                        <input type="file" class="form-control" id="news_img" placeholder="Title">
-                    </div>
-                    <div class="mb-3 mt-3">
-                        <label class="mb-2">News title</label>
-                        <input type="text" class="form-control" id="news_title" placeholder="Title">
-                    </div>
-                    <div class="mb-3 mt-3">
-                        <label class="mb-2">News text</label>
-                        <textarea id="news_text" cols="30" rows="4" class="form-control"></textarea>
-                    </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary px-md-4" onclick="createNews()">Add</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-              </div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Add News</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 mt-2">
+                            <label class="mb-2">News Image</label>
+                            <input type="file" class="form-control" id="news_img" placeholder="Title">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">News title</label>
+                            <input type="text" class="form-control" id="news_title" placeholder="Title">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">News text</label>
+                            <textarea id="news_text" cols="30" rows="4" class="form-control"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary px-md-4" onclick="createNews()">Add</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-          </div>
+        </div>
     </div>
-    
+
 
 
     <!-- END OF MODALS -->
@@ -157,24 +159,26 @@
             $('.dropdown-content').slideToggle(300);
         })
 
-        function showAddNewsModal(){
+        function showAddNewsModal() {
             $('#create_news-modal').modal('show');
         }
 
-        function createNews(){
+        function createNews() {
             let img = $('#news_img')[0].files[0]
             let title = $('#news_title').val();
             let text = $('#news_text').val();
             const formData = new FormData();
-			formData.append('img', img);
-			formData.append('title', title);	
-            formData.append('text', text);	
+            formData.append('img', img);
+            formData.append('title', title);
+            formData.append('text', text);
             $('#create_news-modal').modal('hide');
-            $.ajax({url: "/news/create", method: 'post', data: formData, processData: false, contentType: false, success: function(r){
+            $.ajax({
+                url: "/news/create", method: 'post', data: formData, processData: false, contentType: false, success: function (r) {
 
-            }, error: function(err){
+                }, error: function (err) {
 
-            }});
+                }
+            });
         }
 
 

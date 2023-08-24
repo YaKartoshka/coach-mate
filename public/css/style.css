@@ -315,7 +315,7 @@ button {
 .welcome_screen .welcome_text p {
     font-family: RedHatDisplayExtra;
     color: #FFFFFF;
-    font-size: 40px;
+    font-size: 33px;
     text-align: center;
 }
 
@@ -339,36 +339,59 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
 }
 
 .sign_in .title p {
     font-family: RedHatDisplayExtra;
-    font-size: 56px;
+    font-size: 40px;
     background: linear-gradient(#3793FF, #00FFC2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
+.sign_in .title {
+    position: relative;
+    right: 135px;
+}
+
 .sign_in .title .title_line {
     width: 475px;
-    height: 9px;
+    height: 5px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    position: relative;
-    top: -55px;
+    position: absolute;
+    bottom: 43px;
     background: linear-gradient(to left, #0066FF, #89F0BF);
 }
 
 .sign_in_form .sign_in_heading {
     font-family: RedHatDisplayMed;
-    font-size: 45px;
+    font-size: 30px;
+}
+
+.sign_in_form {
+    position: relative;
+    top: 30px;
 }
 
 .sign_in_form input {
     padding: 10px 20px;
     width: 250px;
     transition: 0.5s;
+}
+
+.form {
+    position: relative;
+}
+
+.form .password {
+    position: absolute;
+    top: 50px;
+}
+
+.form .login_btn {
+    position: absolute;
+    top: 150px;
 }
 
 .form .email input {
@@ -438,14 +461,21 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+}
+
+.continue .continue_text {
     position: absolute;
-    top: 535px;
+    top: 130px;
+    width: 100px;
 }
 
 .sign_in_buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    position: absolute;
+    top: 215px;
 }
 
 .sign_in_btn {
