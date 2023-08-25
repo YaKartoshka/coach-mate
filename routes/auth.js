@@ -55,7 +55,7 @@ router.post("/sign-in", async (req, res) => {
 
   firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then((userCredential) => {
       const user = userCredential.user.uid
-      console.log(user)
+      req.session.user_id = user
       req.session.isAuthenticated = true;
       r['r'] = 1; 
       res.send(JSON.stringify(r))
@@ -63,11 +63,11 @@ router.post("/sign-in", async (req, res) => {
   }, (err)=>{
     console.log(err.code)
     if(err.code == 'auth/user-not-found'){
-      r['r'] = 2; // user not found
+      r['r'] = 2; 
     } else if(err.code == 'auth/wrong-password'){
-      r['r'] = 0; // wrond password
+      r['r'] = 0; 
     } else if(err.code == 'auth/too-many-requests'){
-      r['r'] = 3; // too many requests
+      r['r'] = 3; 
     }
     res.send(JSON.stringify(r))
   })

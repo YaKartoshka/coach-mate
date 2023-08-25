@@ -9,7 +9,6 @@
     <link rel="shortcut icon" href="../public/images/welcome.png" type="image/x-icon">
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
-        /* Existing styles for ambiance */
         #ambiance {
             color: #fff;
             text-align: center;
@@ -28,74 +27,57 @@
             transform: scale(1.05);
         }
 
-        /* New styles for different cases */
         #ambiance.success {
-            background-color: #2ecc71;
-            /* Green for success */
+            background-color: #04DEAA;
         }
 
         #ambiance.error {
             background-color: #e74c3c;
-            /* Red for errors */
         }
 
         #ambiance.info {
-            background-color: #3498db;
-            /* Blue for info */
+            background-color: #2C9AFF;
         }
 
         #ambiance.warning {
             background-color: #f39c12;
-            /* Yellow for warning */
         }
 
-        /* New style for invalid email */
         #ambiance.invalid-email {
             background-color: #c0392b;
-            /* Dark red for invalid email */
         }
 
         #ambiance.too-many-requests {
             background-color: #e67e22;
-            /* Orange for too many requests */
         }
     </style>
-
 </head>
-
 <body>
     <div class="login_panel">
-
         <div class="sign_in">
             <div class="title">
                 <p>CoachMate</p>
                 <div class="title_line"></div>
             </div>
-
             <div class="sign_in_form">
                 <div class="sign_in_heading">
                     <p>Sign In</p>
                 </div>
                 <div id="ambiance">
-
                 </div>
                 <div class="form">
                     <div class="email">
                         <input type="text" autocomplete="off" name="email" id="email" placeholder="Email">
                     </div>
-
                     <div class="password">
                         <input type="password" autocomplete="off" name="password" id="password" placeholder="Password">
                         <div class="forgot">
                             <a href="#">Forgot a password ?</a>
                         </div>
                     </div>
-
                     <div class="login_btn">
                         <button type="button" onclick="signIn()">Login</button>
                     </div>
-
-
                     <div class="continue">
                         <div class="continue_text">
                             <div class="text text_or">
@@ -105,7 +87,6 @@
                                 <p>continue with</p>
                             </div>
                         </div>
-
                         <div class="sign_in_buttons">
                             <div class="sign_in_btn google">
                                 <a href="/auth/google_sign_in">
@@ -121,15 +102,12 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
         <div class="welcome_screen">
             <div class="welcome_img">
                 <img src="../public/images/welcome.png" alt="" width="350px">
             </div>
-
             <div class="welcome_text">
                 <p>Welcome back, please login to your account</p>
             </div>
@@ -138,7 +116,6 @@
 
     <script>
         function isValidEmail(email) {
-            // Simple email validation using a regular expression
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
@@ -148,19 +125,17 @@
             let ambianceElement = $('#ambiance');
 
             if (!email || !password) {
-                ambianceElement.html('<p>Enter login data</p>').addClass('warning');
-                ambianceElement.addClass('show');
+                ambianceElement.html('<p>Enter login data</p>').addClass('show warning');
                 setTimeout(function () {
-                    ambianceElement.removeClass('show').removeClass('warning').html('');
+                    ambianceElement.removeClass('show warning').html('');
                 }, 3000);
                 return;
             }
 
             if (!isValidEmail(email)) {
-                ambianceElement.html('<p>Invalid Email</p>').addClass('invalid-email');
-                ambianceElement.addClass('show');
+                ambianceElement.html('<p>Invalid Email</p>').addClass('invalid-email show');
                 setTimeout(function () {
-                    ambianceElement.removeClass('show').removeClass('invalid-email').html('');
+                    ambianceElement.removeClass('show invalid-email').html('');
                 }, 3000);
                 return;
             }
@@ -186,7 +161,7 @@
 
                     ambianceElement.addClass('show');
                     setTimeout(function () {
-                        ambianceElement.removeClass('show').removeClass('success').removeClass('error').removeClass('info').removeClass('too-many-requests').html('');
+                        ambianceElement.removeClass('show success error info too-many-requests').html('');
                         if (data.r == 1) {
                             window.location = '/';
                         }
@@ -199,5 +174,4 @@
     </script>
 
 </body>
-
 </html>
