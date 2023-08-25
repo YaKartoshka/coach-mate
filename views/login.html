@@ -13,7 +13,7 @@
         #ambiance {
             color: #fff;
             text-align: center;
-            padding: 10px;
+            padding: 0 20px;
             border-radius: 10px;
             margin-top: 20px;
             font-family: InterReg;
@@ -53,6 +53,11 @@
         #ambiance.invalid-email {
             background-color: #c0392b;
             /* Dark red for invalid email */
+        }
+
+        #ambiance.too-many-requests {
+            background-color: #e67e22;
+            /* Orange for too many requests */
         }
     </style>
 
@@ -175,11 +180,13 @@
                         ambianceElement.html('<p>Wrong Password</p>').addClass('error');
                     } else if (data.r == 2) {
                         ambianceElement.html('<p>User not found</p>').addClass('info');
+                    } else if (data.r == 3) {
+                        ambianceElement.html('<p>Too many requests. Try again later.</p>').addClass('too-many-requests');
                     }
 
                     ambianceElement.addClass('show');
                     setTimeout(function () {
-                        ambianceElement.removeClass('show').removeClass('success').removeClass('error').removeClass('info').html('');
+                        ambianceElement.removeClass('show').removeClass('success').removeClass('error').removeClass('info').removeClass('too-many-requests').html('');
                         if (data.r == 1) {
                             window.location = '/';
                         }

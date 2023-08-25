@@ -66,6 +66,8 @@ router.post("/sign-in", async (req, res) => {
       r['r'] = 2; // user not found
     } else if(err.code == 'auth/wrong-password'){
       r['r'] = 0; // wrond password
+    } else if(err.code == 'auth/too-many-requests'){
+      r['r'] = 3; // too many requests
     }
     res.send(JSON.stringify(r))
   })
