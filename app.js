@@ -16,9 +16,10 @@ var news = require('./routes/news');
 
 
 //html ejs
+app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
+
 
 // -- used packages --
 app.use(bodyParser.json({ limit: '500mb' }));

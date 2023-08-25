@@ -5,11 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="/public/css/bootstrap.css">
-    <link rel="stylesheet" href="/public/css/style.css">
+    <%- include('./components/head.ejs.html') %>		
 </head>
 
 <body>
@@ -65,7 +61,7 @@
             <div class="content">
                 <div class="content-head">
                     <h1>News</h1>
-                    <button data-bs-toggle="modal" data-bs-target="#create_news-modal"><span
+                    <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary"><span
                             class="material-symbols-outlined" style="font-size: 25px; font-weight: 700;">add</span>Add
                         News</button>
                 </div>

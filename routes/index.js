@@ -14,7 +14,7 @@ router.get('/login', (req,res)=>{
 })
 
 router.get('/', isAuthenticated, (req,res,next)=>{
-   
+    console.log(req.session)
     res.render('index')
 })
 
