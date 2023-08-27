@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News</title>
-    <%- include('./components/head.ejs.html') %>		
+    <%- include('./components/head.ejs.html') %>
 </head>
 
 <body>
@@ -139,7 +139,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary px-md-4" onclick="createNews()">Add</button>
+                    <button type="button" id="add_news_btn" class="btn btn-primary px-md-4"
+                        onclick="createNews()">Add</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -157,9 +158,11 @@
 
         function showAddNewsModal() {
             $('#create_news-modal').modal('show');
+
         }
 
         function createNews() {
+            loading(2, el = '#add_news_btn')
             let img = $('#news_img')[0].files[0]
             let title = $('#news_title').val();
             let text = $('#news_text').val();
@@ -167,10 +170,16 @@
             formData.append('img', img);
             formData.append('title', title);
             formData.append('text', text);
-            $('#create_news-modal').modal('hide');
+
             $.ajax({
                 url: "/news/create", method: 'post', data: formData, processData: false, contentType: false, success: function (r) {
-
+                    $('#create_news-modal').modal('hide');
+                    loading(20, el = '#add_news_btn');
+                    $.ambiance({
+                        message: "News added!",
+                        type: "success",
+                        fade: true
+                    });
                 }, error: function (err) {
 
                 }
