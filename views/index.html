@@ -129,17 +129,13 @@
         $(document).ready(function () {
             loading(1);
             showNews();
-            loading(0)
-            
-        })
-
-        
+            loading(0);
+        });
 
         function showNews(){
             $.ajax({
                 url: '/news/get-all', method: 'get', success: function (data) {
                     var news_data = JSON.parse(data);
-                    console.log(news_data)
                     news_data.forEach((news) => {
                         var newsContent = `
                             <div class="news">
@@ -157,8 +153,8 @@
                     })
                     
 
-                }, error: function () {
-
+                }, error: function (err) {
+                    console.log(err)
                 }
             })
         }
@@ -191,9 +187,10 @@
                         type: "success",
                         fade: true
                     });
+                    setTimeout(()=> window.location.reload());
                 }, error: function (err) {
-
-                }
+                    console.log(err)
+                }   
             });
         }
 
