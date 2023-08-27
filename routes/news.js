@@ -4,8 +4,8 @@ const multer = require('multer');
 const admin = require('firebase-admin');
 const fs = require('fs');
 const { fdb } = require("../libs/firebase_db");
-const storage=admin.storage().bucket('gs://coach-mate-b8795.appspot.com')
-const uuid=require('uuid-v4');
+const storage = admin.storage().bucket('gs://coach-mate-b8795.appspot.com')
+const uuid = require('uuid-v4');
 const multer_storage = multer.diskStorage({
     destination(req, file, cb) {
         cb(null, conf.temp_path);
@@ -26,11 +26,11 @@ const upload = multer({
 
 const metadata = {
     metadata: {
-      firebaseStorageDownloadTokens: uuid()
+        firebaseStorageDownloadTokens: uuid()
     },
     contentType: 'image/png',
     cacheControl: 'public, max-age=31536000',
-  };
+};
 
 
 
@@ -38,12 +38,13 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
     var r = { r: 1 };
     const image = req.file
     const panel_id = req.session.panel_id;
-
+    const date = getCurrentDate();
     var data = {
         title: req.body.title,
-        text: req.body.text
+        text: req.body.text,
+        date: date
     }
-    try{
+    try {
         const newsRef = fdb.collection('panels').doc(panel_id).collection('news');
         const news = await newsRef.add(data);
 
@@ -54,22 +55,37 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
         });
 
 
-        var news_image_url=`https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
+        var news_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
         console.log(news.id, news_image_url)
         await newsRef.doc(news.id).update({ news_id: news.id, news_image: news_image_url });
         res.send(JSON.stringify(r));
         fs.unlink(image.path, function (err) {
             if (err) {
-              console.error(err);
+                console.error(err);
             }
-          });
-    } catch(e){
-        r['r']=0;
+        });
+    } catch (e) {
+        r['r'] = 0;
         res.send(JSON.stringify(r))
     }
-   
+
 
 });
+
+router.get('/get-all', async(req, res) => {
+    const panel_id = req.session.panel_id;
+    const data = [];
+    try{
+        await fdb.collection('panels').doc(panel_id).collection('news').orderBy('date', 'desc').get().then((news)=>{
+            news.forEach((news_doc)=>{
+                data.push({news_id: news_doc.id, title: news_doc.data().title, text: news_doc.data().text, image_url: news_doc.data().news_image});
+            })
+            res.send(JSON.stringify(data));
+        });
+    } catch(e){
+        res.send(e);
+    }
+})
 
 
 

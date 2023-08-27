@@ -67,33 +67,7 @@
                 </div>
                 <div class="divider"></div>
                 <div class="content-body">
-                    <div class="news">
-                        <img src="https://i.ytimg.com/vi/GZoMbg0q2Uc/maxresdefault.jpg" alt="">
-                        <div class="news-title">
-                            <h3> КАЗАХСТАНСКИЕ ГРЭППЛЕРЫ ЗАВОЕВАЛИ ЕЩЕ 3 ЛИЦЕНЗИИ НА ВСЕМИРНЫЕ ИГРЫ БОЕВЫХ ИСКУССТВО
-                            </h3>
-                        </div>
-                        <div class="news-text">
-                            В Узбекистане завершился квалификационный турнир по грэпплингу на Всемирные игры боевых
-                            искусств (World Combat Games).
-                            Соревнование проходило 30 апреля и 1 мая в г. Ташкент, где взрослая сборная Казахстана
-                            представила шесть спортсменов в трех весовых категориях. По итогам результатов турнира
-                            следующие спортсмены квалифицировались на Всемирные игры боевых искусств:
-                            Талбудин Нурбек 84 кг.
-                            Узбекова Шынар 71 кг.
-                            Кусаинов Рамазан 92 кг.
-                        </div>
-                    </div>
-                    <div class="news">
-                        <img src="https://static.tildacdn.com/tild3935-6632-4938-b037-646435326132/depositphotos_585726.jpg"
-                            alt="">
-                        <div class="news-title">
-                            <h3> Тренировки не будет </h3>
-                        </div>
-                        <div class="news-text">
-                            В связи с погодными условиями тренировки сегодня не будет. Зал закрыт
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
             <div class="ad-content">
@@ -152,6 +126,43 @@
     <!-- END OF MODALS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        $(document).ready(function () {
+            loading(1);
+            showNews();
+            loading(0)
+            
+        })
+
+        
+
+        function showNews(){
+            $.ajax({
+                url: '/news/get-all', method: 'get', success: function (data) {
+                    var news_data = JSON.parse(data);
+                    console.log(news_data)
+                    news_data.forEach((news) => {
+                        var newsContent = `
+                            <div class="news">
+                                <img src="${news.image_url}" alt="">
+                                <div class="news-title">
+                                    <h3> ${news.title} </h3>
+                                </div>
+                                <div class="news-text">
+                                    ${news.text}
+                                </div>
+                            </div>
+                        `; 
+
+                        $('.content-body').append(newsContent);
+                    })
+                    
+
+                }, error: function () {
+
+                }
+            })
+        }
+
         $('#profile-data').on('click', () => {
             $('.dropdown-content').slideToggle(300);
         })
