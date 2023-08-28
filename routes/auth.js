@@ -53,39 +53,36 @@ router.post("/sign-in", async (req, res) => {
   const email = req.body.email.toLowerCase().trim();
   const password = req.body.password.toLowerCase().trim();
 
-  firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async(userCredential) => {
-      const user_id = userCredential.user.uid
-      req.session.user_id = user_id;
-      req.session.isAuthenticated = true;
-      const panels = await firebase.fdb.collection('panels').get();
-      panels.forEach(async(panel)=>{
-        let user = await firebase.fdb.collection('panels').doc(panel.id).collection('users').doc(user_id).get()
-        if (!user.exists) {
-          r['r'] = 3; 
-          res.send(JSON.stringify(r))
-        } else {
-          req.session.panel_id = panel.id
-          r['r'] = 1; 
-          res.send(JSON.stringify(r))
-        }
-      })
-     
-      
- 
-  }, (err)=>{
+  firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async (userCredential) => {
+    const user_id = userCredential.user.uid;
+    req.session.user_id = user_id;
+    req.session.isAuthenticated = true;
+    const panels = await firebase.fdb.collection('panels').get();
+    panels.forEach(async (panel) => {
+      let user = await firebase.fdb.collection('panels').doc(panel.id).collection('users').doc(user_id).get();
+      if (!user.exists) {
+        r['r'] = 3;
+        res.send(JSON.stringify(r));
+      } else {
+        req.session.panel_id = panel.id
+        r['r'] = 1;
+        res.send(JSON.stringify(r))
+      }
+    });
+  }, (err) => {
     console.log(err.code)
-    if(err.code == 'auth/user-not-found'){
-      r['r'] = 2; 
-    } else if(err.code == 'auth/wrong-password'){
-      r['r'] = 0; 
-    } else if(err.code == 'auth/too-many-requests'){
-      r['r'] = 3; 
+    if (err.code == 'auth/user-not-found') {
+      r['r'] = 2;
+    } else if (err.code == 'auth/wrong-password') {
+      r['r'] = 0;
+    } else if (err.code == 'auth/too-many-requests') {
+      r['r'] = 3;
     }
-    res.send(JSON.stringify(r))
+    res.send(JSON.stringify(r));
   })
 
 
- 
+
 });
 
 

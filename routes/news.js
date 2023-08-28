@@ -39,14 +39,13 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
     const image = req.file
     const panel_id = req.session.panel_id;
     const date = getCurrentDate();
-    var data = {
-        title: req.body.title,
-        text: req.body.text,
-        date: date
-    }
     try {
         const newsRef = fdb.collection('panels').doc(panel_id).collection('news');
-        const news = await newsRef.add(data);
+        const news = await newsRef.add({
+            title: req.body.title,
+            text: req.body.text,
+            date: date
+        });
 
         await storage.upload(image.path, {
             gzip: true,
@@ -54,11 +53,17 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
             destination: `news/${image.originalname}`
         });
 
-
         var news_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
         console.log(news.id, news_image_url)
         await newsRef.doc(news.id).update({ news_id: news.id, news_image: news_image_url });
-        res.send(JSON.stringify(r));
+        var data = {
+            news_id: news.id,
+            title: req.body.title,
+            text: req.body.text,
+            date: date,
+            news_image: news_image_url
+        }
+        res.send(JSON.stringify(data));
         fs.unlink(image.path, function (err) {
             if (err) {
                 console.error(err);
@@ -68,8 +73,6 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
         r['r'] = 0;
         res.send(JSON.stringify(r))
     }
-
-
 });
 
 router.get('/get-all', async(req, res) => {

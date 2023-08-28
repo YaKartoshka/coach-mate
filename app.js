@@ -6,13 +6,14 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
 var passport = require('passport');
-// -------- routes --------
 
+// -------- routes --------
 var index = require('./routes/index');
 var students = require('./routes/students');
 var coachers = require('./routes/coachers');
 var auth = require('./routes/auth');
 var news = require('./routes/news');
+var links = require('./routes/links')
 
 
 //html ejs
@@ -47,6 +48,7 @@ app.use('/students', students);
 app.use('/coachers', coachers);
 app.use('/auth', auth);
 app.use('/news', news);
+app.use('/links', links);
 
 module.exports = app;
 

@@ -73,14 +73,10 @@
             <div class="ad-content">
 
                 <div class="hot-links">
-                    <ul>
-                        <li><a href="">Competition schedule</a></li>
-                        <li><a href="">Winners Asia 2023</a></li>
-                        <li><a href="">List of documents for the CMS</a></li>
-                        <li><a href="">Full Karate schedule</a></li>
-                        <li><a href="">Full Judo schedule</a></li>
+                    <ul class="hot-links-list">
+
                     </ul>
-                    <button><span class="material-symbols-outlined"
+                    <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
                             style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
                 </div>
             </div>
@@ -121,6 +117,34 @@
         </div>
     </div>
 
+    <div class="modal fade" id="create_link-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Link</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Link text</label>
+                            <input type="text" class="form-control" id="link_text" placeholder="Text">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Link URL</label>
+                            <input type="text" class="form-control" id="link_url" placeholder="https://">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="add_link_btn" class="btn btn-primary px-md-4"
+                        onclick="createLink()">Add</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- END OF MODALS -->
@@ -129,10 +153,16 @@
         $(document).ready(function () {
             loading(1);
             showNews();
+            showLinks();
             loading(0);
         });
 
+        $('#profile-data').on('click', () => {
+            $('.dropdown-content').slideToggle(300);
+        });
+
         function showNews(){
+            $('.content-body').html('');
             $.ajax({
                 url: '/news/get-all', method: 'get', success: function (data) {
                     var news_data = JSON.parse(data);
@@ -148,24 +178,36 @@
                                 </div>
                             </div>
                         `; 
-
                         $('.content-body').append(newsContent);
                     })
-                    
-
                 }, error: function (err) {
                     console.log(err)
                 }
             })
         }
 
-        $('#profile-data').on('click', () => {
-            $('.dropdown-content').slideToggle(300);
-        })
+        function showLinks(){
+            $(".hot-links-list").html('');
+            $.ajax({
+                url: '/links/get-all', method: 'get', success: function (data) {
+                    var links_data = JSON.parse(data);
+                    links_data.forEach((link) => {
+                      
+                        var list = `<li><a href="${link.link_url}" target="_blank">${link.link_text}</a></li>`;
+                        $(".hot-links-list").append(list);
+                    });
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
 
         function showAddNewsModal() {
             $('#create_news-modal').modal('show');
+        }
 
+        function showAddLinkModal() {
+            $('#create_link-modal').modal('show');
         }
 
         function createNews() {
@@ -187,13 +229,36 @@
                         type: "success",
                         fade: true
                     });
-                    setTimeout(()=> window.location.reload());
+                    loading(1);
+                    showNews();
+                    loading(0);
                 }, error: function (err) {
                     console.log(err)
                 }   
             });
         }
 
+        function createLink(){
+            loading(2, el = '#add_link_btn');
+            let link_url = $('#link_url').val();
+            let link_text = $('#link_text').val();
+            $.ajax({
+                url: "/links/create", method: 'post', data: {link_text:link_text, link_url:link_url}, success: function (r) {
+                    showLinks();
+                    $('#link_url').val('');
+                    $('#link_text').val('');
+                    $('#create_link-modal').modal('hide');
+                    loading(20, el = '#add_link_btn');
+                    $.ambiance({
+                        message: "Link added!",
+                        type: "success",
+                        fade: true
+                    });
+                }, error: function (err) {
+                    console.log(err)
+                }   
+            });
+        }
 
     </script>
 </body>
