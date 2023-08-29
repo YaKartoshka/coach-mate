@@ -337,6 +337,7 @@ body {
 
 .form {
     position: relative;
+    bottom: 30px;
 }
 
 .form .password {
@@ -578,7 +579,7 @@ body {
 }
 
 .switcher button.active {
-    background-color: #3498db;
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
     color: white;
 }
 
