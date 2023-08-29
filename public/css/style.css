@@ -139,7 +139,7 @@ body {
     font-family: InterReg;
 }
 
-.modal label{
+.modal label {
     font-size: 14px;
 }
 
@@ -274,7 +274,7 @@ body {
     text-align: center;
 }
 
-.sign_in {
+.auth {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -283,20 +283,20 @@ body {
     border-bottom-left-radius: 30px;
 }
 
-.sign_in .sign_in_form {
-    display: flex;
+.auth .sign_in_form {
+    display: none;
     flex-direction: column;
     align-items: center;
     margin-top: -50px;
 }
 
-.sign_in .sign_in_form .form {
+.auth .sign_in_form .form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.sign_in .title p {
+.auth .title p {
     font-family: RedHatDisplayExtra;
     font-size: 40px;
     background: linear-gradient(#3793FF, #00FFC2);
@@ -304,12 +304,12 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.sign_in .title {
+.auth .title {
     position: relative;
     right: 135px;
 }
 
-.sign_in .title .title_line {
+.auth .title .title_line {
     width: 475px;
     height: 5px;
     border-top-right-radius: 10px;
@@ -344,6 +344,11 @@ body {
     top: 50px;
 }
 
+.form .rep_password {
+    position: absolute;
+    top: 100px;
+}
+
 .form .login_btn_block {
     position: absolute;
     top: 150px;
@@ -357,6 +362,13 @@ body {
 }
 
 .form .password input {
+    border: none;
+    outline: none;
+    border: 2px solid #2079FF;
+    border-radius: 7px;
+}
+
+.form .rep_password input {
     border: none;
     outline: none;
     border: 2px solid #2079FF;
@@ -391,8 +403,8 @@ body {
     cursor: pointer;
 }
 
-.sign_in_form .login_btn_block button:disabled{
-    cursor:default;
+.sign_in_form .login_btn_block button:disabled {
+    cursor: default;
     opacity: 0.8;
 }
 
@@ -466,3 +478,108 @@ body {
 }
 
 /* ---- End Login Page ---- */
+
+/* ---- Sign Up ---- */
+.auth .sign_up_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -50px;
+}
+
+.auth .sign_up_form .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign_up_form .sign_up_heading {
+    font-family: RedHatDisplayMed;
+    font-size: 30px;
+}
+
+.sign_up_form {
+    position: relative;
+    top: 30px;
+}
+
+.sign_up_form input {
+    padding: 10px 20px;
+    width: 250px;
+    transition: 0.5s;
+}
+
+
+.form .register_btn_block {
+    position: absolute;
+    top: 150px;
+}
+
+.sign_up_form .register_btn_block {
+    margin-top: 15px;
+}
+
+.sign_up_form .register_btn_block button {
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+    color: #FFFFFF;
+    border: none;
+    font-family: InterReg;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 7px;
+    padding: 10px 40px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.sign_up_form .register_btn_block button:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
+.sign_up_form .register_btn_block button:disabled:hover {
+    box-shadow: none;
+}
+
+.sign_up_form .register_btn_block button:hover {
+    box-shadow: 0 0 5px 0 #408CFF, 0 0 5px 0 #00FFC2;
+}
+
+.sign_up_form ::placeholder {
+    color: #2079FF;
+    transition: 0.5s;
+}
+
+.sign_up_form input:focus {
+    border: none;
+    outline: none;
+    border: 2px solid #2079FF;
+    border-color: #4f86ca;
+    box-shadow: 0 0 5px 3px rgba(102, 170, 255, 0.5);
+}
+
+.sign_up_form input:focus::placeholder {
+    color: #727477;
+}
+
+.switcher {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.switcher button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-family: RedHatDisplayMed;
+}
+
+.switcher button.active {
+    background-color: #3498db;
+    color: white;
+}
+
+/*---- End Sign Up ----*/

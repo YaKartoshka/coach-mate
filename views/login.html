@@ -7,7 +7,7 @@
     <title>CoachMate</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="shortcut icon" href="../public/images/welcome.png" type="image/x-icon">
-    <link rel="stylesheet" href="/public/css/common.css">
+    <link rel="stylesheet" href="../public/css/common.css">
     <link rel="stylesheet" href="../public/css/style.css">
     <script>
         function loading(mode, el = null) {
@@ -31,11 +31,18 @@
 
 <body>
     <div class="login_panel">
-        <div class="sign_in">
+        <div class="auth">
             <div class="title">
                 <p>CoachMate</p>
                 <div class="title_line"></div>
             </div>
+
+
+            <div class="switcher">
+                <button id="signUpButton" class="active" onclick="showForm('signUp')">Sign Up</button>
+                <button id="signInButton" onclick="showForm('signIn')">Sign In</button>
+            </div>
+
             <div class="sign_in_form">
                 <div class="sign_in_heading">
                     <p>Sign In</p>
@@ -80,6 +87,30 @@
                     </div>
                 </div>
             </div>
+
+            <div class="sign_up_form">
+                <div class="sign_up_heading">
+                    <p>Sign Up</p>
+                </div>
+                <div id="ambiance">
+                </div>
+                <div class="form">
+                    <div class="email">
+                        <input type="text" autocomplete="off" name="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="password">
+                        <input type="password" autocomplete="off" name="password" id="password" placeholder="Password">
+                    </div>
+                    <div class="rep_password">
+                        <input type="password" autocomplete="off" name="rep_password" id="rep_password"
+                            placeholder="Repeat password">
+                    </div>
+                    <div class="register_btn_block">
+                        <button type="button" id="login_btn" onclick="signUp()">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="welcome_screen">
             <div class="welcome_img">
@@ -97,13 +128,13 @@
         }
 
         function signIn() {
-            loading(2, el='#login_btn');
+            loading(2, el = '#login_btn');
             let email = $('#email').val().trim().toLowerCase();
             let password = $('#password').val().trim();
             let ambianceElement = $('#ambiance');
 
             if (!email || !password) {
-                loading(20, el='#login_btn');
+                loading(20, el = '#login_btn');
                 ambianceElement.html('<p>Enter login data</p>').addClass('show warning');
                 setTimeout(function () {
                     ambianceElement.removeClass('show warning').html('');
@@ -112,7 +143,7 @@
             }
 
             if (!isValidEmail(email)) {
-                loading(20, el='#login_btn');
+                loading(20, el = '#login_btn');
                 ambianceElement.html('<p>Invalid Email</p>').addClass('invalid-email show');
                 setTimeout(function () {
                     ambianceElement.removeClass('show invalid-email').html('');
@@ -131,9 +162,9 @@
                     if (data.r == 1) {
                         ambianceElement.html('<p>Success!</p>').addClass('success');
                         setTimeout(function () {
-                        ambianceElement.removeClass('show success error info too-many-requests').html('');
-                        window.location.href='/';
-                    }, 3000);
+                            ambianceElement.removeClass('show success error info too-many-requests').html('');
+                            window.location.href = '/';
+                        }, 1000);
                     } else if (data.r == 0) {
                         ambianceElement.html('<p>Wrong Password</p>').addClass('error');
                     } else if (data.r == 2) {
@@ -141,18 +172,38 @@
                     } else if (data.r == 3) {
                         ambianceElement.html('<p>The panel is not available</p>').addClass('too-many-requests');
                     }
-                    loading(20, el='#login_btn');
+                    loading(20, el = '#login_btn');
                     ambianceElement.addClass('show');
                     setTimeout(function () {
                         ambianceElement.removeClass('show success error info too-many-requests').html('');
-                    },3000);
+                    }, 3000);
                 }, error: function (err) {
-                    loading(20, el='#login_btn');
+                    loading(20, el = '#login_btn');
                     console.log(err);
                 }
             });
         }
+
+        function showForm(formType) {
+            var signUpButton = document.getElementById('signUpButton');
+            var signInButton = document.getElementById('signInButton');
+            var signUpForm = document.querySelector('.sign_up_form');
+            var signInForm = document.querySelector('.sign_in_form');
+
+            if (formType === 'signUp') {
+                signUpButton.classList.add('active');
+                signInButton.classList.remove('active');
+                signUpForm.style.display = 'flex';
+                signInForm.style.display = 'none';
+            } else {
+                signInButton.classList.add('active');
+                signUpButton.classList.remove('active');
+                signInForm.style.display = 'flex';
+                signUpForm.style.display = 'none';
+            }
+        }
     </script>
 
 </body>
+
 </html>
