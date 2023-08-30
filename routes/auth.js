@@ -5,7 +5,6 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const session = require("express-session");
 const firebase = require("../libs/firebase_db");
-
 var r = { "r": 200 };
 
 passport.serializeUser(function (user, done) {
@@ -55,22 +54,32 @@ router.post("/sign-in", async (req, res) => {
 
   firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async (userCredential) => {
     const user_id = userCredential.user.uid;
-    req.session.user_id = user_id;
-    req.session.isAuthenticated = true;
+
+    var documentFound = false;
     const panels = await firebase.fdb.collection('panels').get();
-    panels.forEach(async (panel) => {
-      let user = await firebase.fdb.collection('panels').doc(panel.id).collection('users').doc(user_id).get();
-      if (!user.exists) {
-        r['r'] = 3;
-        res.send(JSON.stringify(r));
-      } else {
-        req.session.panel_id = panel.id
-        r['r'] = 1;
-        res.send(JSON.stringify(r))
+    const panel_promises = panels.docs.map(async (panel) => {
+      if (!documentFound) {
+        let user = await firebase.fdb.collection('panels').doc(panel.id).collection('users').doc(user_id).get();
+        if (user.exists) {
+          r['r'] = 1;
+          documentFound = true;
+          req.session.user_id = user_id;
+          req.session.isAuthenticated = true;
+          req.session.panel_id = panel.id;
+          res.send(JSON.stringify(r));
+        }
       }
     });
+
+    await Promise.all(panel_promises);
+
+    if (!documentFound) {
+      r['r'] = 3;
+      res.send(JSON.stringify(r));
+    }
+
   }, (err) => {
-    console.log(err.code)
+    console.log(err.code);
     if (err.code == 'auth/user-not-found') {
       r['r'] = 2;
     } else if (err.code == 'auth/wrong-password') {
@@ -79,12 +88,39 @@ router.post("/sign-in", async (req, res) => {
       r['r'] = 3;
     }
     res.send(JSON.stringify(r));
-  })
-
-
-
+  });
 });
 
+router.post("/sign-up", async (req, res) => {
+  const email = req.body.email.toLowerCase().trim();
+  const password = req.body.password.toLowerCase().trim();
+
+  firebase.fauth.createUserWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async (userCredential) => {
+    const user_id = userCredential.user.uid;
+    req.session.user_id = user_id;
+    req.session.isAuthenticated = true;
+
+    const panels = firebase.fdb.collection('panels');
+    const new_panel = await panels.add({
+      panel_name: 'Default'
+    });
+    req.session.panel_id = new_panel.id;
+
+    const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
+      user_id: user_id,
+      email: email
+    });
+
+    r['r'] = 1;
+    res.send(JSON.stringify(r));
+
+  }, (err) => {
+    if (err.code == 'auth/email-already-in-use') {
+      r['r'] = 4;
+    }
+    res.send(JSON.stringify(r));
+  });
+});
 
 
 /* ---- Google Auth ----    */

@@ -511,16 +511,16 @@ body {
 }
 
 
-.form .register_btn_block {
+.form .sign_up_btn_block {
     position: absolute;
     top: 150px;
 }
 
-.sign_up_form .register_btn_block {
+.sign_up_form .sign_up_btn_block {
     margin-top: 15px;
 }
 
-.sign_up_form .register_btn_block button {
+.sign_up_form .sign_up_btn_block button {
     background: linear-gradient(to bottom left, #408CFF, #00FFC2);
     color: #FFFFFF;
     border: none;
@@ -533,16 +533,16 @@ body {
     cursor: pointer;
 }
 
-.sign_up_form .register_btn_block button:disabled {
+.sign_up_form .sign_up_btn_block button:disabled {
     cursor: default;
     opacity: 0.8;
 }
 
-.sign_up_form .register_btn_block button:disabled:hover {
+.sign_up_form .sign_up_btn_block button:disabled:hover {
     box-shadow: none;
 }
 
-.sign_up_form .register_btn_block button:hover {
+.sign_up_form .sign_up_btn_block button:hover {
     box-shadow: 0 0 5px 0 #408CFF, 0 0 5px 0 #00FFC2;
 }
 

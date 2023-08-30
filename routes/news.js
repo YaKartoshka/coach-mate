@@ -36,7 +36,7 @@ const metadata = {
 
 router.post('/create', upload.single('img'), async function (req, res, next) {
     var r = { r: 1 };
-    const image = req.file
+    const image = req.file;
     const panel_id = req.session.panel_id;
     const date = getCurrentDate();
     try {
@@ -82,7 +82,7 @@ router.get('/get-all', async(req, res) => {
         await fdb.collection('panels').doc(panel_id).collection('news').orderBy('date', 'desc').get().then((news)=>{
             news.forEach((news_doc)=>{
                 data.push({news_id: news_doc.id, title: news_doc.data().title, text: news_doc.data().text, image_url: news_doc.data().news_image});
-            })
+            });
             res.send(JSON.stringify(data));
         });
     } catch(e){
