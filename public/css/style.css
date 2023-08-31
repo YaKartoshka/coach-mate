@@ -567,19 +567,23 @@ body {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    background-color: #ECECEC;
+    border-radius: 5px;
 }
 
 .switcher button {
     padding: 10px 20px;
-    margin: 0 10px;
     cursor: pointer;
     border: none;
     border-radius: 5px;
     font-family: RedHatDisplayMed;
+    margin: 0;
+    background: transparent;
+    width: 150px;
 }
 
 .switcher button.active {
-    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+    background: #00B3FF;
     color: white;
 }
 
