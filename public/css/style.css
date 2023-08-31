@@ -447,7 +447,7 @@ body {
     width: 100px;
 }
 
-.sign_in_buttons {
+.sign_in_buttons, .sign_up_buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -455,7 +455,7 @@ body {
     top: 215px;
 }
 
-.sign_in_btn {
+.sign_in_btn, .sign_up_btn {
     background-color: #FFFFFF;
     box-shadow: 0 0 5px 0px gray;
     border-radius: 10px;
@@ -463,7 +463,7 @@ body {
     cursor: pointer;
 }
 
-.sign_in_btn img {
+:is(.sign_in_btn, .sign_up_btn) img {
     border-radius: 10px;
 }
 

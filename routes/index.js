@@ -10,12 +10,12 @@ function isAuthenticated(req, res, next) {
 };
 
 router.get('/login', (req,res)=>{
-    res.render('login')
+    res.render('login');
 })
 
 router.get('/', isAuthenticated, (req,res,next)=>{
-    console.log(req.session)
-    res.render('index')
+    console.log(req.session);
+    res.render('index');
 })
 
 

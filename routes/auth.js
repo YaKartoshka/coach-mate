@@ -3,7 +3,6 @@ const router = express.Router();
 const async = require("async");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const session = require("express-session");
 const firebase = require("../libs/firebase_db");
 var r = { "r": 200 };
 
@@ -66,6 +65,7 @@ router.post("/sign-in", async (req, res) => {
           req.session.user_id = user_id;
           req.session.isAuthenticated = true;
           req.session.panel_id = panel.id;
+          req.session.role = user.data().role;
           res.send(JSON.stringify(r));
         }
       }
@@ -108,7 +108,8 @@ router.post("/sign-up", async (req, res) => {
 
     const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
       user_id: user_id,
-      email: email
+      email: email,
+      role: 'admin'
     });
 
     r['r'] = 1;
@@ -127,15 +128,84 @@ router.post("/sign-up", async (req, res) => {
 
 router.get(
   "/google_sign_in",
-  passport.authenticate("google_sign_in", { scope: ["profile"] }, () => { })
+  passport.authenticate("google_sign_in", { scope: ["profile", "email"] }, () => { })
 );
 
 router.get(
   "/google_sign_in/index",
-  passport.authenticate("google_sign_in", { failureRedirect: "/login" }),
-  function (req, res) {
+  passport.authenticate("google_sign_in", { failureRedirect: "/login", }),
+  async function (req, res) {
     const google_id = req.user.id;
-    res.render('index')
+    const email = req.user.emails[0].value;
+    console.log(email)
+    firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, "googlet7r2j689").then(async (userCredential) => {
+      const user_id = userCredential.user.uid;
+      var documentFound = false;
+      const panels = await firebase.fdb.collection('panels').get();
+      const panel_promises = panels.docs.map(async (panel) => {
+        if (!documentFound) {
+          let user = await firebase.fdb.collection('panels').doc(panel.id).collection('users').doc(user_id).get();
+          if (user.exists) {
+            r['r'] = 1;
+            documentFound = true;
+            req.session.user_id = user_id;
+            req.session.isAuthenticated = true;
+            req.session.panel_id = panel.id;
+            req.session.role = user.data().role;
+            res.redirect('/');
+          }
+        }
+      });
+
+      await Promise.all(panel_promises);
+
+      if (!documentFound) {
+        res.redirect('login');
+      }
+
+
+    }, (err) => {
+      console.log(err)
+    });
+  }
+);
+
+router.get(
+  "/google_sign_up",
+  passport.authenticate("google_sign_up", { scope: ["profile", "email"] }, () => { })
+);
+
+router.get(
+  "/google_sign_up/index",
+  passport.authenticate("google_sign_up", { failureRedirect: "/login" }),
+  async function (req, res) {
+    const google_id = req.user.id;
+    const email = req.user.emails[0].value;
+
+
+    firebase.fauth.createUserWithEmailAndPassword(firebase.fauth.getAuth(), email, "googlet7r2j689").then(async (userCredential) => {
+      const user_id = userCredential.user.uid;
+  
+      const panels = firebase.fdb.collection('panels');
+      const new_panel = await panels.add({
+        panel_name: 'Default'
+      });
+      req.session.panel_id = new_panel.id;
+
+      const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
+        user_id: user_id,
+        google_id: google_id,
+        email: email,
+        role: 'admin'
+      });
+      req.session.user_id = user_id;
+      req.session.isAuthenticated = true;
+      res.redirect('/');
+    }, (err) => {
+      if (err.code == 'auth/email-already-in-use') {
+        res.redirect('/login')
+      }
+    });
   }
 );
 

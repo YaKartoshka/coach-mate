@@ -213,12 +213,10 @@
 
         function createNews() {
             let img = $('#news_img')[0].files[0];
-            let title = $('#news_title').val();
-            let text = $('#news_text').val();
-
-            if (img && !title || !text ||
-                img && title && !text ||
-                img && !title && text) {
+            let title = $('#news_title').val().trim();
+            let text = $('#news_text').val().trim();
+            console.log(!img)
+            if (!img && (!title || !text)) {
                 $.ambiance({
                     message: "Please provide a title and text for the news.",
                     type: "error",
@@ -228,9 +226,9 @@
                 return;
             }
 
-            if (!img || !title || !text) {
+            if (!img) {
                 $.ambiance({
-                    message: "Please fill in all fields and upload an image.",
+                    message: "Please upload an image.",
                     type: "error",
                     fade: true,
                     width: 400
@@ -266,22 +264,12 @@
 
 
         function createLink() {
-            let link_url = $('#link_url').val();
-            let link_text = $('#link_text').val();
-
-            if (!link_text && !link_url) {
+            let link_url = $('#link_url').val().trim();
+            let link_text = $('#link_text').val().trim();
+           
+            if (!(link_text && link_url)) {
                 $.ambiance({
                     message: "Please provide link text and link URL.",
-                    type: "error",
-                    fade: true,
-                    width: 400
-                });
-                return;
-            }
-
-            if (!link_text || !link_url) {
-                $.ambiance({
-                    message: "Please fill in both link text and link URL.",
                     type: "error",
                     fade: true,
                     width: 400
