@@ -12,7 +12,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="/public/images/CoachMate.png" alt="">
+            <a href=""><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
         <div class="profile">
             <div id="profile-data">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="divider"></div>
                 <div class="content-body">
-                   
+
                 </div>
             </div>
             <div class="ad-content">
@@ -162,7 +162,7 @@
             $('.dropdown-content').slideToggle(300);
         });
 
-        function showNews(){
+        function showNews() {
             $('.content-body').html('');
             $.ajax({
                 url: '/news/get-all', method: 'get', success: function (data) {
@@ -178,7 +178,7 @@
                                     ${news.text}
                                 </div>
                             </div>
-                        `; 
+                        `;
                         $('.content-body').append(newsContent);
                     })
                 }, error: function (err) {
@@ -187,13 +187,13 @@
             })
         }
 
-        function showLinks(){
+        function showLinks() {
             $(".hot-links-list").html('');
             $.ajax({
                 url: '/links/get-all', method: 'get', success: function (data) {
                     var links_data = JSON.parse(data);
                     links_data.forEach((link) => {
-                      
+
                         var list = `<li><a href="${link.link_url}" target="_blank">${link.link_text}</a></li>`;
                         $(".hot-links-list").append(list);
                     });
@@ -212,10 +212,34 @@
         }
 
         function createNews() {
-            loading(2, el = '#add_news_btn')
-            let img = $('#news_img')[0].files[0]
+            let img = $('#news_img')[0].files[0];
             let title = $('#news_title').val();
             let text = $('#news_text').val();
+
+            if (img && !title || !text ||
+                img && title && !text ||
+                img && !title && text) {
+                $.ambiance({
+                    message: "Please provide a title and text for the news.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
+            if (!img || !title || !text) {
+                $.ambiance({
+                    message: "Please fill in all fields and upload an image.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
+            loading(2, el = '#add_news_btn');
+
             const formData = new FormData();
             formData.append('img', img);
             formData.append('title', title);
@@ -233,18 +257,42 @@
                     loading(1);
                     showNews();
                     loading(0);
-                }, error: function (err) {
-                    console.log(err)
-                }   
+                },
+                error: function (err) {
+                    console.log(err);
+                }
             });
         }
 
-        function createLink(){
-            loading(2, el = '#add_link_btn');
+
+        function createLink() {
             let link_url = $('#link_url').val();
             let link_text = $('#link_text').val();
+
+            if (!link_text && !link_url) {
+                $.ambiance({
+                    message: "Please provide link text and link URL.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
+            if (!link_text || !link_url) {
+                $.ambiance({
+                    message: "Please fill in both link text and link URL.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
+            loading(2, el = '#add_link_btn');
+
             $.ajax({
-                url: "/links/create", method: 'post', data: {link_text:link_text, link_url:link_url}, success: function (r) {
+                url: "/links/create", method: 'post', data: { link_text: link_text, link_url: link_url }, success: function (r) {
                     showLinks();
                     $('#link_url').val('');
                     $('#link_text').val('');
@@ -255,11 +303,13 @@
                         type: "success",
                         fade: true
                     });
-                }, error: function (err) {
-                    console.log(err)
-                }   
+                },
+                error: function (err) {
+                    console.log(err);
+                }
             });
         }
+
 
     </script>
 </body>
