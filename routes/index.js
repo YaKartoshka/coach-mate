@@ -9,14 +9,20 @@ function isAuthenticated(req, res, next) {
     next();
 };
 
-router.get('/login', (req,res)=>{
-    res.render('login');
-})
+
 
 router.get('/', isAuthenticated, (req,res,next)=>{
     console.log(req.session);
     res.render('index');
-})
+});
+
+router.get('/login', (req,res)=>{
+    res.render('login');
+});
+
+router.get('/settings', isAuthenticated, (req,res)=>{
+    res.render('settings');
+});
 
 
 

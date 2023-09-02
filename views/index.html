@@ -48,13 +48,13 @@
         <div class="news-content">
             <div class="nav-bar">
                 <ul>
-                    <li class="active"><a href=""><span class="material-symbols-outlined"
+                    <li class="active"><a href="/"><span class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 500;">home</span>Home</a></li>
                     <li><a href=""><span class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 500;">group</span>Members</a></li>
                     <li><a href=""><span class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 500;">today</span>Schedule</a></li>
-                    <li><a href=""><span class="material-symbols-outlined"
+                    <li><a href="/settings"><span class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 500;">settings</span>Settings</a></li>
 
                 </ul>
@@ -153,14 +153,29 @@
     <script>
         $(document).ready(function () {
             loading(1);
-            showNews();
-            showLinks();
             loading(0);
         });
 
         $('#profile-data').on('click', () => {
             $('.dropdown-content').slideToggle(300);
         });
+
+        var currentUrl = window.location.pathname;
+
+        var listItems = document.querySelectorAll(".nav-bar ul li");
+
+        for (var i = 0; i < listItems.length; i++) {
+            var listItem = listItems[i];
+            var listItemLink = listItem.querySelector("a");
+            var listItemHref = listItemLink.getAttribute("href");
+
+            if (currentUrl === listItemHref) {
+                listItem.classList.add("active");
+            } else {
+                listItem.classList.remove("active");
+            }
+        }
+
 
         function showNews() {
             $('.content-body').html('');
@@ -215,8 +230,8 @@
             let img = $('#news_img')[0].files[0];
             let title = $('#news_title').val().trim();
             let text = $('#news_text').val().trim();
-            console.log(!img)
-            if (!img && (!title || !text)) {
+
+            if (img && (!title || !text)) {
                 $.ambiance({
                     message: "Please provide a title and text for the news.",
                     type: "error",
@@ -266,7 +281,7 @@
         function createLink() {
             let link_url = $('#link_url').val().trim();
             let link_text = $('#link_text').val().trim();
-           
+
             if (!(link_text && link_url)) {
                 $.ambiance({
                     message: "Please provide link text and link URL.",

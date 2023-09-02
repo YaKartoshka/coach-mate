@@ -447,7 +447,8 @@ body {
     width: 100px;
 }
 
-.sign_in_buttons, .sign_up_buttons {
+.sign_in_buttons,
+.sign_up_buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -455,7 +456,8 @@ body {
     top: 215px;
 }
 
-.sign_in_btn, .sign_up_btn {
+.sign_in_btn,
+.sign_up_btn {
     background-color: #FFFFFF;
     box-shadow: 0 0 5px 0px gray;
     border-radius: 10px;
@@ -589,9 +591,170 @@ body {
 
 /*---- End Sign Up ----*/
 
+/*---- Settings page ----*/
+
+/* Styles for the settings content container */
+.settings-content {
+    padding: 50px;
+    flex: 0.85;
+    font-family: InterReg;
+    box-shadow: 0 0 20px 5px #59D7FF;
+    border-radius: 15px;
+    margin: 60px 60px;
+}
+
+/* Styles for the tab switcher */
+.tab-switcher {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 5%;
+    padding-bottom: 1.5%;
+}
+
+.tab-switcher div {
+    flex: 1;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Bottom highlight for active tab */
+.tab-switcher div::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: #00FFC2;
+    transition: width 0.25s ease;
+}
+
+.tab-switcher div.active::before {
+    width: 100%;
+}
+
+/* Styles for tab content */
+.tab-content>div {
+    display: none;
+}
+
+.tab-content div.active {
+    display: block;
+}
+
+.personal-info input,
+.personal-info textarea,
+.panel-name input {
+    border: 1px solid black;
+}
+
+.file-button {
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.file-button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.profile-image-settings {
+    display: flex;
+    align-items: center;
+}
+
+.photo {
+    flex: 0.25;
+}
+
+.personal-info p {
+    color: #3793FF;
+    font-size: 20px;
+}
+
+.settings-content label {
+    font-weight: bold;
+}
+
+.main-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.fname-lname {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.fname-lname .fname,
+.fname-lname .lname {
+    width: 50%;
+}
+
+.email-phone {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.email-phone .email,
+.email-phone .phone-number {
+    width: 50%;
+}
+
+.about textarea{
+    resize: none;
+}
+
+.panel-name .form-control,
+.main-info .form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.profile-footer {
+    margin-top: 6%;
+    position: relative;
+}
+
+.profile-footer::before {
+    content: "";
+    background-color: #B0FFDE;
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    top: -20px;
+    left: 0;
+}
+
+.save-btn button {
+    padding: 12px 40px;
+}
+
+.save-btn {
+    margin-bottom: 3%;
+}
+
+.box-important img{
+    margin-right: 3%;
+}
+
+
+/*---- End Settings page ---- */
+
 
 /*---- MEDIA QUERIES ---- */
 
-@media (max-width: 768px) {
-    
-}
+@media (max-width: 768px) {}
