@@ -166,6 +166,10 @@
                     loading(0);
                 });
 
+                $('#profile-data').on('click', () => {
+                    $('.dropdown-content').slideToggle(300);
+                });
+
                 var currentUrl = window.location.pathname;
 
                 var listItems = document.querySelectorAll(".nav-bar ul li");
