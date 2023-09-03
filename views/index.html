@@ -160,21 +160,21 @@
             $('.dropdown-content').slideToggle(300);
         });
 
-        var currentUrl = window.location.pathname;
+        $(document).ready(function () {
+            var currentUrl = window.location.pathname;
 
-        var listItems = document.querySelectorAll(".nav-bar ul li");
+            $(".nav-bar ul li").each(function () {
+                var listItem = $(this);
+                var listItemLink = listItem.find("a");
+                var listItemHref = listItemLink.attr("href");
 
-        for (var i = 0; i < listItems.length; i++) {
-            var listItem = listItems[i];
-            var listItemLink = listItem.querySelector("a");
-            var listItemHref = listItemLink.getAttribute("href");
-
-            if (currentUrl === listItemHref) {
-                listItem.classList.add("active");
-            } else {
-                listItem.classList.remove("active");
-            }
-        }
+                if (currentUrl === listItemHref) {
+                    listItem.addClass("active");
+                } else {
+                    listItem.removeClass("active");
+                }
+            });
+        });
 
 
         function showNews() {

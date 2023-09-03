@@ -170,42 +170,41 @@
                     $('.dropdown-content').slideToggle(300);
                 });
 
-                var currentUrl = window.location.pathname;
+                $(document).ready(function () {
+                    var currentUrl = window.location.pathname;
 
-                var listItems = document.querySelectorAll(".nav-bar ul li");
+                    $(".nav-bar ul li").each(function () {
+                        var listItem = $(this);
+                        var listItemLink = listItem.find("a");
+                        var listItemHref = listItemLink.attr("href");
 
-                for (var i = 0; i < listItems.length; i++) {
-                    var listItem = listItems[i];
-                    var listItemLink = listItem.querySelector("a");
-                    var listItemHref = listItemLink.getAttribute("href");
-
-                    if (currentUrl === listItemHref) {
-                        listItem.classList.add("active");
-                    } else {
-                        listItem.classList.remove("active");
-                    }
-                }
+                        if (currentUrl === listItemHref) {
+                            listItem.addClass("active");
+                        } else {
+                            listItem.removeClass("active");
+                        }
+                    });
+                });
 
 
-                document.addEventListener("DOMContentLoaded", function () {
-                    const tabs = document.querySelectorAll(".tab-switcher > div");
-                    const tabContents = document.querySelectorAll(".tab-content > div");
+                $(document).ready(function () {
+                    var tabs = $(".tab-switcher > div");
+                    var tabContents = $(".tab-content > div");
 
-                    tabs.forEach((tab, index) => {
-                        tab.addEventListener("click", () => {
-                            // Remove 'active' class from all tabs and tab contents
-                            tabs.forEach(t => t.classList.remove("active"));
-                            tabContents.forEach(tc => tc.classList.remove("active"));
+                    tabs.each(function (index) {
+                        $(this).click(function () {
 
-                            // Add 'active' class to the clicked tab and corresponding tab content
-                            tab.classList.add("active");
-                            tabContents[index].classList.add("active");
+                            tabs.removeClass("active");
+                            tabContents.removeClass("active");
+
+
+                            $(this).addClass("active");
+                            tabContents.eq(index).addClass("active");
                         });
                     });
 
-                    tabs[0].click();
+                    tabs.first().click();
                 });
-
             </script>
 
 </body>
