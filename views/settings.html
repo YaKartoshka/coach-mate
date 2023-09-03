@@ -145,8 +145,37 @@
                         </div>
                     </div>
                     <div class="password-content">
-                        <h2>Password CONTENT</h2>
-                        <p>This is the content for the PASSWORD tab.</p>
+                        <div class="password-header">
+                            <div class="box-important">
+                                <img src="../public/images/password.svg" alt="">
+                                <span>Personalize your profile to provide your colleagues with a deeper understanding of
+                                    who you are. Remember to include a photo as well!</span>
+                            </div>
+                        </div>
+
+                        <div class="password-body">
+                            <div class="newpass-confirmpass">
+                                <div class="new-password mb-3 mt-5">
+                                    <label class="mb-2">New password</label>
+                                    <input type="password" class="form-control" id="new_password" placeholder="1234567">
+                                </div>
+                                <div class="confirm-password mb-3 mt-5">
+                                    <label class="mb-2">Confirm new password</label>
+                                    <input type="password" class="form-control" id="confirm_password"
+                                        placeholder="1234567">
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="showPasswordCheckbox">
+                                <label class="form-check-label show-pass" for="showPasswordCheckbox">Show password</label>
+                            </div>
+                        </div>
+
+                        <div class="password-footer">
+                            <div class="save-btn">
+                                <button type="button" class="btn btn-outline-primary">Save changes</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="billing-content">
                         <h1>BILLING CONTENT</h1>
@@ -204,6 +233,21 @@
                     });
 
                     tabs.first().click();
+                });
+
+                $(document).ready(function () {
+                    $('#showPasswordCheckbox').change(function () {
+                        const newPasswordInput = $('#new_password');
+                        const confirmPasswordInput = $('#confirm_password');
+
+                        if ($(this).is(':checked')) {
+                            newPasswordInput.attr('type', 'text');
+                            confirmPasswordInput.attr('type', 'text');
+                        } else {
+                            newPasswordInput.attr('type', 'password');
+                            confirmPasswordInput.attr('type', 'password');
+                        }
+                    });
                 });
             </script>
 

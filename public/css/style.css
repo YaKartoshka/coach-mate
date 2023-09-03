@@ -644,9 +644,7 @@ body {
     display: block;
 }
 
-.personal-info input,
-.personal-info textarea,
-.panel-name input {
+.personal-info textarea {
     border: 1px solid black;
 }
 
@@ -681,7 +679,7 @@ body {
     font-size: 20px;
 }
 
-.settings-content label {
+.profile-content label {
     font-weight: bold;
 }
 
@@ -698,7 +696,7 @@ body {
 
 .fname-lname .fname,
 .fname-lname .lname {
-    width: 50%;
+    flex: 0.5;
 }
 
 .email-phone {
@@ -709,7 +707,7 @@ body {
 
 .email-phone .email,
 .email-phone .phone-number {
-    width: 50%;
+    flex: 0.5;
 }
 
 .about textarea{
@@ -722,6 +720,7 @@ body {
     padding: 10px;
     margin: 5px 0;
     border-radius: 4px;
+    border: 1px solid black;
 }
 
 .profile-footer {
@@ -733,7 +732,7 @@ body {
     content: "";
     background-color: #00FFC2;
     width: 100%;
-    height: 3px;
+    height: 1px;
     position: absolute;
     top: -20px;
     left: 0;
@@ -750,6 +749,44 @@ body {
 .box-important img{
     margin-right: 3%;
 }
+
+.password-footer {
+    margin-top: 6%;
+    position: relative;
+}
+
+.password-footer::before {
+    content: "";
+    background-color: #00FFC2;
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    top: -20px;
+    left: 0;
+}
+
+.password-content .form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border: 1px solid black;
+}
+
+.newpass-confirmpass {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+}
+
+.newpass-confirmpass label {
+    font-weight: bold;
+}
+
+.new-password, .confirm-password {
+    flex: 0.5;
+}
+
 
 
 
