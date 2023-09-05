@@ -252,7 +252,7 @@ body {
     border-radius: 30px;
     justify-content: space-between;
     height: 620px;
-    width: 1240px;
+    width: 80%;
     margin: 55px auto;
 }
 
@@ -274,6 +274,28 @@ body {
     text-align: center;
 }
 
+.welcome_screen .title {
+    font-family: RedHatDisplayExtra;
+    font-size: 56px;
+    position: relative;
+    background: linear-gradient(to right, #D7D7D7, #FFFFFF, #0025A9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 300% auto;
+    animation: textShine 4s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
 .auth {
     width: 50%;
     display: flex;
@@ -287,7 +309,6 @@ body {
     display: none;
     flex-direction: column;
     align-items: center;
-    margin-top: -50px;
 }
 
 .auth .sign_in_form .form {
@@ -296,63 +317,16 @@ body {
     align-items: center;
 }
 
-.auth .title p {
-    font-family: RedHatDisplayExtra;
-    font-size: 40px;
-    background: linear-gradient(#3793FF, #00FFC2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.auth .title {
-    position: relative;
-    right: 135px;
-}
-
-.auth .title .title_line {
-    width: 475px;
-    height: 5px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    position: absolute;
-    bottom: 43px;
-    background: linear-gradient(to left, #0066FF, #89F0BF);
-}
-
 .sign_in_form .sign_in_heading {
     font-family: RedHatDisplayMed;
     font-size: 30px;
-}
-
-.sign_in_form {
-    position: relative;
-    top: 30px;
 }
 
 .sign_in_form input {
     padding: 10px 20px;
     width: 250px;
     transition: 0.5s;
-}
-
-.form {
-    position: relative;
-    bottom: 30px;
-}
-
-.form .password {
-    position: absolute;
-    top: 50px;
-}
-
-.form .rep_password {
-    position: absolute;
-    top: 100px;
-}
-
-.form .login_btn_block {
-    position: absolute;
-    top: 150px;
+    margin-bottom: 3%;
 }
 
 .form .email input {
@@ -376,19 +350,11 @@ body {
     border-radius: 7px;
 }
 
-.sign_in_form .forgot {
-    margin-top: 10px;
-}
-
 .sign_in_form .forgot a {
     color: #545454;
     text-decoration: none;
     font-family: InterReg;
     font-size: 13px;
-}
-
-.sign_in_form .login_btn_block {
-    margin-top: -15px;
 }
 
 .sign_in_form .login_btn_block button {
@@ -402,6 +368,7 @@ body {
     padding: 10px 40px;
     transition: 0.3s;
     cursor: pointer;
+    margin-top: 10%;
 }
 
 .sign_in_form .login_btn_block button:disabled {
@@ -434,26 +401,11 @@ body {
     color: #727477;
 }
 
-.continue {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
-.continue .continue_text {
-    position: absolute;
-    top: 130px;
-    width: 100px;
-}
-
 .sign_in_buttons,
 .sign_up_buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    position: absolute;
-    top: 215px;
 }
 
 .sign_in_btn,
@@ -487,7 +439,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: -50px;
 }
 
 .auth .sign_up_form .form {
@@ -501,25 +452,11 @@ body {
     font-size: 30px;
 }
 
-.sign_up_form {
-    position: relative;
-    top: 30px;
-}
-
 .sign_up_form input {
     padding: 10px 20px;
     width: 250px;
     transition: 0.5s;
-}
-
-
-.form .sign_up_btn_block {
-    position: absolute;
-    top: 150px;
-}
-
-.sign_up_form .sign_up_btn_block {
-    margin-top: 15px;
+    margin-bottom: 3%;
 }
 
 .sign_up_form .sign_up_btn_block button {
@@ -533,6 +470,7 @@ body {
     padding: 10px 40px;
     transition: 0.3s;
     cursor: pointer;
+    margin-top: 10%;
 }
 
 .sign_up_form .sign_up_btn_block button:disabled {
@@ -568,9 +506,9 @@ body {
 .switcher {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
     background-color: #ECECEC;
     border-radius: 5px;
+    margin-top: 12%;
 }
 
 .switcher button {
@@ -579,14 +517,39 @@ body {
     border: none;
     border-radius: 5px;
     font-family: RedHatDisplayMed;
-    margin: 0;
     background: transparent;
-    width: 150px;
+    width: 10vw;
 }
 
 .switcher button.active {
     background: #00B3FF;
     color: white;
+}
+
+.auth .title {
+    display: none;
+}
+
+.auth .title {
+    font-family: RedHatDisplayExtra;
+    font-size: 9vw;
+    position: relative;
+    background: linear-gradient(to right, #408CFF, #00FFC2, #0025A9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 300% auto;
+    animation: textShine 4s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 /*---- End Sign Up ----*/
@@ -795,4 +758,21 @@ body {
 
 /*---- MEDIA QUERIES ---- */
 
-@media (max-width: 768px) {}
+@media (max-width: 768px) {
+    .welcome_screen {
+        display: none;
+    }
+
+    .auth {
+        width: 100%;
+    }
+    .switcher button {
+        width: 25vw;
+    }
+    .login_panel{
+        box-shadow: none;
+    }
+    .auth .title {
+        display: flex;
+    }
+}

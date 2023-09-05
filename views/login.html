@@ -32,11 +32,10 @@
 <body>
     <div class="login_panel">
         <div class="auth">
+
             <div class="title">
                 <p>CoachMate</p>
-                <div class="title_line"></div>
             </div>
-
 
             <div class="switcher">
                 <button id="signUpButton" class="active" onclick="showForm('signUp')">Sign Up</button>
@@ -96,7 +95,7 @@
                 </div>
                 <div class="form">
                     <div class="email">
-                        <input type="text" autocomplete="off" name="email" id="email" placeholder="Email">
+                        <input type="text" autocomplete="on" name="email" id="email" placeholder="Email">
                     </div>
                     <div class="password">
                         <input type="password" autocomplete="off" name="password" id="password" placeholder="Password">
@@ -110,10 +109,10 @@
                     </div>
                     <div class="continue">
                         <div class="continue_text">
-                            <div class="text text_or">
+                            <div class="text">
                                 <p>or</p>
                             </div>
-                            <div class="text text_continue">
+                            <div class="text">
                                 <p>continue with</p>
                             </div>
                         </div>
@@ -136,6 +135,9 @@
 
         </div>
         <div class="welcome_screen">
+            <div class="title">
+                <p>CoachMate</p>
+            </div>
             <div class="welcome_img">
                 <img src="../public/images/welcome.png" alt="" width="350px">
             </div>
@@ -216,7 +218,7 @@
 
             if (!email || !password || !rep_password) {
                 loading(20, el = '#sign_up_btn');
-                ambianceElement.html('<p>Enter login data</p>').addClass('show warning');
+                ambianceElement.html('<p>Enter required data</p>').addClass('show warning');
                 setTimeout(function () {
                     ambianceElement.removeClass('show warning').html('');
                 }, 3000);
@@ -231,7 +233,7 @@
                 }, 2000);
                 return;
             }
-
+          
             $.ajax({
                 method: 'post',
                 url: '/auth/sign-up',
