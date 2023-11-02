@@ -9,7 +9,7 @@ var passport = require('passport');
 
 // -------- routes --------
 var index = require('./routes/index');
-var students = require('./routes/students');
+var users = require('./routes/users');
 var coachers = require('./routes/coachers');
 var auth = require('./routes/auth');
 var news = require('./routes/news');
@@ -48,7 +48,7 @@ app.use('/', profile_func)
 app.use('/auth', auth);
 app.use('/news', news);
 app.use('/links', links);
-app.use('/users', students);
+app.use('/users', users);
 app.use('/coachers', coachers);
 
 
