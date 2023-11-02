@@ -44,12 +44,14 @@ app.use(passport.session());
 
 // -- routes --
 app.use('/', index);
-app.use('/students', students);
-app.use('/coachers', coachers);
+app.use('/', profile_func)
 app.use('/auth', auth);
 app.use('/news', news);
 app.use('/links', links);
-app.use('/', profile_func)
+app.use('/users', students);
+app.use('/coachers', coachers);
+
+
 
 module.exports = app;
 

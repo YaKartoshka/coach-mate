@@ -9,20 +9,15 @@ function isAuthenticated(req, res, next) {
 };
 
 
-router.get('/get-profile', isAuthenticated, async(req, res) => {
+router.get('/get-profile', isAuthenticated, async (req, res) => {
     const user_id = req.session.user_id;
     const panel_id = req.session.panel_id;
     try {
         const panel = await fdb.collection('panels').doc(panel_id).get();
         console.log(panel.data().name);
-        
-
-
-    } catch(e){
+    } catch (e) {
         res.send(e);
     }
-
-
 });
 
 
