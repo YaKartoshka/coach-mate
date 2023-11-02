@@ -258,6 +258,7 @@ body {
     width: 50%;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
+    gap: 50px;
 }
 
 .welcome_screen .welcome_text p {
@@ -303,12 +304,14 @@ body {
     display: none;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
 }
 
 .auth .sign_in_form .form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
 }
 
 .sign_in_form .sign_in_heading {
@@ -415,16 +418,19 @@ body {
     border-radius: 10px;
 }
 
-.google,
-.apple {
-    margin-right: 50px;
-}
 
 .continue_text {
     text-align: center;
     font-family: RedHatDisplayReg;
     font-size: 13px;
+    margin: 18px 0;
 }
+
+.google,
+.apple {
+    margin-right: 50px;
+}
+
 
 /* ---- End Login Page ---- */
 
@@ -433,12 +439,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
 }
 
 .auth .sign_up_form .form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
 }
 
 .sign_up_form .sign_up_heading {
