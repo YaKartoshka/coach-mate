@@ -258,7 +258,7 @@ body {
     width: 50%;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
-    gap: 50px;
+    gap: 50px   ;
 }
 
 .welcome_screen .welcome_text p {
@@ -311,7 +311,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .sign_in_form .sign_in_heading {
@@ -446,7 +446,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .sign_up_form .sign_up_heading {
