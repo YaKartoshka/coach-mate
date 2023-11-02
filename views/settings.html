@@ -45,19 +45,7 @@
         </div>
     </header>
     <main>
-        <div class="news-content">
-            <div class="nav-bar">
-                <ul>
-                    <li class="active"><a href="/"><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 500;">home</span>Home</a></li>
-                    <li><a href=""><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 500;">group</span>Members</a></li>
-                    <li><a href=""><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 500;">today</span>Schedule</a></li>
-                    <li><a href="/settings"><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 500;">settings</span>Settings</a></li>
-                </ul>
-            </div>
+            <%- include('./components/nav_bar.ejs.html') %>
 
             <div class="settings-content">
                 <div class="tab-switcher">
@@ -185,6 +173,7 @@
                 </div>
 
             </div>
+            </main>
 
 
 
