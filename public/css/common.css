@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -10,6 +15,11 @@ header {
 
 header .logo img {
     height: 25px;
+}
+
+main {
+    display: flex;
+    font-family: InterReg;
 }
 
 a {
@@ -82,6 +92,12 @@ button {
     height: 20px;
     margin-top: 10px;
     margin: auto;
+}
+
+.divider {
+    height: 1px;
+    margin-top: 5px;
+    background-color: #2079FF;
 }
 
 @keyframes spinner-border {

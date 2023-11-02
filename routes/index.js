@@ -24,6 +24,10 @@ router.get('/settings', isAuthenticated, (req,res)=>{
     res.render('settings');
 });
 
+router.get('/members', isAuthenticated, (req,res)=>{
+    res.render('members');
+});
+
 
 
 

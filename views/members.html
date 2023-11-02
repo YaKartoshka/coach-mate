@@ -7,6 +7,7 @@
     <title>News</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+
 </head>
 
 <body>
@@ -46,28 +47,75 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-        <div class="content">
-            <div class="content-head">
-                <h1>News</h1>
-                <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary"><span
-                        class="material-symbols-outlined" style="font-size: 25px; font-weight: 700;">add</span>Add
-                    News</button>
+            <div class="search-content">
+                <div class="content-head">
+                    <h1>Members</h1>
+                </div>
+                <div class="divider"></div>
+                <div class="search-content-body mt-4">
+                    <div class="search-search">
+                        <label for="" class="form-label">Name:</label>
+                        <input type="text" class="form-control" placeholder="Search by name">
+                        <select class="form-select mt-4">
+                            <option>None</option>
+                            <option>BJJ</option>
+                            <option>Karate</option>
+                            <option>Box</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="divider"></div>
-            <div class="content-body">
+            <div class="members-content">
+                <div class="content-head mt-3">
+                    <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);">Export
+                        Data CSV</button>
+                    <button type="button" class="btn btn-primary">+ Add</button>
+                </div>
 
+                <div class="members-content-body">
+                    <div class="members">
+                        <div class="member">
+                            <div class="member-img">
+                                <img src="/public/images/user_avatar.png" alt="">
+                            </div>
+                            <div class="member-info">
+                                <h3>Erasyl Zarubekov</h3>
+                                <h6>Student</h6>
+                            </div>
+                            <div class="member-edit">
+                                <span class="material-symbols-outlined"
+                                    style="font-size: 50px; font-weight: 400;">stylus</span>
+                            </div>
+                        </div>
+                        <div class="member">
+                            <div class="member-img">
+                                <img src="/public/images/user_avatar.png" alt="">
+                            </div>
+                            <div class="member-info">
+                                <h3>Erasyl Zarubekov</h3>
+                                <h6>Student</h6>
+                            </div>
+                            <div class="member-edit">
+                                <span class="material-symbols-outlined"
+                                    style="font-size: 50px; font-weight: 400;">stylus</span>
+                            </div>
+                        </div>
+                        <div class="member">
+                            <div class="member-img">
+                                <img src="/public/images/user_avatar.png" alt="">
+                            </div>
+                            <div class="member-info">
+                                <h3>Erasyl Zarubekov</h3>
+                                <h6>Student</h6>
+                            </div>
+                            <div class="member-edit">
+                                <span class="material-symbols-outlined"
+                                    style="font-size: 50px; font-weight: 400;">stylus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="ad-content">
-
-            <div class="hot-links">
-                <ul class="hot-links-list">
-
-                </ul>
-                <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
-                        style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
-            </div>
-        </div>
     </main>
     <footer></footer>
 

@@ -14,7 +14,7 @@ var coachers = require('./routes/coachers');
 var auth = require('./routes/auth');
 var news = require('./routes/news');
 var links = require('./routes/links')
-
+var profile_func = require('./routes/profile')
 
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
@@ -49,6 +49,7 @@ app.use('/coachers', coachers);
 app.use('/auth', auth);
 app.use('/news', news);
 app.use('/links', links);
+app.use('/', profile_func)
 
 module.exports = app;
 

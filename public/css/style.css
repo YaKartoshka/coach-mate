@@ -81,10 +81,6 @@ body {
     background-color: #b3b3b363;
 }
 
-.news-content {
-    display: flex;
-}
-
 .nav-bar {
     font-family: InterReg;
     background-color: white;
@@ -170,11 +166,7 @@ body {
 
 
 
-.content .divider {
-    height: 1px;
-    margin-top: 5px;
-    background-color: #2079FF;
-}
+
 
 .news {
     margin: 40px auto;
@@ -291,6 +283,7 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
@@ -547,6 +540,7 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
@@ -673,7 +667,7 @@ body {
     flex: 0.5;
 }
 
-.about textarea{
+.about textarea {
     resize: none;
 }
 
@@ -709,7 +703,7 @@ body {
     margin-bottom: 3%;
 }
 
-.box-important img{
+.box-important img {
     margin-right: 3%;
 }
 
@@ -746,7 +740,8 @@ body {
     font-weight: bold;
 }
 
-.new-password, .confirm-password {
+.new-password,
+.confirm-password {
     flex: 0.5;
 }
 
@@ -754,6 +749,61 @@ body {
 
 
 /*---- End Settings page ---- */
+
+/* Members page */
+.members-content {
+    flex: 0.65;
+    padding: 35px;
+}
+
+.search-content {
+    padding: 35px;
+    flex: 0.2;
+}
+
+.search-content-body,
+.members-content-body {
+    background-color: white;
+    padding: 20px;
+}
+
+.members-content-body {
+    margin-top: 26.5px;
+}
+
+.member {
+    display: flex;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.15);
+    padding: 10px 15px 10px 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.member-img{
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 100%;
+    flex: 0.1;
+}
+
+.member-info{
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.member-edit{
+    flex: 0.1;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+
+/* End Members Page */
 
 
 /*---- MEDIA QUERIES ---- */
@@ -766,12 +816,15 @@ body {
     .auth {
         width: 100%;
     }
+
     .switcher button {
         width: 25vw;
     }
-    .login_panel{
+
+    .login_panel {
         box-shadow: none;
     }
+
     .auth .title {
         display: flex;
     }

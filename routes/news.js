@@ -64,6 +64,7 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
             news_image: news_image_url
         }
         res.send(JSON.stringify(data));
+
         fs.unlink(image.path, function (err) {
             if (err) {
                 console.error(err);
