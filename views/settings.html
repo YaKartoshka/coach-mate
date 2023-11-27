@@ -17,7 +17,7 @@
         <%- include('./components/profile_bar.ejs.html') %>
     </header>
     <main>
-            <%- include('./components/nav_bar.ejs.html') %>
+        <%- include('./components/nav_bar.ejs.html') %>
 
             <div class="settings-content">
                 <div class="tab-switcher">
@@ -34,7 +34,7 @@
                         <div class="profile_header">
                             <div class="profile-image-settings">
                                 <div class="photo">
-                                    <img src="../public/images/profile_image.png" class="rounded-circle" alt="">
+                                    <img src="" class="rounded-circle" alt="" id="profile_img" width="150">
                                 </div>
 
                                 <div class="profile_photo mb-3 mt-2">
@@ -45,10 +45,10 @@
                                 </div>
                             </div>
 
-                            <div class="panel-name mb-3 mt-4">
+                            <!-- <div class="panel-name mb-3 mt-4">
                                 <label class="mb-2">Panel name</label>
-                                <input type="text" class="form-control" id="news_img" placeholder="Your panel name">
-                            </div>
+                                <input type="text" class="form-control" id="panel_name" placeholder="Your panel name">
+                            </div> -->
                         </div>
 
                         <div class="personal-info">
@@ -127,7 +127,8 @@
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="showPasswordCheckbox">
-                                <label class="form-check-label show-pass" for="showPasswordCheckbox">Show password</label>
+                                <label class="form-check-label show-pass" for="showPasswordCheckbox">Show
+                                    password</label>
                             </div>
                         </div>
 
@@ -145,72 +146,91 @@
                 </div>
 
             </div>
-            </main>
+    </main>
 
 
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-                $(document).ready(function () {
-                    loading(1);
-                    loading(0);
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            loading(1);
+            showProfile();
+            loading(0);
+        });
+
+        $('#profile-data').on('click', () => {
+            $('.dropdown-content').slideToggle(300);
+        });
+
+        $(document).ready(function () {
+            var currentUrl = window.location.pathname;
+
+            $(".nav-bar ul li").each(function () {
+                var listItem = $(this);
+                var listItemLink = listItem.find("a");
+                var listItemHref = listItemLink.attr("href");
+
+                if (currentUrl === listItemHref) {
+                    listItem.addClass("active");
+                } else {
+                    listItem.removeClass("active");
+                }
+            });
+        });
+
+
+        $(document).ready(function () {
+            var tabs = $(".tab-switcher > div");
+            var tabContents = $(".tab-content > div");
+
+            tabs.each(function (index) {
+                $(this).click(function () {
+
+                    tabs.removeClass("active");
+                    tabContents.removeClass("active");
+
+
+                    $(this).addClass("active");
+                    tabContents.eq(index).addClass("active");
                 });
+            });
 
-                $('#profile-data').on('click', () => {
-                    $('.dropdown-content').slideToggle(300);
-                });
+            tabs.first().click();
+        });
 
-                $(document).ready(function () {
-                    var currentUrl = window.location.pathname;
+        $(document).ready(function () {
+            $('#showPasswordCheckbox').change(function () {
+                const newPasswordInput = $('#new_password');
+                const confirmPasswordInput = $('#confirm_password');
 
-                    $(".nav-bar ul li").each(function () {
-                        var listItem = $(this);
-                        var listItemLink = listItem.find("a");
-                        var listItemHref = listItemLink.attr("href");
+                if ($(this).is(':checked')) {
+                    newPasswordInput.attr('type', 'text');
+                    confirmPasswordInput.attr('type', 'text');
+                } else {
+                    newPasswordInput.attr('type', 'password');
+                    confirmPasswordInput.attr('type', 'password');
+                }
+            });
+        });
 
-                        if (currentUrl === listItemHref) {
-                            listItem.addClass("active");
-                        } else {
-                            listItem.removeClass("active");
-                        }
-                    });
-                });
+        function showProfile() {
 
-
-                $(document).ready(function () {
-                    var tabs = $(".tab-switcher > div");
-                    var tabContents = $(".tab-content > div");
-
-                    tabs.each(function (index) {
-                        $(this).click(function () {
-
-                            tabs.removeClass("active");
-                            tabContents.removeClass("active");
-
-
-                            $(this).addClass("active");
-                            tabContents.eq(index).addClass("active");
-                        });
-                    });
-
-                    tabs.first().click();
-                });
-
-                $(document).ready(function () {
-                    $('#showPasswordCheckbox').change(function () {
-                        const newPasswordInput = $('#new_password');
-                        const confirmPasswordInput = $('#confirm_password');
-
-                        if ($(this).is(':checked')) {
-                            newPasswordInput.attr('type', 'text');
-                            confirmPasswordInput.attr('type', 'text');
-                        } else {
-                            newPasswordInput.attr('type', 'password');
-                            confirmPasswordInput.attr('type', 'password');
-                        }
-                    });
-                });
-            </script>
+            $.ajax({
+                url: '/users/get', method: 'get', success: function (data) {
+                    var user = JSON.parse(data);
+                    console.log(user);
+                    $("#first_name").val(user.first_name);
+                    $("#last_name").val(user.last_name);
+                    $("#email").val(user.email);
+                    
+                    let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
+                    $('#profile_img').attr('src', profile_src)
+                }, error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+    </script>
 
 </body>
 

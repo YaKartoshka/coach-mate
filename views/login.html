@@ -258,9 +258,9 @@
                             window.location.href = '/';
                         }, 1000);
                     } else if (data.r == 4) {
-                        ambianceElement.html('<p>Email address already in use</p>').addClass('warning');
+                        ambianceElement.html('Email address already in use').addClass('warning');
                     } else {
-                        ambianceElement.html('<p>Error. Try again later!</p>').addClass('error');
+                        ambianceElement.html('Error. Try again later!').addClass('error');
                     }
                     loading(20, el = '#sign_up_btn');
                     ambianceElement.addClass('show');

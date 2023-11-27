@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News</title>
+    <title>Members</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
 
@@ -41,50 +41,12 @@
                 <div class="content-head mt-3">
                     <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);">Export
                         Data CSV</button>
-                    <button type="button" class="btn btn-primary">+ Add</button>
+                    <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ Add</button>
                 </div>
 
                 <div class="members-content-body">
                     <div class="members">
-                        <div class="member">
-                            <div class="member-img">
-                                <img src="/public/images/user_avatar.png" alt="">
-                            </div>
-                            <div class="member-info">
-                                <h3>Erasyl Zarubekov</h3>
-                                <h6>Student</h6>
-                            </div>
-                            <div class="member-edit">
-                                <span class="material-symbols-outlined"
-                                    style="font-size: 50px; font-weight: 400;">stylus</span>
-                            </div>
-                        </div>
-                        <div class="member">
-                            <div class="member-img">
-                                <img src="/public/images/user_avatar.png" alt="">
-                            </div>
-                            <div class="member-info">
-                                <h3>Erasyl Zarubekov</h3>
-                                <h6>Student</h6>
-                            </div>
-                            <div class="member-edit">
-                                <span class="material-symbols-outlined"
-                                    style="font-size: 50px; font-weight: 400;">stylus</span>
-                            </div>
-                        </div>
-                        <div class="member">
-                            <div class="member-img">
-                                <img src="/public/images/user_avatar.png" alt="">
-                            </div>
-                            <div class="member-info">
-                                <h3>Erasyl Zarubekov</h3>
-                                <h6>Student</h6>
-                            </div>
-                            <div class="member-edit">
-                                <span class="material-symbols-outlined"
-                                    style="font-size: 50px; font-weight: 400;">stylus</span>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -92,60 +54,40 @@
     <footer></footer>
 
     <!-- MODALS -->
-    <div class="modal fade" id="create_news-modal">
+    <div class="modal fade" id="create_member-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add News</h4>
+                    <h4 class="modal-title">Add new member</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
-                        <div class="mb-3 mt-2">
-                            <label class="mb-2">News Image</label>
-                            <input type="file" class="form-control" id="news_img" placeholder="Title">
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Email</label>
+                            <input type="email" id="email" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">News title</label>
-                            <input type="text" class="form-control" id="news_title" placeholder="Title">
+                            <label class="mb-2">First Name</label>
+                            <input type="text" id="first_name" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">News text</label>
-                            <textarea id="news_text" cols="30" rows="4" class="form-control"></textarea>
+                            <label class="mb-2">Last Name</label>
+                            <input type="text" id="last_name" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Role</label>
+                            <select name="role" class="form-select" id="role">
+                                <option value="Student">Student</option>
+                                <option value="Coach">Coach</option>
+                                <option value="Admin">Admin</option>
+                            </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="add_news_btn" class="btn btn-primary px-md-4"
-                        onclick="createNews()">Add</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="create_link-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Link</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Link text</label>
-                            <input type="text" class="form-control" id="link_text" placeholder="Text">
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Link URL</label>
-                            <input type="text" class="form-control" id="link_url" placeholder="https://">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="add_link_btn" class="btn btn-primary px-md-4"
-                        onclick="createLink()">Add</button>
+                    <button type="button" id="add_member_btn" class="btn btn-primary px-md-4"
+                        onclick="createMember()">Add</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -170,8 +112,7 @@
     <script>
         $(document).ready(function () {
             loading(1);
-            showNews();
-            showLinks();
+            showMembers();
             loading(0);
         });
 
@@ -196,25 +137,29 @@
         });
 
 
-        function showNews() {
-            $('.content-body').html('');
+        function showMembers() {
+            $('.members').html('');
             $.ajax({
-                url: '/news/get-all', method: 'get', success: function (data) {
+                url: '/users/get-all', method: 'get', success: function (data) {
                     var news_data = JSON.parse(data);
-                    news_data.forEach((news) => {
-                        var newsDiv = $("<div>").addClass("news");
-                        var image = $("<img>").attr("src", news.image_url).attr("alt", "");
-                        var newsTitle = $("<div>").addClass("news-title");
-                        var title = $("<h3>").text(news.title).addClass("clickable-title");
-                        title.on('click', function () {
-                            alert(news.news_id)
-                        });
+                    news_data.forEach((member) => {
+                        let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
+                     
+                        var memberHTML = '<div class="member">' +
+                            '<div class="member-img">' +
+                                `<img src='${profile_src}' alt="" width="50" height="50">` +
+                            '</div>' +
+                            '<div class="member-info">' +
+                                `<h3>${member.first_name} ${member.last_name}</h3>` +
+                                `<h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>` +
+                            '</div>' +
+                            '<div class="member-edit">' +
+                                '<span class="material-symbols-outlined" style="font-size: 50px; font-weight: 400;">stylus</span>' +
+                            '</div>' +
+                            '</div>';
 
-                        var newsText = $("<div>").addClass("news-text").text(news.text);
-                        newsTitle.append(title);
-                        newsDiv.append(image, newsTitle, newsText);
-
-                        $('.content-body').append(newsDiv);
+                        // Append the memberHTML to the "members" div
+                        $('.members').append(memberHTML);
                     });
                 }, error: function (err) {
                     console.log(err)
@@ -222,74 +167,66 @@
             })
         }
 
-        function showLinks() {
-            $(".hot-links-list").html('');
-            $.ajax({
-                url: '/links/get-all', method: 'get', success: function (data) {
-                    var links_data = JSON.parse(data);
-                    links_data.forEach((link) => {
 
-                        var list = `<li><a href="${link.link_url}" target="_blank">${link.link_text}</a></li>`;
-                        $(".hot-links-list").append(list);
-                    });
-                }, error: function (err) {
-                    console.log(err);
-                }
-            });
+
+        function showAddMemberModal() {
+            $('#create_member-modal').modal('show');
         }
 
-        function showAddNewsModal() {
-            $('#create_news-modal').modal('show');
-        }
+        function createMember() {
+            let email = $('#email').val().trim();
+            let first_name = $('#first_name').val().trim();
+            let last_name = $('#last_name').val().trim();
+            let role = $('#role').val();
 
-        function showAddLinkModal() {
-            $('#create_link-modal').modal('show');
-        }
-
-        function createNews() {
-            let img = $('#news_img')[0].files[0];
-            let title = $('#news_title').val().trim();
-            let text = $('#news_text').val().trim();
-
-            if (img && (!title || !text)) {
+            if ((!email || !role || !first_name || !last_name)) {
                 $.ambiance({
-                    message: "Please provide a title and text for the news.",
+                    message: "Please provide an email, full name and role for the member.",
                     type: "error",
                     fade: true,
                     width: 400
                 });
                 return;
             }
-
-            if (!img) {
-                $.ambiance({
-                    message: "Please upload an image.",
-                    type: "error",
-                    fade: true,
-                    width: 400
-                });
-                return;
-            }
-
-            loading(2, el = '#add_news_btn');
-
-            const formData = new FormData();
-            formData.append('img', img);
-            formData.append('title', title);
-            formData.append('text', text);
-
+            loading(2, el = '#add_member_btn');
             $.ajax({
-                url: "/news/create", method: 'post', data: formData, processData: false, contentType: false, success: function (r) {
-                    $('#create_news-modal').modal('hide');
-                    loading(20, el = '#add_news_btn');
-                    $.ambiance({
-                        message: "News added!",
-                        type: "success",
-                        fade: true
-                    });
-                    loading(1);
-                    showNews();
-                    loading(0);
+                url: "/users/create",
+                method: 'post',
+                data: { email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase() },
+                success: function (r) {
+                    let data = JSON.parse(r);
+                    if (data.r == 1) {
+                        $('#create_member-modal').modal('hide');
+                        loading(20, el = '#add_member_btn');
+                        $.ambiance({
+                            message: `${role} added!`,
+                            type: "success",
+                            fade: true
+                        });
+                        loading(1);
+                        showMembers();
+                        loading(0);
+                    } else if (data.r == 4) {
+                        $.ambiance({
+                            message: `Email address already in use`,
+                            type: "error",
+                            fade: true
+                        });
+                    } else if (data.r == 2) {
+                        $.ambiance({
+                            message: `Invalid email`,
+                            type: "error",
+                            fade: true
+                        });
+                    } else {
+                        $.ambiance({
+                            message: `Error. Try again later!`,
+                            type: "error",
+                            fade: true
+                        });
+                    }
+                    loading(20, el = '#add_member_btn');
+
                 },
                 error: function (err) {
                     console.log(err);
@@ -297,41 +234,6 @@
             });
         }
 
-
-        function createLink() {
-            let link_url = $('#link_url').val().trim();
-            let link_text = $('#link_text').val().trim();
-
-            if (!(link_text && link_url)) {
-                $.ambiance({
-                    message: "Please provide link text and link URL.",
-                    type: "error",
-                    fade: true,
-                    width: 400
-                });
-                return;
-            }
-
-            loading(2, el = '#add_link_btn');
-
-            $.ajax({
-                url: "/links/create", method: 'post', data: { link_text: link_text, link_url: link_url }, success: function (r) {
-                    showLinks();
-                    $('#link_url').val('');
-                    $('#link_text').val('');
-                    $('#create_link-modal').modal('hide');
-                    loading(20, el = '#add_link_btn');
-                    $.ambiance({
-                        message: "Link added!",
-                        type: "success",
-                        fade: true
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
 
 
     </script>
