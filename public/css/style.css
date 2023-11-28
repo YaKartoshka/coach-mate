@@ -258,7 +258,7 @@ body {
     width: 50%;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
-    gap: 50px   ;
+    gap: 50px;
 }
 
 .welcome_screen .welcome_text p {
@@ -813,26 +813,30 @@ body {
     width: 100%;
 }
 
-.bh-table th{
+.bh-table th {
     border-bottom: 2px solid #fff;
     color: #fff;
     padding: 20px;
     text-align: center;
 }
 
-.bh-table th:nth-child(1), th:nth-child(2), th:nth-child(3){
+.bh-table th:nth-child(1),
+th:nth-child(2),
+th:nth-child(3) {
     border-right: 2px solid #fff;
     color: #fff;
     padding: 20px;
 }
 
-.bh-table td{
+.bh-table td {
     color: #fff;
     text-align: center;
     padding: 20px;
 }
 
-.bh-table td:nth-child(1), td:nth-child(2), td:nth-child(3){
+.bh-table td:nth-child(1),
+td:nth-child(2),
+td:nth-child(3) {
     border-right: 2px solid #fff;
 }
 
@@ -863,7 +867,8 @@ body {
     padding: 20px;
 }
 
-.members-content-body, .join-content-body {
+.members-content-body,
+.join-content-body {
     margin-top: 26.5px;
 }
 
@@ -876,35 +881,35 @@ body {
     margin-bottom: 20px;
 }
 
-.member-img{
+.member-img {
     flex: 0.1;
     width: 50px;
     height: 50px;
 }
 
-.member-img img{
+.member-img img {
     border-radius: 100%;
 }
 
-.member-info{
+.member-info {
     flex: 0.8;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.member-edit{
+.member-edit {
     flex: 0.1;
     width: 50px;
     height: 50px;
     cursor: pointer;
 }
 
-.join-content{
+.join-content {
     margin-top: 50px;
 }
 
-.join_request{
+.join_request {
     border-radius: 20px;
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.15);
     padding: 10px 15px 10px 15px;
@@ -912,13 +917,13 @@ body {
     margin-bottom: 20px;
 }
 
-.join_request .actions{
+.join_request .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 25px;
 }
 
-.join_request .actions button{
+.join_request .actions button {
     width: 120px;
     height: 20px;
     padding: 15px;
@@ -928,6 +933,138 @@ body {
 }
 
 /* End Members Page */
+
+/* Join page */
+
+.join-panel {
+    box-shadow: 0 0 20px 0 gray;
+    border-radius: 30px;
+    min-height: 500px;
+    padding-bottom: 50px;
+    width: 50%;
+    margin: 100px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.join-title {
+    font-family: RedHatDisplayExtra;
+    font-size: 2.5vw;
+    background: linear-gradient(to right, #408CFF, #00FFC2, #0025A9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 300% auto;
+    animation: textShine 4s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.join-heading {
+    font-family: RedHatDisplayMed;
+    font-size: 2.8vw;
+    word-spacing: 3px;
+}
+
+.join-form input {
+    border: none;
+    outline: none;
+    border: 2px solid #2079FF;
+    border-radius: 7px;
+    padding: 10px 20px;
+    transition: 0.5s;
+    width: 100%;
+}
+
+.join-form ::placeholder {
+    font-family: InterReg;
+    color: #2079FF;
+    transition: 0.5s;
+}
+
+.join-form input:focus {
+    border: none;
+    outline: none;
+    border: 2px solid #2079FF;
+    border-color: #4f86ca;
+    box-shadow: 0 0 5px 3px rgba(102, 170, 255, 0.5);
+}
+
+.join-form input:focus::placeholder {
+    color: #727477;
+}
+
+.join-button button {
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2 80%);
+    color: #FFFFFF;
+    border: none;
+    font-family: InterReg;
+    font-weight: bold;
+    font-size: 1.2vw;
+    border-radius: 7px;
+    padding: 10px 15px;
+    transition: 0.3s;
+    cursor: pointer;
+    margin-top: 10%;
+}
+
+.join-button button:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
+.join-button button:disabled:hover {
+    box-shadow: none;
+}
+
+.join-button button:hover {
+    box-shadow: 0 0 5px 0 #408CFF, 0 0 5px 0 #00FFC2;
+}
+
+.join-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.join-form .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.fullname {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.fullname .fname-input {
+    flex: 0.4;
+}
+
+.fullname .lname-input {
+    flex: 0.4;
+}
+
+.form .email-input {
+    width: 90%;
+}
+
+/*End Join page*/
 
 
 

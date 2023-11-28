@@ -19,9 +19,10 @@ router.get('/login', (req,res)=>{
 });
 
 router.get('/join', async(req,res)=>{
-    const panel_id = req.query.panel_id;
+    const panel_id = 'OFZuPNKPFyRdejchRQp6';
+   
     await fdb.collection('panels').doc(panel_id).get().then((panelDoc)=>{
-        if(!panelDoc.exists){
+        if(panelDoc.exists){
             res.render('join');
         } else {
             res.render('login');
@@ -30,7 +31,6 @@ router.get('/join', async(req,res)=>{
         console.log(e)
         res.render('login');
     })
-    res.render('join');
 });
 
 router.get('/settings', isAuthenticated, (req,res)=>{
