@@ -125,11 +125,12 @@ router.get('/get', async (req, res) => {
                 first_name: user.data().first_name,
                 last_name: user.data().last_name,
                 profile_img: user.data().profile_img,
-                role: role
+                role: user.data().role
             }
             res.send(JSON.stringify(data));
         });
     } catch (e) {
+        console.log(e)
         var r = { r: 0 };
         res.send(JSON.stringify(r));
     }
