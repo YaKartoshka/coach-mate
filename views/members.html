@@ -19,23 +19,39 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="search-content">
-                <div class="content-head">
-                    <h1>Members</h1>
-                </div>
-                <div class="divider"></div>
-                <div class="search-content-body mt-4">
-                    <div class="search-search">
-                        <label for="" class="form-label">Name:</label>
-                        <input type="text" class="form-control" placeholder="Search by name">
-                        <select class="form-select mt-4">
-                            <option>None</option>
-                            <option>BJJ</option>
-                            <option>Karate</option>
-                            <option>Box</option>
-                        </select>
+            <div class="search-join-content">
+                <div class="search-content">
+                    <div class="content-head">
+                        <h1>Members</h1>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="search-content-body mt-4">
+                        <div class="search-search">
+                            <label for="" class="form-label">Name:</label>
+                            <input type="text" class="form-control" placeholder="Search by name">
+                            <select class="form-select mt-4">
+                                <option>None</option>
+                                <option>BJJ</option>
+                                <option>Karate</option>
+                                <option>Box</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+                <div class="join-content">
+                    <div class="content-head">
+                        <h1>Requests</h1>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="join-content-body">
+                        <div class="join_requests">
+
+                        </div>
+                    </div>
+
+                </div>
+
+
             </div>
             <div class="members-content">
                 <div class="content-head mt-3">
@@ -46,7 +62,7 @@
 
                 <div class="members-content-body">
                     <div class="members">
-                       
+
                     </div>
                 </div>
             </div>
@@ -110,9 +126,10 @@
     <!-- END OF MODALS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(async function () {
             loading(1);
-            showMembers();
+            await showMembers();
+            await showRequests();
             loading(0);
         });
 
@@ -141,20 +158,20 @@
             $('.members').html('');
             $.ajax({
                 url: '/users/get-all', method: 'get', success: function (data) {
-                    var news_data = JSON.parse(data);
-                    news_data.forEach((member) => {
+                    var members_data = JSON.parse(data);
+                    members_data.forEach((member) => {
                         let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
-                     
+
                         var memberHTML = '<div class="member">' +
                             '<div class="member-img">' +
-                                `<img src='${profile_src}' alt="" width="50" height="50">` +
+                            `<img src='${profile_src}' alt="" width="50" height="50">` +
                             '</div>' +
                             '<div class="member-info">' +
-                                `<h3>${member.first_name} ${member.last_name}</h3>` +
-                                `<h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>` +
+                            `<h3>${member.first_name} ${member.last_name}</h3>` +
+                            `<h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>` +
                             '</div>' +
                             '<div class="member-edit">' +
-                                '<span class="material-symbols-outlined" style="font-size: 50px; font-weight: 400;">stylus</span>' +
+                            '<span class="material-symbols-outlined" style="font-size: 50px; font-weight: 400;">stylus</span>' +
                             '</div>' +
                             '</div>';
 
@@ -164,10 +181,60 @@
                 }, error: function (err) {
                     console.log(err)
                 }
-            })
+            });
         }
 
+        function showRequests() {
+            $.ajax({
+                url: '/joins/get-all', method: 'get', success: function (data) {
+                    var requests_data = JSON.parse(data);
+                    requests_data.forEach((request) => {
+                        var requestDiv = `
+                            <div class="join_request">
+                                <h3>${request.first_name} ${request.last_name}</h3>
+                                <p>${request.email}</p>
+                                <div class="actions">
+                                    <button class="btn btn-success" onclick="acceptRequest('${request.id}')">Accept</button>
+                                    <button class="btn btn-danger" onclick="declineRequest('${request.id}')">Decline</button>
+                                </div>
+                            </div>
+                        `;
+                        $('.join_requests').append(requestDiv);
+                    });
+                }, error: function (err) {
+                    console.log(err)
+                }
+            })
 
+        }
+
+        function acceptRequest(id) {
+            $.ajax({
+                url: "/joins/accept",
+                method: 'post',
+                data: { request_id: id },
+                success: function (r) {
+                    console.log(r)
+                },
+                error: function (e) {
+                    console.log(r)
+                }
+            });
+        }
+
+        function declineRequest(id) {
+            $.ajax({
+                url: "/joins/decline",
+                method: 'post',
+                data: { request_id: id },
+                success: function (r) {
+                    console.log(r);
+                },
+                error: function (e) {
+                    console.log(r);
+                }
+            });
+        }
 
         function showAddMemberModal() {
             $('#create_member-modal').modal('show');

@@ -19,9 +19,17 @@ router.get('/login', (req,res)=>{
 });
 
 router.get('/join', async(req,res)=>{
-    const panel_name = req.query.panel_name;
-    // const panel = await fdb.collection('panel').where('panel_name', '==', panel_name).get();
-    console.log(panel_name)
+    const panel_id = req.query.panel_id;
+    await fdb.collection('panels').doc(panel_id).get().then((panelDoc)=>{
+        if(!panelDoc.exists){
+            res.render('join');
+        } else {
+            res.render('login');
+        }
+    }).catch((e)=>{
+        console.log(e)
+        res.render('login');
+    })
     res.render('join');
 });
 
