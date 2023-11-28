@@ -19,8 +19,14 @@ router.get('/login', (req,res)=>{
 });
 
 router.get('/join', async(req,res)=>{
-    const panel_id = 'OFZuPNKPFyRdejchRQp6';
-   
+    const panel_id = req.query.panel_id;
+    
+    if(!panel_id || panel_id==undefined){
+        res.redirect('login');
+        return;
+    }
+
+
     await fdb.collection('panels').doc(panel_id).get().then((panelDoc)=>{
         if(panelDoc.exists){
             res.render('join');
@@ -28,9 +34,8 @@ router.get('/join', async(req,res)=>{
             res.render('login');
         }
     }).catch((e)=>{
-        console.log(e)
         res.render('login');
-    })
+    });
 });
 
 router.get('/settings', isAuthenticated, (req,res)=>{

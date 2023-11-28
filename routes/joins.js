@@ -108,7 +108,7 @@ router.post('/decline', isAuthenticated, async (req, res) => {
         res.send(JSON.stringify(r));
     }).catch((e) => {
         console.log(e);
-        res.send(JSON.stringify(r))
+        res.send(JSON.stringify(r));
     });
 });
 
