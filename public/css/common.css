@@ -49,8 +49,8 @@ button {
     transition: background-color 0.5s, transform 0.5s;
     cursor: default;
     margin: 3% 0 1% 0;
-    font-size: 13px;
-    width: 100%;
+    font-size: 0.9vw;
+    width: 80%;
 }
 
 #ambiance:hover {
