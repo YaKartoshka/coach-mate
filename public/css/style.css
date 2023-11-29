@@ -410,8 +410,9 @@ body {
     background-color: #FFFFFF;
     box-shadow: 0 0 5px 0px gray;
     border-radius: 10px;
-    padding: 6px 6px 4px 7px;
+    padding: 6px 6px 6px 6px;
     cursor: pointer;
+    height: 30px;
 }
 
 :is(.sign_in_btn, .sign_up_btn) img {
@@ -593,7 +594,7 @@ body {
     left: 0;
     width: 0;
     height: 3px;
-    background-color: #00FFC2;
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);;
     transition: width 0.25s ease;
 }
 
@@ -696,7 +697,7 @@ body {
 
 .profile-footer::before {
     content: "";
-    background-color: #00FFC2;
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
     width: 100%;
     height: 1px;
     position: absolute;
@@ -713,7 +714,11 @@ body {
 }
 
 .box-important img {
-    margin-right: 3%;
+    margin-right: 15px;
+}
+
+.box-important span{
+    font-family: InterReg;
 }
 
 .password-footer {
@@ -723,9 +728,9 @@ body {
 
 .password-footer::before {
     content: "";
-    background-color: #00FFC2;
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);;
     width: 100%;
-    height: 1px;
+    height: 2px;
     position: absolute;
     top: -20px;
     left: 0;
@@ -771,7 +776,7 @@ body {
 }
 
 .payment-methods .pm-title {
-    color: #00FF94;
+    color: #3793FF;
 }
 
 .card-info {
@@ -784,16 +789,29 @@ body {
 }
 
 .change-payment-button button {
-    border: 2px solid #00FF94;
+    border: 2px solid #007bff;
     border-radius: 10px;
-    padding: 10px 25px;
+    padding: 10px 10px;
     transition: 0.3s;
+    font-size: 12px;
 }
 
 .change-payment-button button:hover {
     color: #fff;
-    background-color: #00FF94;
+    background: linear-gradient(to right, #408CFF, #00FFC2, #0025A9);
     box-shadow: 0 0 5px #00FFC2;
+    background-size: 400% auto;
+    animation: buttonShine 3s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes buttonShine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 .billing-history {
@@ -801,11 +819,11 @@ body {
 }
 
 .billing-history .bh-title {
-    color: #00FF94;
+    color: #3793FF;
 }
 
 .bh-table {
-    background: linear-gradient(#00FF94, #04DEAA);
+    background: linear-gradient(#3793FF, #6E80E7);
     border-radius: 10px;
     font-family: InterReg;
     font-weight: bolder;
