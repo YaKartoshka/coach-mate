@@ -46,5 +46,8 @@ router.get('/members', isAuthenticated, (req, res) => {
     res.render('members');
 });
 
+router.get('/schedule', isAuthenticated, (req, res) => {
+    res.render('schedule');
+});
 
 module.exports = router;

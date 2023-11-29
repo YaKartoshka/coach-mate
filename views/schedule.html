@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members</title>
+    <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.2.0/main.min.css'>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.3.0/main.min.css'>
+    <%- include('./components/head.ejs.html') %>
+        <style>
+            :root {
+                --primary-clr: #0d6efd;
+            }
+
+
+            .calendar-content {
+                padding: 35px;
+            }
+
+            .container {
+                position: relative;
+                width: 1200px;
+                min-height: 850px;
+                margin: 0 auto;
+                padding: 5px;
+                color: #fff;
+                display: flex;
+
+                border-radius: 10px;
+                background-color: white;
+            }
+
+
+            .left {
+                width: 60%;
+                padding: 20px;
+            }
+
+            .calendar {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                color: #878895;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+
+            /* set after behind the main element */
+
+
+            .calendar .month {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 50px;
+                font-size: 1.2rem;
+                font-weight: 500;
+                text-transform: capitalize;
+                padding-top: 25px;
+            }
+
+            .calendar .month .prev,
+            .calendar .month .next {
+                cursor: pointer;
+            }
+
+            .calendar .month .prev:hover,
+            .calendar .month .next:hover {
+                color: var(--primary-clr);
+            }
+
+            .calendar .weekdays {
+                width: 100%;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
+                font-size: 1rem;
+                font-weight: 500;
+                text-transform: capitalize;
+            }
+
+            .weekdays div {
+                width: 14.28%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .calendar .days {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 0 20px;
+                font-size: 1rem;
+                font-weight: 500;
+                margin-bottom: 20px;
+            }
+
+            .calendar .days .day {
+                width: 14.28%;
+                height: 90px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--primary-clr);
+                border: 1px solid #f5f5f5;
+            }
+
+            .calendar .days .day:nth-child(7n + 1) {
+                border-left: 2px solid #f5f5f5;
+            }
+
+            .calendar .days .day:nth-child(7n) {
+                border-right: 2px solid #f5f5f5;
+            }
+
+            .calendar .days .day:nth-child(-n + 7) {
+                border-top: 2px solid #f5f5f5;
+            }
+
+            .calendar .days .day:nth-child(n + 29) {
+                border-bottom: 2px solid #f5f5f5;
+            }
+
+            .calendar .days .day:not(.prev-date, .next-date):hover {
+                color: #fff;
+                background-color: var(--primary-clr);
+            }
+
+            .calendar .days .prev-date,
+            .calendar .days .next-date {
+                color: #b3b3b3;
+            }
+
+            .calendar .days .active {
+                position: relative;
+                font-size: 2rem;
+                color: #fff;
+                background-color: var(--primary-clr);
+            }
+
+            .calendar .days .active::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                box-shadow: 0 0 10px 2px var(--primary-clr);
+            }
+
+            .calendar .days .today {
+                font-size: 2rem;
+            }
+
+            .calendar .days .event {
+                position: relative;
+            }
+
+            .calendar .days .event::after {
+                content: "";
+                position: absolute;
+                bottom: 10%;
+                left: 50%;
+                width: 75%;
+                height: 6px;
+                border-radius: 30px;
+                transform: translateX(-50%);
+                background-color: var(--primary-clr);
+            }
+
+            .calendar .days .day:hover.event::after {
+                background-color: #fff;
+            }
+
+            .calendar .days .active.event::after {
+                background-color: #fff;
+                bottom: 20%;
+            }
+
+            .calendar .days .active.event {
+                padding-bottom: 10px;
+            }
+
+            .calendar .goto-today {
+                width: 100%;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 5px;
+                padding: 0 20px;
+                margin-bottom: 20px;
+                color: var(--primary-clr);
+            }
+
+            .calendar .goto-today .goto {
+                display: flex;
+                align-items: center;
+                border-radius: 5px;
+                overflow: hidden;
+                border: 1px solid var(--primary-clr);
+            }
+
+            .calendar .goto-today .goto input {
+                width: 100%;
+                height: 30px;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                padding: 0 20px;
+                color: var(--primary-clr);
+                border-radius: 5px;
+            }
+
+            .calendar .goto-today button {
+                padding: 5px 10px;
+                border: 1px solid var(--primary-clr);
+                border-radius: 5px;
+                background-color: transparent;
+                cursor: pointer;
+                color: var(--primary-clr);
+            }
+
+            .calendar .goto-today button:hover {
+                color: #fff;
+                background-color: var(--primary-clr);
+            }
+
+            .calendar .goto-today .goto button {
+                border: none;
+                border-left: 1px solid var(--primary-clr);
+                border-radius: 0;
+            }
+
+            .container .right {
+                position: relative;
+                width: 40%;
+                min-height: 100%;
+                padding: 20px 0;
+            }
+
+            .right .today-date {
+                width: 100%;
+                height: 50px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 40px;
+                padding-left: 70px;
+                margin-top: 50px;
+                margin-bottom: 20px;
+                text-transform: capitalize;
+            }
+
+            .right .today-date .event-day {
+                font-size: 2rem;
+                font-weight: 500;
+            }
+
+            .right .today-date .event-date {
+                font-size: 1rem;
+                font-weight: 400;
+                color: #878895;
+            }
+
+            .events {
+                width: 100%;
+                height: 100%;
+                max-height: 600px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+                padding-left: 4px;
+            }
+
+            .events .event {
+                position: relative;
+                width: 95%;
+                min-height: 70px;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                gap: 5px;
+                padding: 0 20px;
+                padding-left: 50px;
+                color: #fff;
+                background: linear-gradient(90deg, #3f4458, transparent);
+                cursor: pointer;
+            }
+
+            /* even event */
+            .events .event:nth-child(even) {
+                background: transparent;
+            }
+
+            .events .event:hover {
+                background: linear-gradient(90deg, var(--primary-clr), transparent);
+            }
+
+            .events .event .title {
+                display: flex;
+                align-items: center;
+                pointer-events: none;
+            }
+
+            .events .event .title .event-title {
+                font-size: 1rem;
+                font-weight: 400;
+                margin-left: 20px;
+            }
+
+            .events .event i {
+                color: var(--primary-clr);
+                font-size: 0.5rem;
+            }
+
+            .events .event:hover i {
+                color: #fff;
+            }
+
+            .events .event .event-time {
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: #878895;
+                margin-left: 15px;
+                pointer-events: none;
+            }
+
+            .events .event:hover .event-time {
+                color: #fff;
+            }
+
+            /* add tick in event after */
+            .events .event::after {
+                content: "✓";
+                position: absolute;
+                top: 50%;
+                right: 0;
+                font-size: 3rem;
+                line-height: 1;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                opacity: 0.3;
+                color: var(--primary-clr);
+                transform: translateY(-50%);
+            }
+
+            .events .event:hover::after {
+                display: flex;
+            }
+
+            .add-event {
+                position: absolute;
+                bottom: 30px;
+                right: 30px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                color: #878895;
+                border: 2px solid #878895;
+                opacity: 0.5;
+                border-radius: 50%;
+                background-color: transparent;
+                cursor: pointer;
+            }
+
+            .add-event:hover {
+                opacity: 1;
+            }
+
+            .add-event i {
+                pointer-events: none;
+            }
+
+            .events .no-event {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                font-weight: 500;
+                color: #878895;
+            }
+
+            .add-event-wrapper {
+                position: absolute;
+                bottom: 100px;
+                left: 50%;
+                width: 90%;
+                max-height: 0;
+                overflow: hidden;
+                border-radius: 5px;
+                background-color: #fff;
+                transform: translateX(-50%);
+                transition: max-height 0.5s ease;
+            }
+
+            .add-event-wrapper.active {
+                max-height: 300px;
+            }
+
+            .add-event-header {
+                width: 100%;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
+                color: #373c4f;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .add-event-header .close {
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .add-event-header .close:hover {
+                color: var(--primary-clr);
+            }
+
+            .add-event-header .title {
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+
+            .add-event-body {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                padding: 20px;
+            }
+
+            .add-event-body .add-event-input {
+                width: 100%;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .add-event-body .add-event-input input {
+                width: 100%;
+                height: 100%;
+                outline: none;
+                border: none;
+                border-bottom: 1px solid #f5f5f5;
+                padding: 0 10px;
+                font-size: 1rem;
+                font-weight: 400;
+                color: #373c4f;
+            }
+
+            .add-event-body .add-event-input input::placeholder {
+                color: #a5a5a5;
+            }
+
+            .add-event-body .add-event-input input:focus {
+                border-bottom: 1px solid var(--primary-clr);
+            }
+
+            .add-event-body .add-event-input input:focus::placeholder {
+                color: var(--primary-clr);
+            }
+
+            .add-event-footer {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .add-event-footer .add-event-btn {
+                height: 40px;
+                font-size: 1rem;
+                font-weight: 500;
+                outline: none;
+                border: none;
+                color: #fff;
+                background-color: var(--primary-clr);
+                border-radius: 5px;
+                cursor: pointer;
+                padding: 5px 10px;
+                border: 1px solid var(--primary-clr);
+            }
+
+            .add-event-footer .add-event-btn:hover {
+                background-color: transparent;
+                color: var(--primary-clr);
+            }
+
+            /* media queries */
+
+            @media screen and (max-width: 1000px) {
+                body {
+                    align-items: flex-start;
+                    justify-content: flex-start;
+                }
+
+                .container {
+                    min-height: 100vh;
+                    flex-direction: column;
+                    border-radius: 0;
+                }
+
+                .container .left {
+                    width: 100%;
+                    height: 100%;
+                    padding: 20px 0;
+                }
+
+                .container .right {
+                    width: 100%;
+                    height: 100%;
+                    padding: 20px 0;
+                }
+
+
+
+                .events {
+                    padding-bottom: 340px;
+                }
+
+                .add-event-wrapper {
+                    bottom: 100px;
+                }
+            }
+
+            @media screen and (max-width: 500px) {
+                .calendar .month {
+                    height: 75px;
+                }
+
+                .calendar .weekdays {
+                    height: 50px;
+                }
+
+                .calendar .days .day {
+                    height: 40px;
+                    font-size: 0.8rem;
+                }
+
+                .calendar .days .day.active,
+                .calendar .days .day.today {
+                    font-size: 1rem;
+                }
+
+                .right .today-date {
+                    padding: 20px;
+                }
+            }
+
+            .credits {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                text-align: center;
+                padding: 10px;
+                font-size: 12px;
+                color: #fff;
+                background-color: #b38add;
+            }
+
+            .credits a {
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .credits a:hover {
+                text-decoration: underline;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
+        </div>
+        <%- include('./components/profile_bar.ejs.html') %>
+    </header>
+    <main>
+        <%- include('./components/nav_bar.ejs.html') %>
+            <div class="calendar-content">
+                <div id='calendar'>
+                    <div class="container">
+                        <div class="left">
+                            <div class="calendar">
+                                <div class="month">
+                                    <i class="fas fa-angle-left prev"></i>
+                                    <div class="date">december 2015</div>
+                                    <i class="fas fa-angle-right next"></i>
+                                </div>
+                                <div class="weekdays">
+                                    <div>Sun</div>
+                                    <div>Mon</div>
+                                    <div>Tue</div>
+                                    <div>Wed</div>
+                                    <div>Thu</div>
+                                    <div>Fri</div>
+                                    <div>Sat</div>
+                                </div>
+                                <div class="days"></div>
+                                <div class="goto-today">
+                                    <div class="goto">
+                                        <input type="text" placeholder="mm/yyyy" class="date-input" />
+                                        <button class="goto-btn">Go</button>
+                                    </div>
+                                    <button class="today-btn">Today</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="today-date">
+                                <div class="event-day">wed</div>
+                                <div class="event-date">12th december 2022</div>
+                            </div>
+                            <div class="events"></div>
+                            <div class="actions">
+                                <button class="btn btn-primary" onclick="showAddEventModal()">Add Event</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
+                    aria-labelledby="delete-modal-title" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delete-modal-title">Confirm Deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center" id="delete-modal-body">
+                                Are you sure you want to delete the event?
+                            </div>
+                            <div class="modal-footer border-0">
+                                <button type="button" class="btn btn-secondary rounded-sm" data-dismiss="modal"
+                                    id="cancel-button">Cancel</button>
+                                <button type="button" class="btn btn-danger rounded-lg"
+                                    id="delete-button">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+    </main>
+    <footer></footer>
+
+    <!-- MODALS -->
+    <div class="modal fade" id="add_event-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Event</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Repetition</label>
+                            <select id="repetition" class="form-control">
+                                <option disabled="true" selected="" value="">Choose</option>
+                                <option value="single">Single</option>
+                                <option value="repeat">Repeat</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="event_name-block">
+                            <label class="mb-2">Event Name</label>
+                            <input type="text" id="event_name" class="form-control" placeholder="Karate" required />
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="event_type-block">
+                            <label class="mb-2">Event type</label>
+                            <select id="event_type" class="form-control">
+                                <option disabled="true" selected="" value="">Choose</option>
+                                <option value="jiu_jitsu">jiu jitsu</option>
+                                <option value="karate">karate</option>
+                                <option value="box">box</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="event_date-block">
+                            <label class="mb-2">Event date</label>
+                            <input type="date" class="form-control" id="event_date">
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="week_day-block">
+                            <label class="mb-2">Week day</label>
+                            <select id="week_day" class="form-control">
+                                <option disabled="true" selected="" value="">Choose</option>
+                                <option value="monday">Monday</option>
+                                <option value="tuesday">Tuesday</option>
+                                <option value="wednesday">Wednesday</option>
+                                <option value="thursday">Thursday</option>
+                                <option value="friday">Friday</option>
+                                <option value="saturday">Saturday</option>
+                                <option value="sunday">Sunday</option>
+                            </select>
+
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="time-block">
+                            <label class="mb-2">Time</label>
+                            <input type="time" id="time" class="form-control" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="add_member_btn" class="btn btn-primary px-md-4"
+                        onclick="addEvent()">Add</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END OF MODALS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/calendar.js"></script>
+    <script>
+        $(document).ready(async function () {
+            var currentUrl = window.location.pathname;
+
+            $(".nav-bar ul li").each(function () {
+                var listItem = $(this);
+                var listItemLink = listItem.find("a");
+                var listItemHref = listItemLink.attr("href");
+
+                if (currentUrl === listItemHref) {
+                    listItem.addClass("active");
+                } else {
+                    listItem.removeClass("active");
+                }
+            });
+            loading(1);
+
+            loading(0);
+        });
+
+
+        function showAddEventModal() {
+            $('#add_event-modal').modal('show')
+        }
+
+        function addEvent() {
+            let repetition = $("#repetition").val();
+            let event_name = $("#event_name").val();
+            let event_type = $("#event_type").val();
+            let time = $("#time").val();
+            let event_date = $("#event_date").val();
+            let week_day = $("#week_day").val();
+            (repetition == 'single') ? week_day = null : event_date = null;
+            if (repetition && event_name && event_type && time && (event_date || week_day)) {
+                $.ajax({
+                    type: "POST",
+                    url: "/schedule/create",
+                    data: {
+                        repetition: repetition,
+                        event_name: event_name,
+                        event_type: event_type,
+                        time: time,
+                        event_date: event_date,
+                        week_day: week_day
+                    },
+                    success: function (r) {
+                        console.log(r)
+                        $("#repetition").val('');
+                        $("#event_name").val('');
+                        $("#event_type").val('');
+                        $("#time").val('');
+                        $("#event_date").val('');
+                        $("#week_day").val('');
+                    },
+                    error: function (error) {
+
+                        console.error("Error:", error);
+                    }
+                });
+            } else {
+                console.error("Please fill in all fields before submitting.");
+            }
+
+
+        }
+
+        $("#repetition").on('change', (() => {
+            let repetition = $('#repetition').val();
+            console.log(repetition)
+            if (repetition == 'single') {
+                $('#event_date-block').show();
+                $('#week_day-block').hide();
+            } else {
+                $('#week_day-block').show();
+                $('#event_date-block').hide();
+            }
+            $('#time-block').show();
+            $('#event_type-block').show();
+            $('#event_name-block').show();
+        }));
+
+    </script>
+</body>
+
+</html>

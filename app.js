@@ -16,6 +16,7 @@ var news = require('./routes/news');
 var links = require('./routes/links')
 var profile_func = require('./routes/profile')
 var joins = require('./routes/joins')
+var schedule = require('./routes/schedule')
 
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
@@ -51,7 +52,8 @@ app.use('/news', news);
 app.use('/links', links);
 app.use('/users', users);
 app.use('/coachers', coachers);
-app.use('/joins', joins)
+app.use('/joins', joins);
+app.use('/schedule', schedule);
 
 
 
