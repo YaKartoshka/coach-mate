@@ -74,18 +74,19 @@
     </div>
 
     <script>
+        const panel_id = getParameterByName('panel_id')
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         function joinPanel() {
             loading(2, el = '#join_button');
-            let firstName = $('.join-form #fname').val().trim();
-            let lastName = $('.join-form #lname').val().trim();
+            let first_name = $('.join-form #fname').val().trim();
+            let last_name = $('.join-form #lname').val().trim();
             let email = $('.join-form #email').val().trim().toLowerCase();
             let ambianceElement = $('.join-form #ambiance');
 
-            if (!firstName || !lastName || !email) {
+            if (!first_name || !last_name || !email) {
                 loading(20, el = '#join_button');
                 ambianceElement.html('Enter all required fields').addClass('show warning');
                 setTimeout(function () {
@@ -93,8 +94,50 @@
                 }, 2000);
                 return;
             }
+            console.log(panel_id)
+            $.ajax({
+                url: '/joins/create',
+                method: 'POST',
+                data: {
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    panel_id: panel_id
+                },
+                success: function (res) {
+                    let data = JSON.parse(res);
+                    console.log(data)
+                    if (data.r == 1) {
+                        ambianceElement.html('Your request was sent successfully. Please wait for confirmation from the admin').addClass('success');
+                        setTimeout(function () {
+                            ambianceElement.removeClass('show success error info too-many-requests').html('');
+                            // You may want to redirect the user or perform other actions on success
+                        }, 1000);
+                    } else if (data.r == 3) {
+                        ambianceElement.html('The panel is not available').addClass('too-many-requests');
+                    }
+                    loading(20, el = '#join_button');
+                    ambianceElement.addClass('show');
+                    setTimeout(function () {
+                        ambianceElement.removeClass('show success error info too-many-requests').html('');
+                    }, 3000);
+                },
+                error: function (err) {
+                    loading(20, el = '#join_button');
+                    console.log(err);
+                }
+            });
         }
 
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
     </script>
 </body>
 

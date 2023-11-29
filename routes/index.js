@@ -9,53 +9,42 @@ function isAuthenticated(req, res, next) {
     next();
 };
 
-router.get('/', isAuthenticated, (req,res,next)=>{
+router.get('/', isAuthenticated, (req, res, next) => {
     console.log(req.session);
     res.render('index');
 });
 
-router.get('/login', (req,res)=>{
+router.get('/login', (req, res) => {
     res.render('login');
 });
 
-router.get('/join', async(req,res)=>{
+router.get('/join', async (req, res) => {
     const panel_id = req.query.panel_id;
-    
-    if(!panel_id || panel_id==undefined){
-        res.redirect('login');
+
+    if (!panel_id || panel_id == undefined) {
+        res.render('login');
         return;
     }
 
 
-    await fdb.collection('panels').doc(panel_id).get().then((panelDoc)=>{
-        if(panelDoc.exists){
+    await fdb.collection('panels').doc(panel_id).get().then((panelDoc) => {
+        if (panelDoc.exists) {
             res.render('join');
         } else {
             res.render('login');
         }
-    }).catch((e)=>{
+    }).catch((e) => {
         res.render('login');
     });
 });
 
-router.get('/settings', isAuthenticated, (req,res)=>{
+router.get('/settings', isAuthenticated, (req, res) => {
     res.render('settings');
 });
 
-router.get('/members', isAuthenticated, (req,res)=>{
+router.get('/members', isAuthenticated, (req, res) => {
     res.render('members');
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;

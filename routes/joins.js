@@ -10,9 +10,9 @@ function isAuthenticated(req, res, next) {
     next();
 };
 
-router.post('/create', isAuthenticated, async (req, res) => {
+router.post('/create', async (req, res) => {
     var r = { r: 0 };
-    const fieldsToCheck = ['email', 'first_name', 'last_name', 'student'];
+    const fieldsToCheck = ['email', 'first_name', 'last_name', 'panel_id'];
     const errors = fieldsToCheck.filter(field => !req.body[field] || req.body[field].trim() === '');
 
     if (errors.length > 0) {
@@ -32,7 +32,7 @@ router.post('/create', isAuthenticated, async (req, res) => {
     const last_name = req.body.last_name;
     const role = 'student';
     const panel_id = req.body.panel_id;
-
+    console.log(req.body)
     const find_request = await fdb.collection('panels').doc(panel_id).collection('requests').where('email', '==', email).get();
     if (!find_request.empty) {
         r['r'] = 5; // Such request already exists
@@ -44,7 +44,7 @@ router.post('/create', isAuthenticated, async (req, res) => {
         res.send(JSON.stringify(r));
     }).catch(async (error) => {
         if (error.code == 'auth/user-not-found') {
-            await fdb.collection('panels').doc(panel_id).collection('requests').doc(new_request.id).set({
+            await fdb.collection('panels').doc(panel_id).collection('requests').add({
                 email: email,
                 first_name: first_name,
                 last_name: last_name,
