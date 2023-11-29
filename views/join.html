@@ -28,7 +28,7 @@
                 setTimeout(function () {
                     $(el).removeAttr('disabled');
                     $(el).find('.spinner-border').remove();
-                }, 500);
+                }, 2000);
             } else if (mode == 3) {
                 $(el).append(' <div class="spinner-border"></div>');
             } else if (mode == 30) {
@@ -94,7 +94,7 @@
                 }, 2000);
                 return;
             }
-            console.log(panel_id)
+
             $.ajax({
                 url: '/joins/create',
                 method: 'POST',
@@ -106,21 +106,26 @@
                 },
                 success: function (res) {
                     let data = JSON.parse(res);
-                    console.log(data)
+                    console.log(data);
                     if (data.r == 1) {
                         ambianceElement.html('Your request was sent successfully. Please wait for confirmation from the admin').addClass('success');
-                        setTimeout(function () {
-                            ambianceElement.removeClass('show success error info too-many-requests').html('');
-                            // You may want to redirect the user or perform other actions on success
-                        }, 1000);
+                    } else if (data.r == 2) {
+                        ambianceElement.html('Invalid email address').addClass('invalid-email');
                     } else if (data.r == 3) {
                         ambianceElement.html('The panel is not available').addClass('too-many-requests');
+                    } else if (data.r == 4) {
+                        ambianceElement.html('User already exists').addClass('error');
+                    } else if (data.r == 5) {
+                        ambianceElement.html('Such request already exists').addClass('error');
+                    } else {
+                        ambianceElement.html('An error occurred').addClass('error');
                     }
+
                     loading(20, el = '#join_button');
                     ambianceElement.addClass('show');
                     setTimeout(function () {
-                        ambianceElement.removeClass('show success error info too-many-requests').html('');
-                    }, 3000);
+                        ambianceElement.removeClass('show success error info too-many-requests invalid-email warning').html('');
+                    }, 2000);
                 },
                 error: function (err) {
                     loading(20, el = '#join_button');

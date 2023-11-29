@@ -37,6 +37,7 @@ router.post('/create', async (req, res) => {
     if (!find_request.empty) {
         r['r'] = 5; // Such request already exists
         res.send(JSON.stringify(r));
+        return;
     }
 
     admin_fauth.getUserByEmail(email).then((userRecord) => {

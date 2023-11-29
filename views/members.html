@@ -7,6 +7,24 @@
     <title>Members</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+        <script>
+            function loading(mode, el = null) {
+                if (mode == 1) {
+                    $(el).html('<img src="/public/images/preloader.svg" class="loader_overlay">');
+                } else if (mode == 2) {
+                    $(el).prepend('<div class="spinner-border"></div> ').attr('disabled', true);
+                } else if (mode == 20) {
+                    setTimeout(function () {
+                        $(el).removeAttr('disabled');
+                        $(el).find('.spinner-border').remove();
+                    }, 500);
+                } else if (mode == 3) {
+                    $(el).append(' <div class="spinner-border"></div>');
+                } else if (mode == 30) {
+                    $(el).find('.spinner-border').remove();
+                }
+            }
+        </script>
 
 </head>
 
@@ -209,12 +227,25 @@
         }
 
         function acceptRequest(id) {
+            loading(2, el = '.btn-success');
+
             $.ajax({
                 url: "/joins/accept",
                 method: 'post',
                 data: { request_id: id },
                 success: function (r) {
-                    console.log(r)
+                    console.log(r);
+                    let data = JSON.parse(r);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Request Accepted!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1600);
                 },
                 error: function (e) {
                     console.log(r)
@@ -223,15 +254,42 @@
         }
 
         function declineRequest(id) {
-            $.ajax({
-                url: "/joins/decline",
-                method: 'post',
-                data: { request_id: id },
-                success: function (r) {
-                    console.log(r);
-                },
-                error: function (e) {
-                    console.log(r);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, decline it!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    loading(2, el = '.btn-danger');
+                    // User clicked "Yes"
+                    $.ajax({
+                        url: "/joins/decline",
+                        method: 'post',
+                        data: { request_id: id },
+                        success: function (r) {
+                            console.log(r);
+                            // Assuming the response contains information about the success of the decline operation
+                            let data = JSON.parse(r);
+                            // Show a SweetAlert2 success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Request Declined!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1600);
+                        },
+                        error: function (e) {
+                            console.log(r);
+                        }
+                    });
                 }
             });
         }
