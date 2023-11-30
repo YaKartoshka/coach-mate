@@ -34,7 +34,17 @@ router.post('/create', isAuthenticated, async (req, res) => {
     })
 });
 
+router.get('/get', isAuthenticated, async (req, res) => {
+    var data = [];
+    const panel_id = req.session.panel_id;
 
+
+    const schedules = await fdb.collection('panels').doc(panel_id).collection('schedules').get();
+    schedules.docs.forEach((schedule) => {
+        data.push(schedule.data())
+    })
+    res.send(data)
+})
 
 
 

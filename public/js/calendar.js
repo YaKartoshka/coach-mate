@@ -14,6 +14,7 @@ let today = new Date();
 let activeDay;
 let month = today.getMonth();
 let year = today.getFullYear();
+var first_init = true;
 
 const months = [
   "January",
@@ -30,38 +31,16 @@ const months = [
   "December",
 ];
 
-// const eventsArr = [
-//   {
-//     day: 13,
-//     month: 11,
-//     year: 2022,
-//     events: [
-//       {
-//         title: "Event 1 lorem ipsun dolar sit genfa tersd dsad ",
-//         time: "10:00 AM",
-//       },
-//       {
-//         title: "Event 2",
-//         time: "11:00 AM",
-//       },
-//     ],
-//   },
-// ];
 
-const eventsArr = [];
-getEvents();
-console.log(eventsArr);
-
-//function to add days in days with class day and prev-date next-date on previous month and next month days and active on today
 function initCalendar() {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
+
   const prevLastDay = new Date(year, month, 0);
   const prevDays = prevLastDay.getDate();
   const lastDate = lastDay.getDate();
   const day = firstDay.getDay();
   const nextDays = 7 - lastDay.getDay() - 1;
-
   date.innerHTML = months[month] + " " + year;
 
   let days = "";
@@ -73,32 +52,36 @@ function initCalendar() {
   for (let i = 1; i <= lastDate; i++) {
     //check if event is present on that day
     let event = false;
-    eventsArr.forEach((eventObj) => {
-      if (
-        eventObj.day === i &&
-        eventObj.month === month + 1 &&
-        eventObj.year === year
-      ) {
-        event = true;
-      }
-    });
+
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
       month === new Date().getMonth()
     ) {
-      activeDay = i;
+      if (first_init) {
+        first_init = false
+        activeDay = i;
+        let next_month = month + 1
+        showEvents(activeDay, next_month, year);
+      }
+
       getActiveDay(i);
-      updateEvents(i);
+
       if (event) {
+
         days += `<div class="day today active event">${i}</div>`;
       } else {
-        days += `<div class="day today active">${i}</div>`;
+        if (activeDay == i) {
+          days += `<div class="day today active">${i}</div>`;
+        } else {
+          days += `<div class="day today">${i}</div>`;
+        }
       }
     } else {
       if (event) {
         days += `<div class="day event">${i}</div>`;
       } else {
+
         days += `<div class="day ">${i}</div>`;
       }
     }
@@ -119,21 +102,27 @@ function prevMonth() {
     year--;
   }
   initCalendar();
+  getActiveDay(activeDay);
+  let next_month = month == 0 ? 1 : month + 1;
+  showEvents(activeDay, next_month, year);
 }
 
 function nextMonth() {
+
   month++;
   if (month > 11) {
     month = 0;
     year++;
   }
   initCalendar();
+  getActiveDay(activeDay);
+  let next_month = month == 0 ? 1 : month + 1;
+  showEvents(activeDay, next_month, year);
 }
 
 prev.addEventListener("click", prevMonth);
 next.addEventListener("click", nextMonth);
 
-initCalendar();
 
 //function to add active on day
 function addListner() {
@@ -141,8 +130,8 @@ function addListner() {
   days.forEach((day) => {
     day.addEventListener("click", (e) => {
       getActiveDay(e.target.innerHTML);
-      updateEvents(Number(e.target.innerHTML));
       activeDay = Number(e.target.innerHTML);
+
       //remove active
       days.forEach((day) => {
         day.classList.remove("active");
@@ -160,6 +149,7 @@ function addListner() {
               day.innerHTML === e.target.innerHTML
             ) {
               day.classList.add("active");
+
             }
           });
         }, 100);
@@ -179,6 +169,8 @@ function addListner() {
         }, 100);
       } else {
         e.target.classList.add("active");
+        let next_month = month + 1
+        showEvents(activeDay, next_month, year)
       }
     });
   });
@@ -222,93 +214,15 @@ function gotoDate() {
   alert("Invalid Date");
 }
 
-//function get active day day name and date and update eventday eventdate
 function getActiveDay(date) {
   const day = new Date(year, month, date);
   const dayName = day.toString().split(" ")[0];
   eventDay.innerHTML = dayName;
   eventDate.innerHTML = date + " " + months[month] + " " + year;
+  return day
 }
 
-//function update events when a day is active
-function updateEvents(date) {
-  let events = "";
-  eventsArr.forEach((event) => {
-    if (
-      date === event.day &&
-      month + 1 === event.month &&
-      year === event.year
-    ) {
-      event.events.forEach((event) => {
-        events += `<div class="event">
-            <div class="title">
-              <i class="fas fa-circle"></i>
-              <h3 class="event-title">${event.title}</h3>
-            </div>
-            <div class="event-time">
-              <span class="event-time">${event.time}</span>
-            </div>
-        </div>`;
-      });
-    }
-  });
-  if (events === "") {
-    events = `<div class="no-event">
-            <h3>No Events</h3>
-        </div>`;
-  }
-  eventsContainer.innerHTML = events;
-  saveEvents();
-}
 
-//function to add event
-
-
-//function to delete event when clicked on event
-eventsContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("event")) {
-    if (confirm("Are you sure you want to delete this event?")) {
-      const eventTitle = e.target.children[0].children[1].innerHTML;
-      eventsArr.forEach((event) => {
-        if (
-          event.day === activeDay &&
-          event.month === month + 1 &&
-          event.year === year
-        ) {
-          event.events.forEach((item, index) => {
-            if (item.title === eventTitle) {
-              event.events.splice(index, 1);
-            }
-          });
-          //if no events left in a day then remove that day from eventsArr
-          if (event.events.length === 0) {
-            eventsArr.splice(eventsArr.indexOf(event), 1);
-            //remove event class from day
-            const activeDayEl = document.querySelector(".day.active");
-            if (activeDayEl.classList.contains("event")) {
-              activeDayEl.classList.remove("event");
-            }
-          }
-        }
-      });
-      updateEvents(activeDay);
-    }
-  }
-});
-
-//function to save events in local storage
-function saveEvents() {
-  localStorage.setItem("events", JSON.stringify(eventsArr));
-}
-
-//function to get events from local storage
-function getEvents() {
-  //check if events are already saved in local storage then return event else nothing
-  if (localStorage.getItem("events") === null) {
-    return;
-  }
-  eventsArr.push(...JSON.parse(localStorage.getItem("events")));
-}
 
 function convertTime(time) {
   //convert time to 24 hour format
@@ -320,3 +234,60 @@ function convertTime(time) {
   time = timeHour + ":" + timeMin + " " + timeFormat;
   return time;
 }
+
+function showEvents(week_day, month, year) {
+  $('.events').html('');
+  var myDate = new Date(`${year}-${month}-${week_day}`);
+  week_day = week_day < 10 ? `0${week_day}` : week_day
+  var dayOfWeek = getDayName(myDate)
+  let counter = 0;
+  events.forEach((ed) => {
+    // console.log(ed)
+    if (ed.week_day == dayOfWeek) {
+      counter++;
+      let eventDiv = `
+      <div class="event"> 
+        <h2>${ed.event_name}
+      </div>
+       `
+      $('.events').append(eventDiv);
+    }
+    console.log(`${year}-${month}-${week_day}`)
+    if (ed.event_date == `${year}-${month}-${week_day}`) {
+      counter++;
+      let eventDiv = `
+      <div class="event"> 
+        <h2>${ed.event_name}
+      </div>
+    `
+      $('.events').append(eventDiv);
+    }
+
+
+
+  });
+  if(!counter){
+    let noEvents = `
+    <div class="no-event">
+          <h3>No Events</h3>
+      </div>
+    `
+    $('.events').append(noEvents);
+  }
+}
+
+
+  function getDayName(myDate) {
+    var dayOfWeek = myDate.getDay();
+    var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dayName = daysOfWeek[dayOfWeek];
+    return dayName.toLowerCase();
+  }
+
+  // if (!week_day || !month || !year) {
+  //   no_event = `<div class="no-event">
+  //           <h3>No Events</h3>
+  //       </div>`;
+  // }
+
+  // alert(`${week_day}, ${month}, ${year} ${dayName}`)

@@ -69,6 +69,7 @@
             .calendar .month .prev,
             .calendar .month .next {
                 cursor: pointer;
+                display: none;
             }
 
             .calendar .month .prev:hover,
@@ -748,8 +749,9 @@
 
     <!-- END OF MODALS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/js/calendar.js"></script>
+
     <script>
+        var events = [];
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
 
@@ -765,13 +767,15 @@
                 }
             });
             loading(1);
+            getEvents();
+            initCalendar();
 
             loading(0);
         });
 
 
         function showAddEventModal() {
-            $('#add_event-modal').modal('show')
+            $('#add_event-modal').modal('show');
         }
 
         function addEvent() {
@@ -815,6 +819,21 @@
 
         }
 
+        function getEvents(){
+            $.ajax({
+                url: 'schedule/get',
+                method: 'GET',
+                success: function (data){
+                    events = data;
+                },
+                error: function(e){
+                    console.log(e)
+
+                }
+
+            })
+        }
+
         $("#repetition").on('change', (() => {
             let repetition = $('#repetition').val();
             console.log(repetition)
@@ -829,8 +848,9 @@
             $('#event_type-block').show();
             $('#event_name-block').show();
         }));
-
+        
     </script>
+      <script src="/public/js/calendar.js"></script>
 </body>
 
 </html>
