@@ -45,13 +45,15 @@
                     <div class="divider"></div>
                     <div class="search-content-body mt-4">
                         <div class="search-search">
-                            <label for="" class="form-label">Name:</label>
+                            <label for="" class="form-label">Name</label>
                             <input type="text" class="form-control" placeholder="Search by name">
-                            <select class="form-select mt-4">
-                                <option>None</option>
-                                <option>BJJ</option>
-                                <option>Karate</option>
-                                <option>Box</option>
+                            <br>
+                            <label for="" class="form-label">Role</label>
+                            <select class="form-select mt-1" onchange="showMembers()" id="roles">
+                                <option value="all">All</option>
+                                <option value="student">Student</option>
+                                <option value="admin">Admin</option>
+                                <option value="box">Coach</option>
                             </select>
                         </div>
                     </div>
@@ -116,7 +118,7 @@
                         </div>
                         <div class="mb-3 mt-3">
                             <label class="mb-2">Role</label>
-                            <select name="role" class="form-select" id="role">
+                            <select name="role" class="form-select" id="roles">
                                 <option value="Student">Student</option>
                                 <option value="Coach">Coach</option>
                                 <option value="Admin">Admin</option>
@@ -151,8 +153,8 @@
     <script>
         $(document).ready(async function () {
             loading(1);
-            await showMembers();
-            await showRequests();
+            showMembers();
+            showRequests();
             loading(0);
         });
 
@@ -179,9 +181,20 @@
 
         function showMembers() {
             $('.members').html('');
+            let roles = $('#roles').val().toLowerCase();
             $.ajax({
-                url: '/users/get-all', method: 'get', success: function (data) {
+                url: '/users/get-all',
+                method: 'get',
+                data: { roles: roles },
+                success: function (data) {
                     var members_data = JSON.parse(data);
+                    if(!members_data.length){
+                        let no_members = `
+                        <div class="no_members">No members</div>
+                        `
+                        $('.members').append(no_members);
+                        return;
+                    }
                     members_data.forEach((member) => {
                         let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
 

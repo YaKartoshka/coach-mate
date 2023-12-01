@@ -93,21 +93,40 @@ router.post('/edit', async (req, res) => {
 
 router.get('/get-all', async (req, res) => {
     const panel_id = req.session.panel_id;
+    const roles = req.query.roles;
+    console.log(req.query)
     const data = [];
     try {
-        await fdb.collection('panels').doc(panel_id).collection('users').get().then((users) => {
-            users.forEach((u_doc) => {
-                data.push({
-                    id: u_doc.id,
-                    first_name: u_doc.data().first_name,
-                    last_name: u_doc.data().last_name,
-                    email: u_doc.data().email,
-                    role: u_doc.data().role,
-                    profile_img: u_doc.data().profile_img,
+
+        if (roles == 'all') {
+            await fdb.collection('panels').doc(panel_id).collection('users').get().then((users) => {
+                users.forEach((u_doc) => {
+                    data.push({
+                        id: u_doc.id,
+                        first_name: u_doc.data().first_name,
+                        last_name: u_doc.data().last_name,
+                        email: u_doc.data().email,
+                        role: u_doc.data().role,
+                        profile_img: u_doc.data().profile_img,
+                    });
                 });
+                res.send(JSON.stringify(data));
             });
-            res.send(JSON.stringify(data));
-        });
+        } else {
+            await fdb.collection('panels').doc(panel_id).collection('users').where('role','==', roles).get().then((users) => {
+                users.forEach((u_doc) => {
+                    data.push({
+                        id: u_doc.id,
+                        first_name: u_doc.data().first_name,
+                        last_name: u_doc.data().last_name,
+                        email: u_doc.data().email,
+                        role: u_doc.data().role,
+                        profile_img: u_doc.data().profile_img,
+                    });
+                });
+                res.send(JSON.stringify(data));
+            });
+        }
     } catch (e) {
         var r = { r: 0 };
         res.send(JSON.stringify(r));

@@ -58,19 +58,23 @@ function initCalendar() {
       year === new Date().getFullYear() &&
       month === new Date().getMonth()
     ) {
+    
       if (first_init) {
         first_init = false
         activeDay = i;
-        let next_month = month + 1
-        showEvents(activeDay, next_month, year);
+        let next_month = month + 1;
+        setTimeout(()=>{
+          showEvents(activeDay, next_month, year);
+        },500)
       }
 
       getActiveDay(i);
-
+  
       if (event) {
 
         days += `<div class="day today active event">${i}</div>`;
       } else {
+   
         if (activeDay == i) {
           days += `<div class="day today active">${i}</div>`;
         } else {
@@ -78,9 +82,12 @@ function initCalendar() {
         }
       }
     } else {
+      
       if (event) {
         days += `<div class="day event">${i}</div>`;
-      } else {
+      } else if (activeDay == i) {
+        days += `<div class="day today active">${i}</div>`;
+      }  else {
 
         days += `<div class="day ">${i}</div>`;
       }
@@ -95,33 +102,38 @@ function initCalendar() {
 }
 
 //function to add month and year on prev and next button
-function prevMonth() {
+function prevMonth(day) {
+  if(day){
+    activeDay = day
+  }
   month--;
   if (month < 0) {
     month = 11;
     year--;
   }
-  initCalendar();
+  initCalendar(activeDay);
   getActiveDay(activeDay);
   let next_month = month == 0 ? 1 : month + 1;
   showEvents(activeDay, next_month, year);
 }
 
-function nextMonth() {
-
+function nextMonth(day) {
+  if(day){
+    activeDay = day
+  }
   month++;
   if (month > 11) {
     month = 0;
     year++;
   }
+
   initCalendar();
   getActiveDay(activeDay);
   let next_month = month == 0 ? 1 : month + 1;
   showEvents(activeDay, next_month, year);
 }
 
-prev.addEventListener("click", prevMonth);
-next.addEventListener("click", nextMonth);
+
 
 
 //function to add active on day
@@ -236,6 +248,7 @@ function convertTime(time) {
 }
 
 function showEvents(week_day, month, year) {
+  
   $('.events').html('');
   var myDate = new Date(`${year}-${month}-${week_day}`);
   week_day = week_day < 10 ? `0${week_day}` : week_day

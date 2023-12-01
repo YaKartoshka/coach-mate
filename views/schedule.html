@@ -10,7 +10,16 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.3.0/main.min.css'>
     <%- include('./components/head.ejs.html') %>
         <style>
-            
+            .prev_month_btn, .next_month_btn{
+                transition: 0.3s;
+                font-size: 30px;
+                cursor: pointer;
+            }
+
+            .prev_month_btn:hover, .next_month_btn:hover{
+                color: black;
+                
+            }
         </style>
 </head>
 
@@ -29,9 +38,9 @@
                         <div class="left">
                             <div class="calendar">
                                 <div class="month">
-                                    <i class="fas fa-angle-left prev"></i>
-                                    <div class="date">december 2015</div>
-                                    <i class="fas fa-angle-right next"></i>
+                                    <div class="material-symbols-outlined prev_month_btn" style="transform: rotate(180deg);" onclick="prevMonth(1)">arrow_forward_ios</div>
+                                    <div class="date"></div>
+                                    <div class="material-symbols-outlined next_month_btn" onclick="nextMonth(1)">arrow_forward_ios</div>
                                 </div>
                                 <div class="weekdays">
                                     <div>Sun</div>
