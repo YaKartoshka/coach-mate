@@ -87,7 +87,7 @@ router.post('/payments', async function (req, res, next) {
                                 type: cardAttach.card.brand,
                                 cid: cid,
                                 name_on_card: name_on_card
-                            }).then(()=>{
+                            }).then(() => {
                                 r['r'] = 1;
                                 res.send(JSON.stringify(r));
                             });
@@ -211,6 +211,19 @@ router.get('/payments', async function (req, res, next) {
         res.send(JSON.stringify(r));
     }
 });
+
+router.post('/change_password', async(req, res) => {
+    var r = {r:0};
+    const password = req.session.password;
+    const user_id = req.session.user_id;
+    await admin_fauth.updateUser(user_id, {password: password}).then((user)=>{
+        r['r'] = 1;
+        res.send(JSON.stringify(r));
+    }).catch((e)=>{
+        console.log(e);
+        res.send(JSON.stringify(r))
+    })
+})  
 
 
 module.exports = router;

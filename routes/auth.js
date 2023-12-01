@@ -63,6 +63,7 @@ router.post("/sign-in", async (req, res) => {
           r['r'] = 1;
           documentFound = true;
           req.session.user_id = user_id;
+          
           req.session.isAuthenticated = true;
           req.session.panel_id = panel.id;
           req.session.role = user.data().role;
@@ -99,13 +100,13 @@ router.post("/sign-up", async (req, res) => {
     const user_id = userCredential.user.uid;
     req.session.user_id = user_id;
     req.session.isAuthenticated = true;
-
     const panels = firebase.fdb.collection('panels');
     const new_panel = await panels.add({
       panel_name: 'Default'
     });
+    
     req.session.panel_id = new_panel.id;
-
+    
     const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
       user_id: user_id,
       email: email,
@@ -151,6 +152,7 @@ router.get(
             req.session.user_id = user_id;
             req.session.isAuthenticated = true;
             req.session.panel_id = panel.id;
+            
             req.session.role = user.data().role;
             res.redirect('/');
           }
@@ -185,19 +187,20 @@ router.get(
 
     firebase.fauth.createUserWithEmailAndPassword(firebase.fauth.getAuth(), email, "googlet7r2j689").then(async (userCredential) => {
       const user_id = userCredential.user.uid;
-  
       const panels = firebase.fdb.collection('panels');
       const new_panel = await panels.add({
         panel_name: 'Default'
       });
-      req.session.panel_id = new_panel.id;
 
+      req.session.panel_id = new_panel.id;
       const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
         user_id: user_id,
         google_id: google_id,
         email: email,
         role: 'admin'
       });
+
+      
       req.session.user_id = user_id;
       req.session.isAuthenticated = true;
       res.redirect('/');
@@ -208,6 +211,11 @@ router.get(
     });
   }
 );
+
+router.get('/logout', (req,res)=> {
+  req.session.destroy();
+  return res.redirect('/login');
+});
 
 /* ---- End Google Auth ----    */
 

@@ -18,28 +18,34 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-        <div class="content">
-            <div class="content-head">
-                <h1>News</h1>
-                <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary"><span
-                        class="material-symbols-outlined" style="font-size: 25px; font-weight: 700;">add</span>Add
-                    News</button>
-            </div>
-            <div class="divider"></div>
-            <div class="content-body">
+            <div class="content">
+                <div class="content-head">
+                    <h1>News</h1>
+                    <% if (role=='admin') { %>
+                        <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary"><span
+                            class="material-symbols-outlined" style="font-size: 25px; font-weight: 700;">add</span>Add
+                        News</button>
+                      <% } %>
+                 
+                </div>
+                <div class="divider"></div>
+                <div class="content-body">
 
+                </div>
             </div>
-        </div>
-        <div class="ad-content">
+            <div class="ad-content">
 
-            <div class="hot-links">
-                <ul class="hot-links-list">
+                <div class="hot-links">
+                    <ul class="hot-links-list">
 
-                </ul>
-                <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
-                        style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                    </ul>
+                    <% if (role=='admin') { %>
+                        <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
+                            style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                      <% } %>
+                  
+                </div>
             </div>
-        </div>
     </main>
     <footer></footer>
 
@@ -179,6 +185,12 @@
             $.ajax({
                 url: '/links/get-all', method: 'get', success: function (data) {
                     var links_data = JSON.parse(data);
+                    console.log(links_data)
+                    if(!links_data.length){
+                        var no_links = `<div class="no_links">No links yet</div>`
+                        $(".hot-links-list").append(no_links);
+                        return;
+                    }
                     links_data.forEach((link) => {
 
                         var list = `<li><a href="${link.link_url}" target="_blank">${link.link_text}</a></li>`;

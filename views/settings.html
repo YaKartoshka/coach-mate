@@ -23,7 +23,9 @@
                 <div class="tab-switcher">
                     <div class="profile-tab active">PROFILE</div>
                     <div class="password-tab">PASSWORD</div>
-                    <div class="billing-tab">BILLING</div>
+                    <% if (role=='admin' ) { %>
+                        <div class="billing-tab">BILLING</div>
+                        <% } %>
                 </div>
 
 
@@ -134,57 +136,61 @@
 
                         <div class="password-footer">
                             <div class="save-btn">
-                                <button type="button" class="btn btn-outline-primary">Save changes</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="changePassword()">Save
+                                    changes</button>
                             </div>
                         </div>
                     </div>
-                    <div class="billing-content">
-                        <div class="payment-methods">
-                            <p class="pm-title">Payment methods</p>
-                            <div class="card-info">
-                                <div class="card-img">
-                                    <img src="../public/images/cards/visa.png" alt="" width="105">
+                    <% if (role=='admin' ) { %>
+                        <div class="billing-content">
+                            <div class="payment-methods">
+                                <p class="pm-title">Payment methods</p>
+                                <div class="card-info">
+                                    <div class="card-img">
+                                        <img src="../public/images/cards/visa.png" alt="" width="105">
+                                    </div>
+                                    <div class="card-data">
+                                        <div class="card-name">
+                                            <p>VISA</p>
+                                        </div>
+                                        <div class="card-number">
+                                            <p>****3311</p>
+                                        </div>
+                                        <div class="expiration-date">
+                                            <p>Expires 07.2024</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-data">
-                                    <div class="card-name">
-                                        <p>VISA</p>
-                                    </div>
-                                    <div class="card-number">
-                                        <p>****3311</p>
-                                    </div>
-                                    <div class="expiration-date">
-                                        <p>Expires 07.2024</p>
-                                    </div>
+                                <div class="change-payment-button">
+                                    <button>ADD PAYMENT METHOD</button>
                                 </div>
                             </div>
-                            <div class="change-payment-button">
-                                <button>ADD PAYMENT METHOD</button>
+                            <div class="billing-history">
+                                <p class="bh-title">Billing history</p>
+                                <table class="bh-table">
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Card number</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    <tr>
+                                        <td>$10.00</td>
+                                        <td>Success</td>
+                                        <td>****0254</td>
+                                        <td>Aug 15, 12:30 PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>$10.00</td>
+                                        <td>Success</td>
+                                        <td>****0254</td>
+                                        <td>Aug 1, 12:30 PM</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
-                        <div class="billing-history">
-                            <p class="bh-title">Billing history</p>
-                            <table class="bh-table"> 
-                                <tr>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Card number</th>
-                                    <th>Date</th>
-                                </tr>
-                                <tr>
-                                    <td>$10.00</td>
-                                    <td>Success</td>
-                                    <td>****0254</td>
-                                    <td>Aug 15, 12:30 PM</td>
-                                </tr>
-                                <tr>
-                                    <td>$10.00</td>
-                                    <td>Success</td>
-                                    <td>****0254</td>
-                                    <td>Aug 1, 12:30 PM</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                        <% } %>
+
 
                 </div>
 
@@ -203,7 +209,7 @@
         $('#profile-data').on('click', () => {
             $('.dropdown-content').slideToggle(300);
         });
-       
+
         $(document).ready(function () {
             var currentUrl = window.location.pathname;
             $(".nav-bar ul li").each(function () {
@@ -218,11 +224,11 @@
                 }
             });
         });
-             
+
         $(document).ready(function () {
             var tabs = $(".tab-switcher > div");
             var tabContents = $(".tab-content > div");
-     
+
             tabs.each(function (index) {
                 $(this).click(function () {
 
@@ -235,7 +241,7 @@
             });
             tabs.first().click();
         });
-           
+
         $(document).ready(function () {
             $('#showPasswordCheckbox').change(function () {
                 const newPasswordInput = $('#new_password');
@@ -258,13 +264,37 @@
                     $("#first_name").val(user.first_name);
                     $("#last_name").val(user.last_name);
                     $("#email").val(user.email);
-                    
+
                     let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
                     $('#profile_img').attr('src', profile_src)
                 }, error: function (err) {
                     console.log(err)
                 }
             })
+        }
+
+        function changePassword() {
+            let new_password = $('#new_password').val();
+            let confirm_password = $('#confirm_password').val();
+            if (new_password != confirm_password) {
+                return alert('Passwords do not match!');
+            }
+
+            $.ajax({
+                url: '/profile/change_password',
+                method: 'post',
+                data: { password: new_password },
+                success: function (r) {
+                    var res = JSON.parse(r);
+                    if (res.r) {
+                        alert('Success')
+                        $('#new_password').val('');
+                        $('#confirm_password').val('');
+                    }
+                }, error: function (err) {
+                    console.log(err)
+                }
+            });
         }
     </script>
 

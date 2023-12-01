@@ -13,10 +13,11 @@ var users = require('./routes/users');
 var coachers = require('./routes/coachers');
 var auth = require('./routes/auth');
 var news = require('./routes/news');
-var links = require('./routes/links')
-var profile_func = require('./routes/profile')
-var joins = require('./routes/joins')
-var schedule = require('./routes/schedule')
+var links = require('./routes/links');
+var profile_func = require('./routes/profile');
+var joins = require('./routes/joins');
+var schedule = require('./routes/schedule');
+var settings = require('./routes/settings');
 
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
@@ -46,7 +47,7 @@ app.use(passport.session());
 
 // -- routes --
 app.use('/', index);
-app.use('/', profile_func)
+app.use('/profile', profile_func)
 app.use('/auth', auth);
 app.use('/news', news);
 app.use('/links', links);
@@ -54,7 +55,7 @@ app.use('/users', users);
 app.use('/coachers', coachers);
 app.use('/joins', joins);
 app.use('/schedule', schedule);
-
+app.use('/settings', settings);
 
 
 module.exports = app;

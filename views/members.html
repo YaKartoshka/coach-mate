@@ -56,26 +56,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="join-content">
-                    <div class="content-head">
-                        <h1>Requests</h1>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="join-content-body">
-                        <div class="join_requests">
+                <% if (role=='admin' ) { %>
+                    <div class="join-content">
+                        <div class="content-head">
+                            <h1>Requests</h1>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="join-content-body">
+                            <div class="join_requests">
 
+                            </div>
                         </div>
                     </div>
+                    <% } %>
 
-                </div>
 
 
             </div>
             <div class="members-content">
                 <div class="content-head mt-3">
-                    <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);">Export
-                        Data CSV</button>
-                    <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ Add</button>
+                    <% if (role=='admin' ) { %>
+                        <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);">Export
+                            Data CSV</button>
+                        <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ Add</button>
+                        <% } %>
+
                 </div>
 
                 <div class="members-content-body">

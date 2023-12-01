@@ -11,7 +11,7 @@ function isAuthenticated(req, res, next) {
 
 router.get('/', isAuthenticated, (req, res, next) => {
     console.log(req.session);
-    res.render('index');
+    res.render('index', { role: req.session.role });
 });
 
 router.get('/login', (req, res) => {
@@ -29,7 +29,7 @@ router.get('/join', async (req, res) => {
 
     await fdb.collection('panels').doc(panel_id).get().then((panelDoc) => {
         if (panelDoc.exists) {
-            res.render('join');
+            res.render('join', { role: req.session.role });
         } else {
             res.render('login');
         }
@@ -39,15 +39,15 @@ router.get('/join', async (req, res) => {
 });
 
 router.get('/settings', isAuthenticated, (req, res) => {
-    res.render('settings');
+    res.render('settings', { role: req.session.role });
 });
 
 router.get('/members', isAuthenticated, (req, res) => {
-    res.render('members');
+    res.render('members', { role: req.session.role });
 });
 
 router.get('/schedule', isAuthenticated, (req, res) => {
-    res.render('schedule');
+    res.render('schedule', { role: req.session.role });
 });
 
 module.exports = router;
