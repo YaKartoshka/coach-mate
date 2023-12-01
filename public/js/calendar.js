@@ -247,17 +247,19 @@ function showEvents(week_day, month, year) {
       counter++;
       let eventDiv = `
       <div class="event"> 
-        <h2>${ed.event_name}
-      </div>
+      <div class="time">${ed.time}</div>
+      <div class="event_name">${ed.event_name}</div>
+    </div>
        `
       $('.events').append(eventDiv);
     }
-    console.log(`${year}-${month}-${week_day}`)
+
     if (ed.event_date == `${year}-${month}-${week_day}`) {
       counter++;
       let eventDiv = `
       <div class="event"> 
-        <h2>${ed.event_name}
+        <div class="time">${ed.time}</div>
+        <div class="event_name">${ed.event_name}</div>
       </div>
     `
       $('.events').append(eventDiv);
@@ -266,7 +268,7 @@ function showEvents(week_day, month, year) {
 
 
   });
-  if(!counter){
+  if (!counter) {
     let noEvents = `
     <div class="no-event">
           <h3>No Events</h3>
@@ -277,17 +279,17 @@ function showEvents(week_day, month, year) {
 }
 
 
-  function getDayName(myDate) {
-    var dayOfWeek = myDate.getDay();
-    var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var dayName = daysOfWeek[dayOfWeek];
-    return dayName.toLowerCase();
-  }
+function getDayName(myDate) {
+  var dayOfWeek = myDate.getDay();
+  var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var dayName = daysOfWeek[dayOfWeek];
+  return dayName.toLowerCase();
+}
 
-  // if (!week_day || !month || !year) {
-  //   no_event = `<div class="no-event">
-  //           <h3>No Events</h3>
-  //       </div>`;
-  // }
+// if (!week_day || !month || !year) {
+//   no_event = `<div class="no-event">
+//           <h3>No Events</h3>
+//       </div>`;
+// }
 
-  // alert(`${week_day}, ${month}, ${year} ${dayName}`)
+// alert(`${week_day}, ${month}, ${year} ${dayName}`)

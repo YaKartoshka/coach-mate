@@ -10,7 +10,7 @@ const fauth = firebase.fauth
 var app = require("../app");
 var http = require("http");
 var server = http.createServer(app);
-
+let port = conf.port || process.env.PORT;
 
 server.listen(conf.port);
 server.on("error", onError);
