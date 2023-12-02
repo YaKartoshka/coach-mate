@@ -97,14 +97,17 @@ router.post("/sign-up", async (req, res) => {
 
   firebase.fauth.createUserWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async (userCredential) => {
     const user_id = userCredential.user.uid;
-    req.session.user_id = user_id;
-    req.session.isAuthenticated = true;
+
     const panels = firebase.fdb.collection('panels');
     const new_panel = await panels.add({
       panel_name: 'Default'
     });
-    req.session.panel_id = new_panel.id;
 
+    req.session.user_id = user_id;
+    req.session.isAuthenticated = true;
+    req.session.panel_id = new_panel.id;
+    req.session.role = 'admin';
+    
     const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
       user_id: user_id,
       email: email,
@@ -210,6 +213,7 @@ router.get(
 
 
       req.session.user_id = user_id;
+      req.session.role = 'admin';
       req.session.isAuthenticated = true;
       res.redirect('/');
     }, (err) => {
