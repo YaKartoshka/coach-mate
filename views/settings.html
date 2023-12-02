@@ -77,7 +77,7 @@
 
                                 <div class="profile_photo mb-3 mt-2">
                                     <label class="mb-3">
-                                        <input type="file" class="form-control file-button" id="profile_photo"
+                                        <input type="file" class="form-control file-button" id="profile_img_src"
                                             placeholder="Change photo">
                                     </label>
                                 </div>
@@ -99,31 +99,31 @@
                                     <div class="fname-lname">
                                         <div class="fname mb-3 mt-3">
                                             <label class="mb-2">First name</label>
-                                            <input type="text" class="form-control" id="first_name" placeholder="Toji">
+                                            <input type="text" class="form-control" id="first_name" placeholder="Toji"
+                                                required>
                                         </div>
                                         <div class="lname mb-3 mt-3">
                                             <label class="mb-2">Last name</label>
                                             <input type="text" class="form-control" id="last_name"
-                                                placeholder="Fushiguro">
+                                                placeholder="Fushiguro" required>
                                         </div>
                                     </div>
                                     <div class="email-phone">
                                         <div class="email mb-3 mt-3">
                                             <label class="mb-2">Email</label>
                                             <input type="text" class="form-control" id="email"
-                                                placeholder="example@gmail.com">
+                                                placeholder="example@gmail.com" disabled>
                                         </div>
                                         <div class="phone-number mb-3 mt-3">
                                             <label class="mb-2">Phone number</label>
-                                            <input type="text" class="form-control" id="phone_number"
-                                                placeholder="+77071234567">
+                                            <input type="text" class="form-control" id="phone_number" placeholder="+7">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="about mb-3 mt-4">
                                     <label class="mb-2">About me</label>
-                                    <textarea id="about_me_text" cols="30" rows="7" class="form-control"></textarea>
+                                    <textarea id="description" cols="30" rows="7" class="form-control"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -131,7 +131,8 @@
 
                         <div class="profile-footer">
                             <div class="save-btn">
-                                <button type="button" class="btn btn-outline-primary">Save changes</button>
+                                <button type="button" id="change_profile_btn" class="btn btn-outline-primary"
+                                    onclick="changeProfile()">Save changes</button>
                             </div>
 
                             <div class="box-important">
@@ -235,10 +236,7 @@
                             </div>
                         </div>
                         <% } %>
-
-
                 </div>
-
             </div>
     </main>
 
@@ -309,13 +307,85 @@
                     $("#first_name").val(user.first_name);
                     $("#last_name").val(user.last_name);
                     $("#email").val(user.email);
+                    $("#description").val(user.description);
+                    $("#phone_number").val(user.phone_number);
 
                     let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
                     $('#profile_img').attr('src', profile_src)
                 }, error: function (err) {
-                    console.log(err)
+                    console.log(err);
                 }
-            })
+            });
+        }
+
+        function changeProfile() {
+            loading(2, el = '#change_profile_btn');
+            let img = $('#profile_img_src')[0].files[0];
+            console.log(img)
+            let first_name = $('#first_name').val().trim();
+            let last_name = $('#last_name').val().trim();
+            let phone_number = $('#phone_number').val().trim();
+            let description = $('#description').val().trim();
+
+            if (!first_name || !last_name) {
+                if (!first_name) $('#first_name').focus();
+                if (!last_name) $('#last_name').focus();
+                $.ambiance({
+                    message: "Fill in required fields",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return loading(20, el = '#change_profile_btn');;
+            }
+
+            if (first_name.length > 20 || last_name.length > 20) {
+                if (first_name.length > 20) $('#first_name').focus();
+                if (last_name.length > 20) $('#last_name').focus();
+                $.ambiance({
+                    message: "The length of the first and last name should be no more than 20",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return loading(20, el = '#change_profile_btn');
+            }
+
+            let formData = new FormData();
+            formData.append('img', img);
+            formData.append('first_name', first_name);
+            formData.append('last_name', last_name);
+            formData.append('phone_number', phone_number);
+            formData.append('description', description);
+
+            $.ajax({
+                url: '/profile/update',
+                method: 'post',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (r) {
+                    var res = JSON.parse(r);
+                    if (res.r) {
+                        $.ambiance({
+                            message: "Your profile updated",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    return loading(20, el = '#change_profile_btn');
+                }, error: function (err) {
+                    console.log(err);
+                    $.ambiance({
+                        message: "Something went wrong. Try again later",
+                        type: "success",
+                        fade: true,
+                        width: 400
+                    });
+                    return loading(20, el = '#change_profile_btn');
+                }
+            });
         }
 
         function changePassword() {
@@ -399,7 +469,7 @@
             let strengthLabelText = '';
 
             if (!new_password) {
-                resetStrengthIndicator(); 
+                resetStrengthIndicator();
                 return;
             }
             if (new_password.length >= 6) {

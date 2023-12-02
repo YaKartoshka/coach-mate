@@ -144,7 +144,9 @@ router.get('/get', async (req, res) => {
                 first_name: user.data().first_name,
                 last_name: user.data().last_name,
                 profile_img: user.data().profile_img,
-                role: user.data().role
+                role: user.data().role,
+                description: user.data().description,
+                phone_number: user.data().phone_number
             }
             res.send(JSON.stringify(data));
         });
