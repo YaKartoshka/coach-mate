@@ -7,6 +7,42 @@
     <title>Settings</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+
+        <style>
+            .password-strength {
+                margin-top: 10px;
+                width: 20%;
+            }
+
+            .strength-bar-container {
+                position: relative;
+                width: 100%;
+            }
+
+            .strength-bar {
+                height: 10px;
+                max-width: 100%;
+                transition: width 0.3s;
+                border-radius: 5px;
+                margin-bottom: 5px;
+            }
+
+            .strength-text {
+                text-align: center;
+            }
+
+            .strength-low {
+                background-color: red;
+            }
+
+            .strength-medium {
+                background-color: orange;
+            }
+
+            .strength-high {
+                background-color: green;
+            }
+        </style>
 </head>
 
 <body>
@@ -119,13 +155,21 @@
                             <div class="newpass-confirmpass">
                                 <div class="new-password mb-3 mt-5">
                                     <label class="mb-2">New password</label>
-                                    <input type="password" class="form-control" id="new_password" placeholder="1234567">
+                                    <input type="password" class="form-control" id="new_password" placeholder="1234567"
+                                        oninput="updateStrengthIndicator()">
                                 </div>
                                 <div class="confirm-password mb-3 mt-5">
                                     <label class="mb-2">Confirm new password</label>
                                     <input type="password" class="form-control" id="confirm_password"
                                         placeholder="1234567">
                                 </div>
+                            </div>
+
+                            <div id="password-strength" class="password-strength">
+                                <div class="strength-bar-container">
+                                    <div class="strength-bar" id="strength-bar"></div>
+                                </div>
+                                <div class="strength-text" id="strength-text"></div>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="showPasswordCheckbox">
@@ -136,7 +180,8 @@
 
                         <div class="password-footer">
                             <div class="save-btn">
-                                <button type="button" class="btn btn-outline-primary" onclick="changePassword()">Save
+                                <button type="button" class="btn btn-outline-primary" id="change_password_btn"
+                                    onclick="changePassword()">Save
                                     changes</button>
                             </div>
                         </div>
@@ -274,12 +319,53 @@
         }
 
         function changePassword() {
-            let new_password = $('#new_password').val();
-            let confirm_password = $('#confirm_password').val();
-            if (new_password != confirm_password) {
-                return alert('Passwords do not match!');
+            let new_password = $('#new_password').val().trim();
+            let confirm_password = $('#confirm_password').val().trim();
+
+            if (!(new_password && confirm_password)) {
+                $.ambiance({
+                    message: 'Please enter both new and confirm passwords',
+                    type: 'error',
+                    width: 400,
+                    fade: true
+                });
+                return;
             }
 
+            if (new_password !== confirm_password) {
+                $.ambiance({
+                    message: 'Passwords do not match!',
+                    type: 'error',
+                    width: 400,
+                    fade: true
+                });
+                return;
+            }
+
+            // Password complexity checks
+            if (new_password.length < 6) {
+                $.ambiance({
+                    message: 'Password should be at least 6 characters long',
+                    type: 'error',
+                    width: 400,
+                    fade: true
+                });
+                return;
+            }
+
+            let hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(new_password);
+
+            if (!hasSpecialChar) {
+                $.ambiance({
+                    message: 'Password should contain at least one special character',
+                    type: 'error',
+                    width: 400,
+                    fade: true
+                });
+                return;
+            }
+
+            // Continue with the AJAX request
             $.ajax({
                 url: '/profile/change_password',
                 method: 'post',
@@ -287,14 +373,66 @@
                 success: function (r) {
                     var res = JSON.parse(r);
                     if (res.r) {
-                        alert('Success')
+                        $.ambiance({
+                            message: 'Password changed successfully!',
+                            type: 'success',
+                            fade: true,
+                            width: 400
+                        });
+
                         $('#new_password').val('');
                         $('#confirm_password').val('');
+                        resetStrengthIndicator();
                     }
-                }, error: function (err) {
-                    console.log(err)
+                },
+                error: function (err) {
+                    console.log(err);
                 }
             });
+        }
+
+        function updateStrengthIndicator() {
+            let new_password = $('#new_password').val();
+            let strengthBar = $('#strength-bar');
+            let strengthText = $('#strength-text');
+            let strengthClass = 'strength-low';
+            let strengthLabelText = '';
+
+            if (!new_password) {
+                resetStrengthIndicator(); 
+                return;
+            }
+            if (new_password.length >= 6) {
+                strengthClass = 'strength-medium';
+                strengthLabelText = 'Medium Password';
+            }
+
+            if (new_password.length >= 9) {
+                strengthClass = 'strength-high';
+                strengthLabelText = 'Strong Password';
+            }
+
+            let hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(new_password);
+
+            strengthBar.attr('class', `strength-bar ${strengthClass}`);
+
+
+            let fillSpeed = hasSpecialChar ? 1.5 : 1.0;
+            strengthBar.css('width', `${Math.min((new_password.length / 10) * 100 * fillSpeed, 100)}%`);
+
+            strengthText.text(strengthLabelText);
+
+            if (strengthClass === 'strength-low') {
+                strengthText.text('Weak Password');
+            }
+        }
+
+        function resetStrengthIndicator() {
+            let strengthBar = $('#strength-bar');
+            let strengthText = $('#strength-text');
+            strengthBar.attr('class', 'strength-bar');
+            strengthBar.css('width', '0%');
+            strengthText.text('');
         }
     </script>
 
