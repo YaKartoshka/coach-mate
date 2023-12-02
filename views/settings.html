@@ -326,7 +326,7 @@
             let last_name = $('#last_name').val().trim();
             let phone_number = $('#phone_number').val().trim();
             let description = $('#description').val().trim();
-
+            let profile_img_src = null;
             if (!first_name || !last_name) {
                 if (!first_name) $('#first_name').focus();
                 if (!last_name) $('#last_name').focus();
@@ -351,12 +351,21 @@
                 return loading(20, el = '#change_profile_btn');
             }
 
+            if (!img || img == undefined) {
+                profile_img_src = $('#profile_img').attr('src')
+                if (profile_img_src == './public/images/user_avatar.png') {
+                    profile_img_src=null;
+                    img=null;
+                }
+            }
+            console.log(img)
             let formData = new FormData();
             formData.append('img', img);
             formData.append('first_name', first_name);
             formData.append('last_name', last_name);
             formData.append('phone_number', phone_number);
             formData.append('description', description);
+            formData.append('profile_img_src', profile_img_src);
 
             $.ajax({
                 url: '/profile/update',

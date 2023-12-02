@@ -646,6 +646,13 @@ body {
     flex: 0.25;
 }
 
+.photo img {
+    width: 150px;
+    height: 150px;
+    box-shadow: 0 0 5px #007bff, 0 0 10px #007bff;
+    border: 3px solid white;
+}
+
 .personal-info p {
     color: #3793FF;
     font-size: 1.3vw;

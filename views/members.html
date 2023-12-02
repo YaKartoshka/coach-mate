@@ -197,13 +197,13 @@
                     }
                     members_data.forEach((member) => {
                         let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
-
+                        
                         var memberHTML = '<div class="member">' +
                             '<div class="member-img">' +
                             `<img src='${profile_src}' alt="" width="50" height="50">` +
                             '</div>' +
                             '<div class="member-info">' +
-                            `<h3>${member.first_name} ${member.last_name}</h3>` +
+                            `<h3>${member.first_name} ${member.last_name==null ? '' : member.last_name}</h3>` +
                             `<h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>` +
                             '</div>' +
                             '<div class="member-more">' +

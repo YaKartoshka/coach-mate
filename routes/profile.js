@@ -66,7 +66,7 @@ router.post('/change_password', isAuthenticated, async (req, res) => {
     });
 });
 
-router.post('/update', isAuthenticated,  upload.single('img'), async (req, res) => {
+router.post('/update', isAuthenticated, upload.single('img'), async (req, res) => {
     var r = { r: 0 };
     const panel_id = req.session.panel_id;
     const user_id = req.session.user_id;
@@ -74,27 +74,47 @@ router.post('/update', isAuthenticated,  upload.single('img'), async (req, res) 
     const last_name = req.body.first_name;
     const phone_number = req.body.phone_number;
     const description = req.body.description;
+    const profile_img_src = req.body.profile_img_src;
     const image = req.file;
-    console.log(req.body)
-    if(!first_name || !last_name){
+    var profile_image_url;
+    console.log('image', image)
+    console.log('profile_img_src', profile_img_src)
+    if (image == undefined && profile_img_src.includes('https')) {
+        profile_image_url = profile_img_src
+    } else if (image==undefined || !profile_img_src) {
+
+        profile_image_url = null
+    } else {
+
+        await storage.upload(image.path, {
+            gzip: true,
+            metadata: metadata,
+            destination: `news/${image.originalname}`
+        });
+
+        profile_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
+
+
+        fs.unlink(image.path, function (err) {
+            if (err) {
+                console.error(err);
+            }
+        });
+    }
+
+    console.log(profile_image_url)
+
+    if (!first_name || !last_name) {
         r['r'] = 2;
         res.send(JSON.stringify(r));
     }
-
-    await storage.upload(image.path, {
-        gzip: true,
-        metadata: metadata,
-        destination: `news/${image.originalname}`
-    });
-
-    var news_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
 
     await fdb.collection('panels').doc(panel_id).collection('users').doc(user_id).update({
         first_name: first_name,
         last_name: last_name,
         phone_number: phone_number,
         description: description,
-        profile_img: news_image_url
+        profile_img: profile_image_url
     }).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
@@ -103,11 +123,6 @@ router.post('/update', isAuthenticated,  upload.single('img'), async (req, res) 
         res.send(JSON.stringify(r));
     });
 
-    fs.unlink(image.path, function (err) {
-        if (err) {
-            console.error(err);
-        }
-    });
 });
 
 
