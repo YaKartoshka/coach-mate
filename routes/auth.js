@@ -48,8 +48,8 @@ passport.use(
 /* ---- Basic Auth ----    */
 
 router.post("/sign-in", async (req, res) => {
-  const email = req.body.email.toLowerCase().trim();
-  const password = req.body.password.toLowerCase().trim();
+  const email = req.body.email.trim();
+  const password = req.body.password.trim();
 
   firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async (userCredential) => {
     const user_id = userCredential.user.uid;
@@ -93,8 +93,8 @@ router.post("/sign-in", async (req, res) => {
 });
 
 router.post("/sign-up", async (req, res) => {
-  const email = req.body.email.toLowerCase().trim();
-  const password = req.body.password.toLowerCase().trim();
+  const email = req.body.email.trim();
+  const password = req.body.password.trim();
 
   firebase.fauth.createUserWithEmailAndPassword(firebase.fauth.getAuth(), email, password).then(async (userCredential) => {
     const user_id = userCredential.user.uid;
