@@ -262,6 +262,9 @@ function showEvents(week_day, month, year) {
       <div class="event"> 
       <div class="time">${ed.time}</div>
       <div class="event_name">${ed.event_name}</div>
+      <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
+      more_horiz
+      </span></div>
     </div>
        `
       $('.events').append(eventDiv);
@@ -273,6 +276,9 @@ function showEvents(week_day, month, year) {
       <div class="event"> 
         <div class="time">${ed.time}</div>
         <div class="event_name">${ed.event_name}</div>
+        <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
+      more_horiz
+      </span></div>
       </div>
     `
       $('.events').append(eventDiv);

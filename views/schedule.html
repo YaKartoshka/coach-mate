@@ -20,6 +20,8 @@
                 color: black;
                 
             }
+
+            
         </style>
 </head>
 
@@ -52,13 +54,6 @@
                                     <div>Sat</div>
                                 </div>
                                 <div class="days"></div>
-                                <div class="goto-today">
-                                    <div class="goto">
-                                        <input type="text" placeholder="mm/yyyy" class="date-input" />
-                                        <button class="goto-btn">Go</button>
-                                    </div>
-                                    <button class="today-btn">Today</button>
-                                </div>
                             </div>
                         </div>
                         <div class="right">
@@ -66,7 +61,9 @@
                                 <div class="event-day">wed</div>
                                 <div class="event-date">12th december 2022</div>
                             </div>
-                            <div class="events"></div>
+                            <div class="events">
+                                
+                            </div>
                             <div class="actions">
                                 <button class="btn btn-primary" onclick="showAddEventModal()">Add Event</button>
                             </div>
@@ -206,6 +203,17 @@
             let event_date = $("#event_date").val();
             let week_day = $("#week_day").val();
             (repetition == 'single') ? week_day = null : event_date = null;
+
+            if (event_name.length > 25) {
+                $.ambiance ({
+                    message: 'Event name must be 25 characters or less.',
+                    type: 'error',
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
             if (repetition && event_name && event_type && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
@@ -226,14 +234,33 @@
                         $("#time").val('');
                         $("#event_date").val('');
                         $("#week_day").val('');
+                        $.ambiance ({
+                            message: "Event added successfully!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                        return;
                     },
                     error: function (error) {
-
                         console.error("Error:", error);
+                        $.ambiance ({
+                            message: 'Error adding event. Please try again.',
+                            type: 'error',
+                            fade: true,
+                            width: 400
+                        });
+                        return;
                     }
                 });
             } else {
-                console.error("Please fill in all fields before submitting.");
+                $.ambiance ({
+                    message: 'Please fill in all fields!',
+                    type: 'error',
+                    fade: true,
+                    width: 400
+                });
+                return;
             }
 
 
