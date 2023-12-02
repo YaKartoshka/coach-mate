@@ -905,7 +905,7 @@ td:nth-child(3) {
 }
 
 .member-img {
-    flex: 0.1;
+    flex: 0.15;
     width: 50px;
     height: 50px;
 }
@@ -915,13 +915,13 @@ td:nth-child(3) {
 }
 
 .member-info {
-    flex: 0.8;
+    flex: 0.75;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.member-edit {
+.member-more {
     flex: 0.1;
     width: 50px;
     height: 50px;
@@ -1360,8 +1360,13 @@ td:nth-child(3) {
 }
 
 .events .event .event_name {
-    flex: 0.8;
+    flex: 0.7;
     font-size: 20px;
+}
+
+.events .event .more_icon {
+    flex: 0.1;
+    cursor: pointer;
 }
 
 .add-event {

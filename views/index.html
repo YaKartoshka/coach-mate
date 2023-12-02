@@ -21,12 +21,13 @@
             <div class="content">
                 <div class="content-head">
                     <h1>News</h1>
-                    <% if (role=='admin') { %>
+                    <% if (role=='admin' ) { %>
                         <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary"><span
-                            class="material-symbols-outlined" style="font-size: 25px; font-weight: 700;">add</span>Add
-                        News</button>
-                      <% } %>
-                 
+                                class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 700;">add</span>Add
+                            News</button>
+                        <% } %>
+
                 </div>
                 <div class="divider"></div>
                 <div class="content-body">
@@ -39,11 +40,11 @@
                     <ul class="hot-links-list">
 
                     </ul>
-                    <% if (role=='admin') { %>
+                    <% if (role=='admin' ) { %>
                         <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
-                            style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
-                      <% } %>
-                  
+                                style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                        <% } %>
+
                 </div>
             </div>
     </main>
@@ -61,7 +62,7 @@
                     <form autocomplete="off">
                         <div class="mb-3 mt-2">
                             <label class="mb-2">News Image</label>
-                            <input type="file" class="form-control" id="news_img" placeholder="Title">
+                            <input type="file" class="form-control" id="news_img" placeholder="Title" accept="image/*">
                         </div>
                         <div class="mb-3 mt-3">
                             <label class="mb-2">News title</label>
@@ -186,7 +187,7 @@
                 url: '/links/get-all', method: 'get', success: function (data) {
                     var links_data = JSON.parse(data);
                     console.log(links_data)
-                    if(!links_data.length){
+                    if (!links_data.length) {
                         var no_links = `<div class="no_links">No links yet</div>`
                         $(".hot-links-list").append(no_links);
                         return;
@@ -215,19 +216,9 @@
             let title = $('#news_title').val().trim();
             let text = $('#news_text').val().trim();
 
-            if (img && (!title || !text)) {
+            if (!(title && text)) {
                 $.ambiance({
                     message: "Please provide a title and text for the news.",
-                    type: "error",
-                    fade: true,
-                    width: 400
-                });
-                return;
-            }
-
-            if (!img) {
-                $.ambiance({
-                    message: "Please upload an image.",
                     type: "error",
                     fade: true,
                     width: 400
