@@ -400,15 +400,23 @@
         }
 
         function isPasswordComplex(password) {
-            const isStrong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasDigit = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
             if (password.length < 6) {
                 showError('Password should be at least 6 characters long');
                 return false;
             }
 
-            if (!isStrong) {
-                showError('Password should meet the complexity requirements');
+            if (!hasUppercase) {
+                showError('Password should contain at least one uppercase letter');
+                return false;
+            }
+
+            if (!hasSpecialChar) {
+                showError('Password should contain at least one special character');
                 return false;
             }
 
@@ -416,32 +424,25 @@
         }
 
         function showError(message) {
+            showMessage(message, 'error');
+        }
+
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+
+        function showMessage(message, type) {
             $.ambiance({
                 message: message,
-                type: 'error',
+                type: type,
                 width: 400,
                 fade: true
             });
         }
 
-        function showSuccess(message) {
-            $.ambiance({
-                message: message,
-                type: 'success',
-                fade: true,
-                width: 400
-            });
-        }
-
         function calculatePasswordStrength(password) {
-            const conditions = [
-                /[a-z]/.test(password),
-                /[A-Z]/.test(password),
-                /\d/.test(password),
-                /[!@#$%^&*(),.?":{}|<>]/.test(password)
-            ];
-
-            const conditionsMet = conditions.filter(Boolean).length;
+            const conditions = [/[a-z]/, /[A-Z]/, /\d/, /[!@#$%^&*(),.?":{}|<>]/];
+            const conditionsMet = conditions.reduce((count, condition) => count + condition.test(password), 0);
 
             return conditionsMet === 4 ? STRENGTH_STRONG : (conditionsMet >= 2 ? STRENGTH_MODERATE : 0);
         }
@@ -452,17 +453,21 @@
             const password = newPasswordInput.val().trim();
             const strength = calculatePasswordStrength(password);
 
-            newPasswordInput.removeClass('border-danger border-warning border-success');
-            passwordValidationMessage.removeClass('text-danger text-warning text-success');
+            const classes = ['border-danger', 'border-warning', 'border-success'];
+            newPasswordInput.removeClass(classes.join(' '));
+            passwordValidationMessage.removeClass(classes.map(c => `text-${c.replace('border-', '')}`).join(' '));
 
-            const borderColor = strength >= STRENGTH_STRONG ? 'border-success' : (strength >= STRENGTH_MODERATE ? 'border-warning' : 'border-danger');
-            const shadowColor = strength >= STRENGTH_STRONG ? 'rgba(40, 167, 69, 0.25)' : (strength >= STRENGTH_MODERATE ? 'rgba(255, 193, 7, 0.25)' : 'rgba(220, 53, 69, 0.25)');
-            const textClass = strength >= STRENGTH_STRONG ? 'text-success' : (strength >= STRENGTH_MODERATE ? 'text-warning' : 'text-danger');
-            const strengthText = strength >= STRENGTH_STRONG ? 'Password is strong.' : (strength >= STRENGTH_MODERATE ? 'Password is moderate.' : 'Password is weak.');
+            const colors = {
+                [STRENGTH_STRONG]: { class: 'success', color: 'rgba(40, 167, 69, 0.25)' },
+                [STRENGTH_MODERATE]: { class: 'warning', color: 'rgba(255, 193, 7, 0.25)' },
+                0: { class: 'danger', color: 'rgba(220, 53, 69, 0.25)' }
+            };
 
-            newPasswordInput.addClass(borderColor);
-            newPasswordInput.css('box-shadow', `0 0 0 0.25rem ${shadowColor}`);
-            passwordValidationMessage.addClass(textClass).text(strengthText);
+            newPasswordInput.addClass(`border-${colors[strength].class}`);
+            newPasswordInput.css('box-shadow', `0 0 0 0.25rem ${colors[strength].color}`);
+            passwordValidationMessage.addClass(`text-${colors[strength].class}`);
+
+            passwordValidationMessage.text(`Password is ${strength ? (strength === STRENGTH_STRONG ? 'strong' : 'moderate') : 'weak'}.`);
         }
 
         function resetStrengthIndicator() {
@@ -490,7 +495,6 @@
             validationMessage.text('Password is valid.').removeClass('text-danger').addClass('text-success');
             return true;
         }
-
 
     </script>
 
