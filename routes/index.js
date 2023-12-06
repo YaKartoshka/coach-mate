@@ -26,7 +26,6 @@ router.get('/join', async (req, res) => {
         return;
     }
 
-
     await fdb.collection('panels').doc(panel_id).get().then((panelDoc) => {
         if (panelDoc.exists) {
             res.render('join', { role: req.session.role });
@@ -49,5 +48,10 @@ router.get('/members', isAuthenticated, (req, res) => {
 router.get('/schedule', isAuthenticated, (req, res) => {
     res.render('schedule', { role: req.session.role });
 });
+
+router.get('/events', isAuthenticated, (req, res) => {
+    res.render('events', { role: req.session.role });
+});
+
 
 module.exports = router;

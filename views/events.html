@@ -4,25 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members</title>
+    <title>News</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.2.0/main.min.css'>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.3.0/main.min.css'>
     <%- include('./components/head.ejs.html') %>
-        <style>
-            .prev_month_btn,
-            .next_month_btn {
-                transition: 0.3s;
-                font-size: 30px;
-                cursor: pointer;
-            }
-
-            .prev_month_btn:hover,
-            .next_month_btn:hover {
-                color: black;
-
-            }
-        </style>
 </head>
 
 <body>
@@ -34,73 +18,35 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="calendar-content">
-                <div id='calendar'>
-                    <div class="container">
-                        <div class="left">
-                            <div class="calendar">
-                                <div class="month">
-                                    <div class="material-symbols-outlined prev_month_btn"
-                                        style="transform: rotate(180deg);" onclick="prevMonth(1)">arrow_forward_ios
-                                    </div>
-                                    <div class="date"></div>
-                                    <div class="material-symbols-outlined next_month_btn" onclick="nextMonth(1)">
-                                        arrow_forward_ios</div>
-                                </div>
-                                <div class="weekdays">
-                                    <div>Sun</div>
-                                    <div>Mon</div>
-                                    <div>Tue</div>
-                                    <div>Wed</div>
-                                    <div>Thu</div>
-                                    <div>Fri</div>
-                                    <div>Sat</div>
-                                </div>
-                                <div class="days"></div>
-                            </div>
-                        </div>
-                        <div class="right">
-                            <div class="today-date">
-                                <div class="event-day">wed</div>
-                                <div class="event-date">12th december 2022</div>
-                            </div>
-                            <div class="events">
+            <div class="content">
+                <div class="content-head">
+                    <h1>Events</h1>
+                    <% if (role=='admin' ) { %>
+                        <button data-bs-toggle="modal" data-bs-target="#add_event-modal" class="btn btn-primary"><span
+                                class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 700;">add</span>Add
+                            Event</button>
+                        <% } %>
 
-                            </div>
-                            <div class="actions">
-                                <button class="btn btn-primary" onclick="showAddEventModal()">Add Event</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                <div class="divider"></div>
+                <div class="content-body">
+                    <div class="events"></div>
+                </div>
+            </div>
+            <div class="ad-content">
 
+                <div class="hot-links">
+                    <ul class="hot-links-list">
 
-
-                <!-- Delete Modal -->
-                <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
-                    aria-labelledby="delete-modal-title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="delete-modal-title">Confirm Deletion</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center" id="delete-modal-body">
-                                Are you sure you want to delete the event?
-                            </div>
-                            <div class="modal-footer border-0">
-                                <button type="button" class="btn btn-secondary rounded-sm" data-dismiss="modal"
-                                    id="cancel-button">Cancel</button>
-                                <button type="button" class="btn btn-danger rounded-lg"
-                                    id="delete-button">Delete</button>
-                            </div>
-                        </div>
-                    </div>
+                    </ul>
+                    <% if (role=='admin' ) { %>
+                        <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
+                                style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                        <% } %>
 
                 </div>
             </div>
-
     </main>
     <footer></footer>
 
@@ -168,12 +114,62 @@
         </div>
     </div>
 
-    <!-- END OF MODALS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="modal fade" id="create_link-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Link</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Link text</label>
+                            <input type="text" class="form-control" id="link_text" placeholder="Text">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Link URL</label>
+                            <input type="text" class="form-control" id="link_url" placeholder="https://">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="add_link_btn" class="btn btn-primary px-md-4"
+                        onclick="createLink()">Add</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
 
     <script>
-        var events = [];
-        $(document).ready(async function () {
+        var ailabs_user_info = {
+            'client': 'c10',
+            'welcome_message': 'Welcome to the chat 👋',
+            'popup_mode': 0, //0-off, 1-auto popup after 10 seconds for new users
+            'input_comment': 'Type your message or /start to restart'
+        };
+        AILabsChatStart();
+    </script>
+
+
+    <!-- END OF MODALS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            loading(1);
+            showLinks();
+            showEvents();
+            loading(0);
+        });
+
+        $('#profile-data').on('click', () => {
+            $('.dropdown-content').slideToggle(300);
+        });
+
+        $(document).ready(function () {
             var currentUrl = window.location.pathname;
 
             $(".nav-bar ul li").each(function () {
@@ -187,12 +183,95 @@
                     listItem.removeClass("active");
                 }
             });
-            loading(1);
-            getEvents();
-            initCalendar();
-            loading(0);
         });
 
+        function showLinks() {
+            $(".hot-links-list").html('');
+            $.ajax({
+                url: '/links/get-all', method: 'get', success: function (data) {
+                    var links_data = JSON.parse(data);
+                    console.log(links_data)
+                    if (!links_data.length) {
+                        var no_links = `<div class="no_links">No links yet</div>`
+                        $(".hot-links-list").append(no_links);
+                        return;
+                    }
+                    links_data.forEach((link) => {
+
+                        var list = `<li><a href="${link.link_url}" target="_blank">${link.link_text}</a></li>`;
+                        $(".hot-links-list").append(list);
+                    });
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function showAddLinkModal() {
+            $('#create_link-modal').modal('show');
+        }
+
+        function createLink() {
+            let link_url = $('#link_url').val().trim();
+            let link_text = $('#link_text').val().trim();
+
+            if (!(link_text && link_url)) {
+                $.ambiance({
+                    message: "Please provide link text and link URL.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
+            loading(2, el = '#add_link_btn');
+
+            $.ajax({
+                url: "/links/create", method: 'post', data: { link_text: link_text, link_url: link_url }, success: function (r) {
+                    showLinks();
+                    $('#link_url').val('');
+                    $('#link_text').val('');
+                    $('#create_link-modal').modal('hide');
+                    loading(20, el = '#add_link_btn');
+                    $.ambiance({
+                        message: "Link added!",
+                        type: "success",
+                        fade: true
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function showEvents() {
+            $.ajax({
+                url: '/schedule/get',
+                method: 'GET',
+                success: function (data) {
+                    var events = data;
+                    console.log(events)
+                    events.forEach((ed) => {
+                        let eventDiv = `
+                            <div class="event"> 
+                                <div class="time">${ed.time}</div>
+                                <div class="event_name">${ed.event_name}</div>
+                                <button class="btn btn-primary mx-5 px-5">Join</button>
+                                <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
+                            more_horiz
+                            </span></div>
+                            </div>
+                            `
+                        $('.events').append(eventDiv);
+                    });
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
 
         function showAddEventModal() {
             $('#add_event-modal').modal('show');
@@ -230,7 +309,7 @@
                         week_day: week_day
                     },
                     success: function (r) {
-                        console.log(r)
+                        $('#add_event-modal').modal('hide');
                         $("#repetition").val('');
                         $("#event_name").val('');
                         $("#event_type").val('');
@@ -243,7 +322,7 @@
                             fade: true,
                             width: 400
                         });
-                        return;
+                        return window.location.reload();
                     },
                     error: function (error) {
                         console.error("Error:", error);
@@ -267,19 +346,7 @@
             }
         }
 
-        function getEvents() {
-            $.ajax({
-                url: 'schedule/get',
-                method: 'GET',
-                success: function (data) {
-                    events = data;
-                },
-                error: function (e) {
-                    console.log(e)
-                }
-            });
-        }
-
+        
         $("#repetition").on('change', (() => {
             let repetition = $('#repetition').val();
             console.log(repetition)
@@ -295,8 +362,8 @@
             $('#event_name-block').show();
         }));
 
+
     </script>
-    <script src="/public/js/calendar.js"></script>
 </body>
 
 </html>
