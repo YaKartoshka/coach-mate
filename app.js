@@ -18,6 +18,7 @@ var profile_func = require('./routes/profile');
 var joins = require('./routes/joins');
 var schedule = require('./routes/schedule');
 var settings = require('./routes/settings');
+var profile = require('./routes/profile')
 
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
@@ -56,6 +57,7 @@ app.use('/coachers', coachers);
 app.use('/joins', joins);
 app.use('/schedule', schedule);
 app.use('/settings', settings);
+
 
 
 module.exports = app;

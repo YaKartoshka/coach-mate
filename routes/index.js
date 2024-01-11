@@ -53,5 +53,8 @@ router.get('/events', isAuthenticated, (req, res) => {
     res.render('events', { role: req.session.role });
 });
 
+router.get('/profile', isAuthenticated, (req, res) => {
+    res.render('profile', {role: req.session.role})
+})
 
 module.exports = router;
