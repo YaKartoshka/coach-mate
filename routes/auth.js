@@ -107,7 +107,7 @@ router.post("/sign-up", async (req, res) => {
     req.session.isAuthenticated = true;
     req.session.panel_id = new_panel.id;
     req.session.role = 'admin';
-    
+
     const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
       user_id: user_id,
       email: email,
@@ -143,38 +143,36 @@ router.get(
   passport.authenticate("google_sign_in", { failureRedirect: "/login", }),
   async function (req, res) {
     const google_id = req.user.id;
-    const email = req.user.emails[0].value;
-    console.log(email)
-    firebase.fauth.signInWithEmailAndPassword(firebase.fauth.getAuth(), email, "googlet7r2j689").then(async (userCredential) => {
-      const user_id = userCredential.user.uid;
-      var documentFound = false;
-      const panels = await firebase.fdb.collection('panels').get();
-      const panel_promises = panels.docs.map(async (panel) => {
-        if (!documentFound) {
-          let user = await firebase.fdb.collection('panels').doc(panel.id).collection('users').doc(user_id).get();
-          if (user.exists) {
-            r['r'] = 1;
-            documentFound = true;
-            req.session.user_id = user_id;
-            req.session.isAuthenticated = true;
-            req.session.panel_id = panel.id;
-
-            req.session.role = user.data().role;
-            res.redirect('/');
-          }
-        }
-      });
-
-      await Promise.all(panel_promises);
-
+    console.log(google_id)
+    var documentFound = false;
+    const panels = await firebase.fdb.collection('panels').get();
+    const panel_promises = panels.docs.map(async (panel) => {
       if (!documentFound) {
-        res.redirect('login');
+        console.log(panel.id)
+        await firebase.fdb.collection('panels').doc(panel.id).collection('users').where('google_id', '==', google_id).get().then((users)=>{
+          
+          users.docs.map((user)=>{
+            console.log(user  )
+            if (user.exists) {
+              r['r'] = 1;
+              documentFound = true;
+              req.session.user_id = user.id;
+              req.session.isAuthenticated = true;
+              req.session.panel_id = panel.id;
+    
+              req.session.role = user.data().role;
+              res.redirect('/');
+            }
+          });
+        });
       }
-
-
-    }, (err) => {
-      console.log(err)
     });
+
+    await Promise.all(panel_promises);
+
+    if (!documentFound) {
+      res.redirect('login');
+    }
   }
 );
 
