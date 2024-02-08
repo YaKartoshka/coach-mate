@@ -3,9 +3,9 @@ const calendar = document.querySelector(".calendar"),
   daysContainer = document.querySelector(".days"),
   prev = document.querySelector(".prev"),
   next = document.querySelector(".next"),
-  todayBtn = document.querySelector(".today-btn"),
-  gotoBtn = document.querySelector(".goto-btn"),
-  dateInput = document.querySelector(".date-input"),
+  // todayBtn = document.querySelector(".today-btn"),
+  // gotoBtn = document.querySelector(".goto-btn"),
+  // dateInput = document.querySelector(".date-input"),
   eventDay = document.querySelector(".event-day"),
   eventDate = document.querySelector(".event-date"),
   eventsContainer = document.querySelector(".events");
@@ -188,43 +188,43 @@ function addListner() {
   });
 }
 
-todayBtn.addEventListener("click", () => {
-  today = new Date();
-  month = today.getMonth();
-  year = today.getFullYear();
-  initCalendar();
-});
+// todayBtn.addEventListener("click", () => {
+//   today = new Date();
+//   month = today.getMonth();
+//   year = today.getFullYear();
+//   initCalendar();
+// });
 
-dateInput.addEventListener("input", (e) => {
-  dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
-  if (dateInput.value.length === 2) {
-    dateInput.value += "/";
-  }
-  if (dateInput.value.length > 7) {
-    dateInput.value = dateInput.value.slice(0, 7);
-  }
-  if (e.inputType === "deleteContentBackward") {
-    if (dateInput.value.length === 3) {
-      dateInput.value = dateInput.value.slice(0, 2);
-    }
-  }
-});
+// dateInput.addEventListener("input", (e) => {
+//   dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
+//   if (dateInput.value.length === 2) {
+//     dateInput.value += "/";
+//   }
+//   if (dateInput.value.length > 7) {
+//     dateInput.value = dateInput.value.slice(0, 7);
+//   }
+//   if (e.inputType === "deleteContentBackward") {
+//     if (dateInput.value.length === 3) {
+//       dateInput.value = dateInput.value.slice(0, 2);
+//     }
+//   }
+// });
 
-gotoBtn.addEventListener("click", gotoDate);
+// gotoBtn.addEventListener("click", gotoDate);
 
-function gotoDate() {
-  console.log("here");
-  const dateArr = dateInput.value.split("/");
-  if (dateArr.length === 2) {
-    if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
-      month = dateArr[0] - 1;
-      year = dateArr[1];
-      initCalendar();
-      return;
-    }
-  }
-  alert("Invalid Date");
-}
+// function gotoDate() {
+//   console.log("here");
+//   const dateArr = dateInput.value.split("/");
+//   if (dateArr.length === 2) {
+//     if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
+//       month = dateArr[0] - 1;
+//       year = dateArr[1];
+//       initCalendar();
+//       return;
+//     }
+//   }
+//   alert("Invalid Date");
+// }
 
 function getActiveDay(date) {
   const day = new Date(year, month, date);
@@ -252,16 +252,24 @@ function showEvents(week_day, month, year) {
   $('.events').html('');
   var myDate = new Date(`${year}-${month}-${week_day}`);
   week_day = week_day < 10 ? `0${week_day}` : week_day
+  month = month < 10 ? `0${month}` : month
   var dayOfWeek = getDayName(myDate)
   let counter = 0;
+  console.log(myDate)
+
+
   events.forEach((ed) => {
-    // console.log(ed)
+    console.log(ed.event_date)
+     console.log(`${year}-${month}-${week_day}`)
     if (ed.week_day == dayOfWeek) {
       counter++;
       let eventDiv = `
       <div class="event"> 
-      <div class="time">${ed.time}</div>
-      <div class="event_name">${ed.event_name}</div>
+      <div class="time">${ed.time}</div> 
+      <div class="d-flex flex-column flex-grow-1 ps-3">
+        <div class="event_name">${ed.event_name}</div>
+        <div class="coach_name">${ed.coach_name}</div>
+      </div>
       <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
       more_horiz
       </span></div>
@@ -275,7 +283,10 @@ function showEvents(week_day, month, year) {
       let eventDiv = `
       <div class="event"> 
         <div class="time">${ed.time}</div>
-        <div class="event_name">${ed.event_name}</div>
+        <div class="d-flex flex-column flex-grow-1 ps-3">
+          <div class="event_name">${ed.event_name}</div>
+          <div class="coach_name">${ed.coach_name}</div>
+        </div>  
         <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
       more_horiz
       </span></div>

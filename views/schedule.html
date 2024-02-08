@@ -123,8 +123,12 @@
                             </select>
                         </div>
                         <div class="mb-3 mt-3 hidden" id="event_name-block">
-                            <label class="mb-2">Event Name</label>
+                            <label class="mb-2">Event name</label>
                             <input type="text" id="event_name" class="form-control" placeholder="Karate" required />
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="coach_name-block">
+                            <label class="mb-2">Coach name</label>
+                            <select name="coach_id" id="coach_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3 hidden" id="event_type-block">
                             <label class="mb-2">Event type</label>
@@ -195,6 +199,7 @@
 
 
         function showAddEventModal() {
+            getCoaches();
             $('#add_event-modal').modal('show');
         }
 
@@ -205,6 +210,9 @@
             let time = $("#time").val();
             let event_date = $("#event_date").val();
             let week_day = $("#week_day").val();
+            let coach_id = $('#coach_id').val();
+            let coach_name = $('#coach_id option:selected').text(); 
+            
             (repetition == 'single') ? week_day = null : event_date = null;
 
             if (event_name.length > 25) {
@@ -217,7 +225,7 @@
                 return;
             }
 
-            if (repetition && event_name && event_type && time && (event_date || week_day)) {
+            if (coach_id && repetition && event_name && event_type && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
                     url: "/schedule/create",
@@ -227,16 +235,19 @@
                         event_type: event_type,
                         time: time,
                         event_date: event_date,
-                        week_day: week_day
+                        week_day: week_day,
+                        coach_id: coach_id,
+                        coach_name: coach_name
                     },
                     success: function (r) {
-                        console.log(r)
+                        $('#add_event-modal').modal('hide');
                         $("#repetition").val('');
                         $("#event_name").val('');
                         $("#event_type").val('');
                         $("#time").val('');
                         $("#event_date").val('');
                         $("#week_day").val('');
+                        $("#coach_id").val('');
                         $.ambiance({
                             message: "Event added successfully!",
                             type: "success",
@@ -280,6 +291,32 @@
             });
         }
 
+        function getCoaches(){
+            $.ajax({
+                url: '/users/get-all',
+                method: 'get',
+                data: { roles: 'coach' },
+                dataType: 'json',
+                success: function (coaches_data) {
+                    console.log(coaches_data)
+                    if(!coaches_data.length){
+                        let no_members = `
+                        <div class="no_members">No members</div>
+                        `
+                        $('.members').append(no_members);
+                        return;
+                    }
+                    var coachHTML = '<option value="none" disabled selected="true">None</option>'
+                    coaches_data.forEach((coach) => {                        
+                        coachHTML += `<option value="${coach.id}">${coach.first_name} ${coach.last_name}</option>`;
+                    });
+                    $('#coach_id').html(coachHTML);
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
         $("#repetition").on('change', (() => {
             let repetition = $('#repetition').val();
             console.log(repetition)
@@ -293,6 +330,8 @@
             $('#time-block').show();
             $('#event_type-block').show();
             $('#event_name-block').show();
+            $('#coach_name-block').show();
+            
         }));
 
     </script>

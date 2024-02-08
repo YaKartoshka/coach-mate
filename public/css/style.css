@@ -1399,8 +1399,9 @@ td:nth-child(3) {
     padding: 20px;
     border-radius: 5px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 .events .event .time {
