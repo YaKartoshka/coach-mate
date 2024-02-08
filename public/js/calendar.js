@@ -265,15 +265,23 @@ function showEvents(week_day, month, year) {
       counter++;
       let eventDiv = `
       <div class="event"> 
-      <div class="time">${ed.time}</div> 
-      <div class="d-flex flex-column flex-grow-1 ps-3">
-        <div class="event_name">${ed.event_name}</div>
-        <div class="coach_name">${ed.coach_name}</div>
+        <div class="time">${ed.time}</div> 
+        <div class="d-flex flex-column flex-grow-1 ps-3">
+          <div class="event_name">${ed.event_name}</div>
+          <div class="coach_name">${ed.coach_name}</div>
+        </div>
+        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+          <div class="more_icon d-flex">
+            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+              more_horiz
+            </span>
+          </div>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Edit</a>
+          <a class="dropdown-item" href="#">Delete</a>
+        </div>
       </div>
-      <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
-      more_horiz
-      </span></div>
-    </div>
        `
       $('.events').append(eventDiv);
     }
@@ -287,9 +295,18 @@ function showEvents(week_day, month, year) {
           <div class="event_name">${ed.event_name}</div>
           <div class="coach_name">${ed.coach_name}</div>
         </div>  
-        <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
-      more_horiz
-      </span></div>
+        
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+          <div class="more_icon">
+            <span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
+              more_horiz
+            </span>
+          </div>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Edit</a>
+          <a class="dropdown-item" href="#">Delete</a>
+        </div>
       </div>
     `
       $('.events').append(eventDiv);

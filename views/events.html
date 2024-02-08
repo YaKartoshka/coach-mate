@@ -259,9 +259,17 @@
                                 <div class="time">${ed.time}</div>
                                 <div class="event_name">${ed.event_name}</div>
                                 <button class="btn btn-primary mx-5 px-5">Join</button>
-                                <div class="more_icon"><span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
-                            more_horiz
-                            </span></div>
+                                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" style="float:right;">
+                                    <div class="more_icon d-flex">
+                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+                                    more_horiz
+                                    </span>
+                                </div>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Edit</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
                             </div>
                             `
                         $('.events').append(eventDiv);

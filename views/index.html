@@ -168,12 +168,28 @@
                         title.on('click', function () {
                             alert(news.news_id)
                         });
-
+                        var newsContent = $("<div>").addClass("news-content");
+                        var dropdownHTML = `
+                        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" style="float:right;">
+                            <div class="more_icon d-flex">
+                            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+                            more_horiz
+                            </span>
+                        </div>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                        `;
                         var newsText = $("<div>").addClass("news-text").text(news.text);
                         newsTitle.append(title);
-                        newsDiv.append(image, newsTitle, newsText);
+                        newsContent.append(newsTitle, newsText)
+                        newsDiv.append(image, newsContent, dropdownHTML);
 
                         $('.content-body').append(newsDiv);
+
+
                     });
                 }, error: function (err) {
                     console.log(err)
