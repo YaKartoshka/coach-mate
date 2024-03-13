@@ -10,7 +10,6 @@ function isAuthenticated(req, res, next) {
 };
 
 router.get('/', isAuthenticated, (req, res, next) => {
-    console.log(req.session);
     res.render('index', { role: req.session.role });
 });
 
@@ -55,6 +54,10 @@ router.get('/events', isAuthenticated, (req, res) => {
 
 router.get('/profile', isAuthenticated, (req, res) => {
     res.render('profile', {role: req.session.role})
+})
+
+router.get('/passes', isAuthenticated, (req, res) => {
+    res.render('passes', {role: req.session.role})
 })
 
 module.exports = router;

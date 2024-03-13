@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members</title>
+    <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
+    <%- include('./components/head.ejs.html') %>
+        <script>
+            function loading(mode, el = null) {
+                if (mode == 1) {
+                    $(el).html('<img src="/public/images/preloader.svg" class="loader_overlay">');
+                } else if (mode == 2) {
+                    $(el).prepend('<div class="spinner-border"></div> ').attr('disabled', true);
+                } else if (mode == 20) {
+                    setTimeout(function () {
+                        $(el).removeAttr('disabled');
+                        $(el).find('.spinner-border').remove();
+                    }, 500);
+                } else if (mode == 3) {
+                    $(el).append(' <div class="spinner-border"></div>');
+                } else if (mode == 30) {
+                    $(el).find('.spinner-border').remove();
+                }
+            }
+        </script>
+
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
+        </div>
+        <%- include('./components/profile_bar.ejs.html') %>
+    </header>
+    <main>
+        <%- include('./components/nav_bar.ejs.html') %>
+     
+    </main>
+    <footer></footer>
+
+    <!-- MODALS -->
+    <div class="modal fade" id="create_member-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add new member</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Email</label>
+                            <input type="email" id="email" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">First Name</label>
+                            <input type="text" id="first_name" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Last Name</label>
+                            <input type="text" id="last_name" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Role</label>
+                            <select name="role" class="form-select" id="role">
+                                <option value="Student">Student</option>
+                                <option value="Coach">Coach</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="add_member_btn" class="btn btn-primary px-md-4"
+                        onclick="createMember()">Add</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
+
+    <script>
+        var ailabs_user_info = {
+            'client': 'c10',
+            'welcome_message': 'Welcome to the chat 👋',
+            'popup_mode': 0, //0-off, 1-auto popup after 10 seconds for new users
+            'input_comment': 'Type your message or /start to restart'
+        };
+        AILabsChatStart();
+    </script>
+
+
+    <!-- END OF MODALS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(async function () {
+            loading(1);
+          
+            loading(0);
+        });
+
+
+
+    </script>
+</body>
+
+</html>
