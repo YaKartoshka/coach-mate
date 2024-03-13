@@ -193,7 +193,7 @@ body {
     line-height: 24px;
 }
 
-.news-content{
+.news-content {
     flex: 1;
     padding: 10px;
 }
@@ -224,6 +224,16 @@ body {
     color: #004c9d;
     border-bottom: #004c9d 1px solid;
 }
+
+.hot-links span{
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.hot-links li span:hover {
+    color: red;
+}
+
 
 .hot-links button {
     border: 2px #047bf8 solid !important;
@@ -577,8 +587,9 @@ body {
 .settings-content {
     padding: 50px;
     flex: 1;
+    background-color: white;
     font-family: InterReg;
-    box-shadow: 0 0 20px 5px #59D7FF;
+    box-shadow: 0 0 10px 3px #59D7FF;
     border-radius: 15px;
     margin: 60px 60px;
 }
@@ -607,7 +618,8 @@ body {
     left: 0;
     width: 0;
     height: 3px;
-    background: linear-gradient(to bottom left, #408CFF, #00FFC2);;
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+    ;
     transition: width 0.25s ease;
 }
 
@@ -737,7 +749,7 @@ body {
     margin-right: 15px;
 }
 
-.box-important span{
+.box-important span {
     font-family: InterReg;
 }
 
@@ -748,7 +760,8 @@ body {
 
 .password-footer::before {
     content: "";
-    background: linear-gradient(to bottom left, #408CFF, #00FFC2);;
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+    ;
     width: 100%;
     height: 2px;
     position: absolute;
@@ -1401,9 +1414,9 @@ td:nth-child(3) {
     gap: 20px;
 }
 
-.events .event{
+.events .event {
     color: black;
-    box-shadow: 0 0 3px var(--primary-clr), 0 0 5px var(--primary-clr);
+    background-color: white;
     padding: 20px;
     border-radius: 5px;
     display: flex;

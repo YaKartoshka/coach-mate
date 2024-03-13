@@ -68,54 +68,39 @@ router.post('/change_password', isAuthenticated, async (req, res) => {
 
 router.post('/update', isAuthenticated, upload.single('img'), async (req, res) => {
     var r = { r: 0 };
-    const panel_id = req.session.panel_id;
-    const user_id = req.session.user_id;
-    const first_name = req.body.first_name;
-    const last_name = req.body.first_name;
-    const phone_number = req.body.phone_number;
-    const description = req.body.description;
-    const profile_img_src = req.body.profile_img_src;
+    const { panel_id, user_id } = req.session;
+    const { first_name, last_name, phone_number, description } = req.body;
     const image = req.file;
-    var profile_image_url;
-    console.log('image', image)
-    console.log('profile_img_src', profile_img_src)
-    if (image == undefined && profile_img_src.includes('https')) {
-        profile_image_url = profile_img_src
-    } else if (image==undefined || !profile_img_src) {
+    let random = Math.floor(10000 + Math.random() * 90000);
 
-        profile_image_url = null
-    } else {
-
+    if (image != undefined) {
         await storage.upload(image.path, {
             gzip: true,
             metadata: metadata,
-            destination: `news/${image.originalname}`
+            destination: `users/${user_id+random}`
         });
-
-        profile_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
-
-
         fs.unlink(image.path, function (err) {
-            if (err) {
-                console.error(err);
-            }
+            if (err) console.error(err);
         });
     }
 
-    console.log(profile_image_url)
+    var data = {
+        first_name: first_name,
+        last_name: last_name,
+        phone_number: phone_number,
+        description: description
+    }
+
+    if (image != undefined) {
+        data.profile_img = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/users%2F${user_id+random}?alt=media`
+    }
 
     if (!first_name || !last_name) {
         r['r'] = 2;
         res.send(JSON.stringify(r));
     }
 
-    await fdb.collection('panels').doc(panel_id).collection('users').doc(user_id).update({
-        first_name: first_name,
-        last_name: last_name,
-        phone_number: phone_number,
-        description: description,
-        profile_img: profile_image_url
-    }).then(() => {
+    await fdb.collection('panels').doc(panel_id).collection('users').doc(user_id).update(data).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
     }).catch((e) => {

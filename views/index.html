@@ -162,6 +162,25 @@
         </div>
     </div>
 
+    <div class="modal fade" id="delete_link-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Link</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  You won't be able to revert this. Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete_link_btn" class="btn btn-danger px-md-4"
+                        onclick="deleteLink()">Delete</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
 
     <script>
@@ -262,8 +281,7 @@
                         return;
                     }
                     links_data.forEach((link) => {
-
-                        var list = `<li><a href="${link.link_url}" target="_blank">${link.link_text}</a></li>`;
+                        var list = `<li class="d-flex align-items-center justify-content-between"><a href="${link.link_url}" target="_blank">${link.link_text}</a><span class="material-symbols-outlined" onclick="showDeleteLinkModal('${link.link_id}')">delete</span></li>`;
                         $(".hot-links-list").append(list);
                     });
                 }, error: function (err) {
@@ -430,6 +448,32 @@
             });
         }
 
+        function showDeleteLinkModal(link_id){
+            $('#delete_link-modal').modal('show');
+            globalLinkId = link_id;
+        }
+
+        function deleteLink(){
+            loading(2, el='#delete_link_btn');
+            $.ajax({
+                url: '/links/delete',
+                method: 'POST',
+                data: {link_id: globalLinkId},
+                dataType: 'json',
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                        message: "Link deleted!",
+                        type: "success",
+                        fade: true
+                    });
+                    }
+                    $('#delete_link-modal').modal('hide');
+                    loading(20, el='#delete_link_btn');
+                    showLinks();
+                }
+            });
+        }
 
     </script>
 </body>

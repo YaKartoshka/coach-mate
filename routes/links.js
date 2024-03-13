@@ -38,4 +38,20 @@ router.post('/create', async function (req, res, next) {
     }
 });
 
+router.post('/delete', async function (req, res, next) {
+    var r = { r: 1 };
+    const panel_id = req.session.panel_id;
+    const link_id = req.body.link_id;
+
+    try {
+        await fdb.collection('panels').doc(panel_id).collection('links').doc(link_id).delete();
+        res.send(JSON.stringify(r));
+    } catch (e) {
+        r['r'] = 0;
+        console.log(e);
+        res.send(JSON.stringify(r));
+    }
+});
+
+
 module.exports = router;

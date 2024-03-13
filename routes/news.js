@@ -79,10 +79,8 @@ router.post('/create', upload.single('img'), async function (req, res, next) {
 router.post('/edit', upload.single('img'), async function (req, res, next) {
     var r = { r: 1 };
     const image = req.file;
-    const panel_id = req.session.panel_id;
-    const news_id = req.body.news_id;
-    const title = req.body.title;
-    const text = req.body.text;
+    const { panel_id } = req.session;
+    const { news_id, title, text } = req.body;
     let random = Math.floor(10000 + Math.random() * 90000);
 
     try {
