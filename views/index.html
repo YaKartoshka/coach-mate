@@ -83,6 +83,57 @@
         </div>
     </div>
 
+    <div class="modal fade" id="edit_news-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit News</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">
+                        <div class="mb-3 mt-2">
+                            <label class="mb-2">News Image</label>
+                            <input type="file" class="form-control" id="new_news_img" accept="image/*">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">News title</label>
+                            <input type="text" class="form-control" id="new_news_title" placeholder="Title">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">News text</label>
+                            <textarea id="new_news_text" cols="30" rows="4" class="form-control"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="edit_news_btn" class="btn btn-primary px-md-4"
+                        onclick="editNews()">Edit</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete_news-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete News</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    You won't be able to revert this. Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete_news_btn" class="btn btn-danger px-md-4"
+                        onclick="deleteNews()">Delete</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="create_link-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -127,6 +178,9 @@
     <!-- END OF MODALS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        var globalNews;
+        var globalNewsId;
+
         $(document).ready(function () {
             loading(1);
             showNews();
@@ -160,6 +214,7 @@
             $.ajax({
                 url: '/news/get-all', method: 'get', success: function (data) {
                     var news_data = JSON.parse(data);
+                    globalNews = JSON.parse(data)
                     news_data.forEach((news) => {
                         var newsDiv = $("<div>").addClass("news");
                         var image = $("<img>").attr("src", news.image_url).attr("alt", "");
@@ -178,8 +233,8 @@
                         </div>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Edit</a>
-                            <a class="dropdown-item" href="#">Delete</a>
+                            <a class="dropdown-item" href="#" onclick="showEditNewsModal('${news.news_id}')">Edit</a>
+                            <a class="dropdown-item" href="#" onclick="showDeleteNewsModal('${news.news_id}')">Delete</a>
                         </div>
                         `;
                         var newsText = $("<div>").addClass("news-text").text(news.text);
@@ -188,8 +243,6 @@
                         newsDiv.append(image, newsContent, dropdownHTML);
 
                         $('.content-body').append(newsDiv);
-
-
                     });
                 }, error: function (err) {
                     console.log(err)
@@ -219,12 +272,14 @@
             });
         }
 
-        function showAddNewsModal() {
-            $('#create_news-modal').modal('show');
-        }
+   
 
         function showAddLinkModal() {
             $('#create_link-modal').modal('show');
+        }
+
+        function showAddNewsModal() {
+            $('#create_news-modal').modal('show');
         }
 
         function createNews() {
@@ -268,6 +323,77 @@
             });
         }
 
+        function showEditNewsModal(news_id){
+            globalNewsId = news_id;
+            var selected_news = globalNews.filter(function(news){
+                return news.news_id == globalNewsId
+            })
+            $('#new_news_title').val(selected_news[0].title);
+            $('#new_news_text').val(selected_news[0].text);
+            $('#edit_news-modal').modal('show');
+        }
+
+
+        function editNews(){
+            let img = $('#new_news_img')[0].files[0];
+            let title = $('#new_news_title').val().trim();
+            let text = $('#new_news_text').val().trim();
+
+            loading(2, el = '#edit_news_btn');
+
+            const formData = new FormData();
+            formData.append('img', img);
+            formData.append('title', title);
+            formData.append('text', text);
+            formData.append('news_id', globalNewsId);
+
+            $.ajax({
+                url: "/news/edit", method: 'post', data: formData, processData: false, contentType: false, success: function (r) {
+                    $('#edit_news-modal').modal('hide');
+                    loading(20, el = '#edit_news_btn');
+                    $.ambiance({
+                        message: "News updated!",
+                        type: "success",
+                        fade: true
+                    });
+                    loading(1);
+                    showNews();
+                    loading(0);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function showDeleteNewsModal(news_id){
+            globalNewsId = news_id;
+            $('#delete_news-modal').modal('show');
+        }
+
+        function deleteNews(){
+            loading(2, el='#delete_news_btn');
+            $.ajax({
+                url: '/news/delete',
+                method: 'POST',
+                data: {news_id:globalNewsId},
+                dataType: 'json',
+                success:function(res){
+                    if(res.r){
+                        $.ambiance({
+                        message: "Deleted!",
+                        type: "success",
+                        fade: true
+                    });
+                    loading(1);
+                    showNews();
+                    loading(0);
+                    }
+                    $('#delete_news-modal').modal('hide');
+                    loading(20, el="#delete_news_btn");
+                }
+            })
+        }
 
         function createLink() {
             let link_url = $('#link_url').val().trim();
