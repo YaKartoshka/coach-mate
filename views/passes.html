@@ -104,6 +104,21 @@
             loading(0);
         });
 
+        $(document).ready(function () {
+            var currentUrl = window.location.pathname;
+
+            $(".nav-bar ul li").each(function () {
+                var listItem = $(this);
+                var listItemLink = listItem.find("a");
+                var listItemHref = listItemLink.attr("href");
+
+                if (currentUrl === listItemHref) {
+                    listItem.addClass("active");
+                } else {
+                    listItem.removeClass("active");
+                }
+            });
+        });
 
 
     </script>

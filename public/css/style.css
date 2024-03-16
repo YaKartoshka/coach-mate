@@ -225,7 +225,7 @@ body {
     border-bottom: #004c9d 1px solid;
 }
 
-.hot-links span{
+.hot-links span {
     transition: 0.2s;
     cursor: pointer;
 }
@@ -421,13 +421,6 @@ body {
     color: #727477;
 }
 
-.sign_in_buttons,
-.sign_up_buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
 .sign_in_btn,
 .sign_up_btn {
     background-color: #FFFFFF;
@@ -438,6 +431,26 @@ body {
     height: 30px;
 }
 
+.sign_up_btn {
+    display: flex;
+    align-items: center;
+    width: 280px;
+}
+
+.sign_up_btn .google_icon {
+    flex: 0.7;
+    margin-top: 4px;
+}
+
+.sign_up_btn p {
+    font-family: RedHatDisplayMed;
+    font-size: 15px;
+}
+
+.sign_up_link:active, .sign_up_link:visited, .sign_up_link:link{
+    color: #545454;
+}
+
 :is(.sign_in_btn, .sign_up_btn) img {
     border-radius: 10px;
 }
@@ -446,13 +459,8 @@ body {
 .continue_text {
     text-align: center;
     font-family: RedHatDisplayReg;
-    font-size: 13px;
+    font-size: 14px;
     margin: 18px 0;
-}
-
-.google,
-.apple {
-    margin-right: 50px;
 }
 
 
@@ -527,6 +535,22 @@ body {
 
 .sign_up_form input:focus::placeholder {
     color: #727477;
+}
+
+.sign_in_btn {
+    display: flex;
+    align-items: center;
+    width: 280px;
+}
+
+.sign_in_btn .google_icon {
+    flex: 0.7;
+    margin-top: 4px;
+}
+
+.sign_in_btn p {
+    font-family: RedHatDisplayMed;
+    font-size: 15px;
 }
 
 .switcher {
