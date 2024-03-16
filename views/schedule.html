@@ -177,6 +177,7 @@
 
     <script>
         var events = [];
+        var globalUsers;
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
 
@@ -191,9 +192,27 @@
                     listItem.removeClass("active");
                 }
             });
+
+            $("#repetition").on('change', (() => {
+                let repetition = $('#repetition').val();
+                console.log(repetition)
+                if (repetition == 'single') {
+                    $('#event_date-block').show();
+                    $('#week_day-block').hide();
+                } else {
+                    $('#week_day-block').show();
+                    $('#event_date-block').hide();
+                }
+                $('#time-block').show();
+                $('#event_type-block').show();
+                $('#event_name-block').show();
+                $('#coach_name-block').show();
+            }));
+
             loading(1);
             getEvents();
             initCalendar();
+            getStudents();
             loading(0);
         });
 
@@ -211,8 +230,8 @@
             let event_date = $("#event_date").val();
             let week_day = $("#week_day").val();
             let coach_id = $('#coach_id').val();
-            let coach_name = $('#coach_id option:selected').text(); 
-            
+            let coach_name = $('#coach_id option:selected').text();
+
             (repetition == 'single') ? week_day = null : event_date = null;
 
             if (event_name.length > 25) {
@@ -291,7 +310,7 @@
             });
         }
 
-        function getCoaches(){
+        function getCoaches() {
             $.ajax({
                 url: '/users/get-all',
                 method: 'get',
@@ -299,7 +318,7 @@
                 dataType: 'json',
                 success: function (coaches_data) {
                     console.log(coaches_data)
-                    if(!coaches_data.length){
+                    if (!coaches_data.length) {
                         let no_members = `
                         <div class="no_members">No members</div>
                         `
@@ -307,7 +326,7 @@
                         return;
                     }
                     var coachHTML = '<option value="none" disabled selected="true">None</option>'
-                    coaches_data.forEach((coach) => {                        
+                    coaches_data.forEach((coach) => {
                         coachHTML += `<option value="${coach.id}">${coach.first_name} ${coach.last_name}</option>`;
                     });
                     $('#coach_id').html(coachHTML);
@@ -317,22 +336,21 @@
             });
         }
 
-        $("#repetition").on('change', (() => {
-            let repetition = $('#repetition').val();
-            console.log(repetition)
-            if (repetition == 'single') {
-                $('#event_date-block').show();
-                $('#week_day-block').hide();
-            } else {
-                $('#week_day-block').show();
-                $('#event_date-block').hide();
-            }
-            $('#time-block').show();
-            $('#event_type-block').show();
-            $('#event_name-block').show();
-            $('#coach_name-block').show();
-            
-        }));
+        function getStudents() {
+            $.ajax({
+                url: '/users/get-all',
+                method: 'get',
+                data: { roles: 'student' },
+                dataType: 'json',
+                success: function (students_data) {
+                    globalUsers = students_data
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+
 
     </script>
     <script src="/public/js/calendar.js"></script>

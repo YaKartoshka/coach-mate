@@ -98,9 +98,10 @@
     <!-- END OF MODALS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        var globalPasses;
         $(document).ready(async function () {
             loading(1);
-          
+            showPasses();
             loading(0);
         });
 
@@ -119,6 +120,25 @@
                 }
             });
         });
+
+        function showPasses(){
+            var passes = [
+                {
+                    id: '',
+                    // fill out json objects by figma
+                }
+            ]
+            var passesHTML = ''
+
+            passes.forEach((p)  =>{
+               passesHTML+=`
+                <div ...
+               
+               `
+            })
+
+            $('#passes').html('');
+        }
 
 
     </script>

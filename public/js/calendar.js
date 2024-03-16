@@ -58,23 +58,23 @@ function initCalendar() {
       year === new Date().getFullYear() &&
       month === new Date().getMonth()
     ) {
-    
+
       if (first_init) {
         first_init = false
         activeDay = i;
         let next_month = month + 1;
-        setTimeout(()=>{
+        setTimeout(() => {
           showEvents(activeDay, next_month, year);
-        },500)
+        }, 500)
       }
 
       getActiveDay(i);
-  
+
       if (event) {
 
         days += `<div class="day today active event">${i}</div>`;
       } else {
-   
+
         if (activeDay == i) {
           days += `<div class="day today active">${i}</div>`;
         } else {
@@ -82,12 +82,12 @@ function initCalendar() {
         }
       }
     } else {
-      
+
       if (event) {
         days += `<div class="day event">${i}</div>`;
       } else if (activeDay == i) {
         days += `<div class="day today active">${i}</div>`;
-      }  else {
+      } else {
 
         days += `<div class="day ">${i}</div>`;
       }
@@ -103,7 +103,7 @@ function initCalendar() {
 
 //function to add month and year on prev and next button
 function prevMonth(day) {
-  if(day){
+  if (day) {
     activeDay = day
   }
   month--;
@@ -118,7 +118,7 @@ function prevMonth(day) {
 }
 
 function nextMonth(day) {
-  if(day){
+  if (day) {
     activeDay = day
   }
   month++;
@@ -248,23 +248,22 @@ function convertTime(time) {
 }
 
 function showEvents(week_day, month, year) {
-  
+
   $('.events').html('');
   var myDate = new Date(`${year}-${month}-${week_day}`);
   week_day = week_day < 10 ? `0${week_day}` : week_day
   month = month < 10 ? `0${month}` : month
   var dayOfWeek = getDayName(myDate)
   let counter = 0;
-  console.log(myDate)
+
 
 
   events.forEach((ed) => {
-    console.log(ed.event_date)
-     console.log(`${year}-${month}-${week_day}`)
+
+
     if (ed.week_day == dayOfWeek) {
-      counter++;
       let eventDiv = `
-      <div class="event"> 
+      <div class="event" id="event-${counter}"> 
         <div class="time">${ed.time}</div> 
         <div class="d-flex flex-column flex-grow-1 ps-3">
           <div class="event_name">${ed.event_name}</div>
@@ -278,8 +277,9 @@ function showEvents(week_day, month, year) {
           </div>
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Edit</a>
-          <a class="dropdown-item" href="#">Delete</a>
+          <a class="dropdown-item" href="#">Conduct</a>
+          <a class="dropdown-item" href="#">Reschedule</a>
+          <a class="dropdown-item" href="#">Cancel</a>
         </div>
       </div>
        `
@@ -287,30 +287,30 @@ function showEvents(week_day, month, year) {
     }
 
     if (ed.event_date == `${year}-${month}-${week_day}`) {
-      counter++;
       let eventDiv = `
-      <div class="event"> 
+       <div class="event" id="event-${counter}"> 
         <div class="time">${ed.time}</div>
         <div class="d-flex flex-column flex-grow-1 ps-3">
           <div class="event_name">${ed.event_name}</div>
           <div class="coach_name">${ed.coach_name}</div>
-        </div>  
-        
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-          <div class="more_icon">
-            <span class="material-symbols-outlined" style="font-size: 55px; font-weight: 900;">
+        </div>
+        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+          <div class="more_icon d-flex">
+            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
               more_horiz
             </span>
           </div>
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Edit</a>
-          <a class="dropdown-item" href="#">Delete</a>
+          <a class="dropdown-item" href="#">Conduct</a>
+          <a class="dropdown-item" href="#">Reschedule</a>
+          <a class="dropdown-item" href="#">Cancel</a>
         </div>
       </div>
-    `
+      `
       $('.events').append(eventDiv);
     }
+    counter++;
 
 
 
