@@ -140,19 +140,16 @@ router.get(
 
 router.get(
   "/google_sign_in/index",
-  passport.authenticate("google_sign_in", { failureRedirect: "/login", }),
+  passport.authenticate("google_sign_in", { failureRedirect: "/login?status=0", }),
   async function (req, res) {
     const google_id = req.user.id;
-    console.log(google_id)
     var documentFound = false;
     const panels = await firebase.fdb.collection('panels').get();
     const panel_promises = panels.docs.map(async (panel) => {
       if (!documentFound) {
-        console.log(panel.id)
         await firebase.fdb.collection('panels').doc(panel.id).collection('users').where('google_id', '==', google_id).get().then((users)=>{
           
           users.docs.map((user)=>{
-            console.log(user  )
             if (user.exists) {
               r['r'] = 1;
               documentFound = true;
@@ -171,7 +168,7 @@ router.get(
     await Promise.all(panel_promises);
 
     if (!documentFound) {
-      res.redirect('login');
+      res.redirect('/login?status=0');
     }
   }
 );
