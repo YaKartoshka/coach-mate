@@ -247,7 +247,7 @@
             if (coach_id && repetition && event_name && event_type && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
-                    url: "/schedule/create",
+                    url: "/events/create",
                     data: {
                         repetition: repetition,
                         event_name: event_name,
@@ -299,7 +299,7 @@
 
         function getEvents() {
             $.ajax({
-                url: 'schedule/get',
+                url: 'events/get',
                 method: 'GET',
                 success: function (data) {
                     events = data;

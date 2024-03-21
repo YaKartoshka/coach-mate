@@ -293,8 +293,9 @@
             $.ajax({
                 url: '/joins/get-all', method: 'get', success: function (data) {
                     var requests_data = JSON.parse(data);
+                    var requestsHTML = requests_data.length == 0 ? 'No requests' : '';
                     requests_data.forEach((request) => {
-                        var requestDiv = `
+                        requestsHTML += `
                             <div class="join_request">
                                 <h3>${request.first_name} ${request.last_name}</h3>
                                 <p>${request.email}</p>
@@ -304,8 +305,9 @@
                                 </div>
                             </div>
                         `;
-                        $('.join_requests').append(requestDiv);
                     });
+                    
+                    $('.join_requests').html(requestsHTML);
                 }, error: function (err) {
                     console.log(err)
                 }

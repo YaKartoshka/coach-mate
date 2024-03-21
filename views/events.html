@@ -22,7 +22,7 @@
                 <div class="content-head">
                     <h1>Events</h1>
                     <% if (role=='admin' ) { %>
-                        <button data-bs-toggle="modal" data-bs-target="#add_event-modal" class="btn btn-primary"><span
+                        <button onclick="showAddEventModal()" class="btn btn-primary" id="add_event_btn"><span
                                 class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 700;">add</span>Add
                             Event</button>
@@ -69,8 +69,12 @@
                             </select>
                         </div>
                         <div class="mb-3 mt-3 hidden" id="event_name-block">
-                            <label class="mb-2">Event Name</label>
+                            <label class="mb-2">Event name</label>
                             <input type="text" id="event_name" class="form-control" placeholder="Karate" required />
+                        </div>
+                        <div class="mb-3 mt-3 hidden" id="coach_name-block">
+                            <label class="mb-2">Coach name</label>
+                            <select name="coach_id" id="coach_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3 hidden" id="event_type-block">
                             <label class="mb-2">Event type</label>
@@ -142,6 +146,25 @@
         </div>
     </div>
 
+    <div class="modal fade" id="delete_event-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Event</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    You won't be able to revert this. Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete_event_btn" class="btn btn-danger px-md-4"
+                        onclick="deleteEvent()">Delete</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="delete_link-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -150,7 +173,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                  You won't be able to revert this. Are you sure?
+                    You won't be able to revert this. Are you sure?
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_link_btn" class="btn btn-danger px-md-4"
@@ -267,28 +290,28 @@
             });
         }
 
-        function showDeleteLinkModal(link_id){
+        function showDeleteLinkModal(link_id) {
             $('#delete_link-modal').modal('show');
             globalLinkId = link_id;
         }
 
-        function deleteLink(){
-            loading(2, el='#delete_link_btn');
+        function deleteLink() {
+            loading(2, el = '#delete_link_btn');
             $.ajax({
                 url: '/links/delete',
                 method: 'POST',
-                data: {link_id: globalLinkId},
+                data: { link_id: globalLinkId },
                 dataType: 'json',
-                success: function(res){
-                    if(res.r){
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
-                        message: "Link deleted!",
-                        type: "success",
-                        fade: true
-                    });
+                            message: "Link deleted!",
+                            type: "success",
+                            fade: true
+                        });
                     }
                     $('#delete_link-modal').modal('hide');
-                    loading(20, el='#delete_link_btn');
+                    loading(20, el = '#delete_link_btn');
                     showLinks();
                 }
             });
@@ -296,7 +319,7 @@
 
         function showEvents() {
             $.ajax({
-                url: '/schedule/get',
+                url: '/events/get',
                 method: 'GET',
                 success: function (data) {
                     var events = data;
@@ -315,8 +338,8 @@
                                 </div>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Edit</a>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="showEditEventModal('${ed.event_id}')">Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="showDeleteEventModal('${ed.event_id}')">Delete</a>
                                 </div>
                             </div>
                             `
@@ -330,16 +353,21 @@
         }
 
         function showAddEventModal() {
+            getCoaches();
             $('#add_event-modal').modal('show');
         }
 
         function addEvent() {
+            loading(2, el = "add_event_btn");
             let repetition = $("#repetition").val();
             let event_name = $("#event_name").val();
             let event_type = $("#event_type").val();
             let time = $("#time").val();
             let event_date = $("#event_date").val();
             let week_day = $("#week_day").val();
+            let coach_id = $('#coach_id').val();
+            let coach_name = $('#coach_id option:selected').text();
+
             (repetition == 'single') ? week_day = null : event_date = null;
 
             if (event_name.length > 25) {
@@ -349,36 +377,43 @@
                     fade: true,
                     width: 400
                 });
-                return;
+                return loading(20, el = "add_event_btn");
             }
 
-            if (repetition && event_name && event_type && time && (event_date || week_day)) {
+            if (coach_id && repetition && event_name && event_type && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
-                    url: "/schedule/create",
+                    url: "/events/create",
                     data: {
                         repetition: repetition,
                         event_name: event_name,
                         event_type: event_type,
                         time: time,
                         event_date: event_date,
-                        week_day: week_day
+                        week_day: week_day,
+                        coach_id: coach_id,
+                        coach_name: coach_name
                     },
-                    success: function (r) {
-                        $('#add_event-modal').modal('hide');
-                        $("#repetition").val('');
-                        $("#event_name").val('');
-                        $("#event_type").val('');
-                        $("#time").val('');
-                        $("#event_date").val('');
-                        $("#week_day").val('');
-                        $.ambiance({
-                            message: "Event added successfully!",
-                            type: "success",
-                            fade: true,
-                            width: 400
-                        });
-                        return window.location.reload();
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.r) {
+                            $('#add_event-modal').modal('hide');
+                            $("#repetition").val('');
+                            $("#event_name").val('');
+                            $("#event_type").val('');
+                            $("#time").val('');
+                            $("#event_date").val('');
+                            $("#week_day").val('');
+                            $("#coach_id").val('');
+                            $.ambiance({
+                                message: "Event added successfully!",
+                                type: "success",
+                                fade: true,
+                                width: 400
+                            });
+                            return;
+                        }
+                        loading(20, el = "add_event_btn");
                     },
                     error: function (error) {
                         console.error("Error:", error);
@@ -402,6 +437,70 @@
             }
         }
 
+        function showDeleteEventModal(event_id) {
+            globalEventId = event_id;
+            $('#delete_event-modal').modal('show');
+        }
+
+        function deleteEvent() {
+            loading(2, el = "delete_event_btn");
+            $.ajax({
+                type: "POST",
+                url: "/events/delete",
+                data: {
+                    event_id: globalEventId
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.r) {
+                        return $.ambiance({
+                            message: "Event deleted successfully!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el = "delete_event_btn");
+                },
+                error: function (error) {
+                    console.error("Error:", error);
+                    $.ambiance({
+                        message: 'Error adding event. Please try again.',
+                        type: 'error',
+                        fade: true,
+                        width: 400
+                    });
+                    return;
+                }
+            });
+
+        }
+
+        function getCoaches() {
+            $.ajax({
+                url: '/users/get-all',
+                method: 'get',
+                data: { roles: 'coach' },
+                dataType: 'json',
+                success: function (coaches_data) {
+                    console.log(coaches_data)
+                    if (!coaches_data.length) {
+                        let no_members = `
+                        <div class="no_members">No members</div>
+                        `
+                        $('.members').append(no_members);
+                        return;
+                    }
+                    var coachHTML = '<option value="none" disabled selected="true">None</option>'
+                    coaches_data.forEach((coach) => {
+                        coachHTML += `<option value="${coach.id}">${coach.first_name} ${coach.last_name}</option>`;
+                    });
+                    $('#coach_id').html(coachHTML);
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
 
         $("#repetition").on('change', (() => {
             let repetition = $('#repetition').val();
@@ -416,6 +515,7 @@
             $('#time-block').show();
             $('#event_type-block').show();
             $('#event_name-block').show();
+            $('#coach_name-block').show();
         }));
 
 
