@@ -27,7 +27,7 @@ router.post('/create', isAuthenticated, async (req, res) => {
         week_day: week_day,
         coach_id: coach_id,
         coach_name: coach_name,
-        participants: '[]'
+        members: '[]'
     }).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
@@ -51,7 +51,7 @@ router.post('/edit', isAuthenticated, async (req, res) => {
         week_day: week_day,
         coach_id: coach_id,
         coach_name: coach_name,
-        participants: '[]'
+        members: '[]'
     }).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));

@@ -989,7 +989,7 @@ td:nth-child(3) {
     margin-top: 26.5px;
 }
 
-.member {
+.members-content-body .member {
     display: flex;
     border-radius: 5px;
     box-shadow: 0px 0px 5px #007bff;
@@ -1611,6 +1611,17 @@ td:nth-child(3) {
     background-color: transparent;
     color: var(--primary-clr);
 }
+
+
+/*  Events Page  */
+
+#event_members .member, #new_event_members .member{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* End of Events Page */
 
 /* media queries */
 

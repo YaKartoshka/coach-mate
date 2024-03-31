@@ -269,7 +269,7 @@ function showEvents(week_day, month, year) {
           <div class="event_name">${ed.event_name}</div>
           <div class="coach_name">${ed.coach_name}</div>
         </div>
-        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
           <div class="more_icon d-flex">
             <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
               more_horiz
@@ -294,7 +294,7 @@ function showEvents(week_day, month, year) {
           <div class="event_name">${ed.event_name}</div>
           <div class="coach_name">${ed.coach_name}</div>
         </div>
-        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
           <div class="more_icon d-flex">
             <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
               more_horiz

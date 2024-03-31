@@ -22,7 +22,7 @@
                 <div class="content-head">
                     <h1>News</h1>
                     <% if (role=='admin' ) { %>
-                        <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary"><span
+                        <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary d-flex"><span
                                 class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 700;">add</span>Add
                             News</button>
@@ -244,9 +244,9 @@
                         });
                         var newsContent = $("<div>").addClass("news-content");
                         var dropdownHTML = `
-                        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" style="float:right;">
+                        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
                             <div class="more_icon d-flex">
-                            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+                            <span class="material-symbols-outlined d-flex" style="font-size: 25px; font-weight: 900;">
                             more_horiz
                             </span>
                         </div>

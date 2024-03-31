@@ -34,7 +34,7 @@ li {
 }
 
 button {
-    display: flex !important;
+    display: flex;
     align-items: center;
     gap: 5px;
     justify-content: center;
