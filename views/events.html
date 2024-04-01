@@ -238,20 +238,15 @@
                     </div>
                     <div id="event_members_block">
                         <div id="event_members" class="d-flex flex-column gap-3">
-                            <div class="member flex-fill">
-                                <h3>Erasyl Zarubekov</h3>
-                                <button class="btn btn-danger material-symbols-outlined" style="scale: 0.75;">
-                                    delete
-                                </button>
-                            </div>
+                          
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary " onclick="saveMembers()" id="save_members_btn"
-                    style="display: none !important;">Save</button>
+                        style="display: none; ">Save</button>
                     <button type="button" class="btn btn-success " onclick="showMembers()" id="show_members_btn"
-                        style="display: none !important;">Show Members</button>
+                        style="display: none;">Show Members</button>
                     <button type="button" class="btn btn-success" onclick="showNewMembers()" id="add_member_btn">+ Add
                         Member</button>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -301,7 +296,7 @@
         var globalEvents;
         var globalLinkId;
         var globalUsers;
-        var globalEventMembers;
+     
 
         $(document).ready(function () {
             loading(1);
@@ -542,14 +537,32 @@
         function showMembersModal(event_index) {
             $("#show_members-modal").modal('show');
             globalEventIndex = event_index;
+            globalEventId = globalEvents[event_index.split('-')[1]].event_id;
             showMembers();
         }
 
         function showMembers() {
-
-
-            
-
+            var members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+            console.log(members)
+            $('#event_members_block').show();
+            $("#add_member_btn").show();
+            $('#new_event_members_block').hide();
+            $("#show_members_btn").hide();
+            var membersHTML = '';
+            var i = 0;
+            members.forEach((m) => {
+                membersHTML += `
+                <div class="member flex-fill" id="member-${i}">
+                    <h3>${m.first_name} ${m.last_name}</h3>
+                    <button class="btn btn-danger material-symbols-outlined" style="scale: 0.75;" onclick="deleteMember('${m.id}', ${i})">
+                        delete
+                    </button>
+                </div>
+                `
+                i++;
+            });
+            if(!members.length) membersHTML = '<div class="alert alert-light">No members.</div>'
+            $('#event_members').html(membersHTML);
             // console.log(globalUsers);
             // console.log(globalEvents);
         }
@@ -559,30 +572,28 @@
             $("#new_event_members_block").show();
             $("#add_member_btn").hide();
             $("#show_members_btn").show();
-           
+
             var eventMembers = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
             var allStudents = globalUsers.filter((user) => {
                 return user.role == 'student'
             });
 
-            var newUsers = allStudents.filter(user => !eventMembers.some(m => m.id == user.id));
-        
-            var newUsersHTML = ''
-            let i = 0;
-            newUsers.forEach((nu) => {
-                console.log(nu)
-                newUsersHTML += `
-                <div class="member flex-fill">
+            var newMembers = allStudents.filter(user => !eventMembers.some(m => m.id == user.id));
+            var newMembersHTML = '';
+            var i = 0;
+            newMembers.forEach((nu) => {
+                newMembersHTML += `
+                <div class="member flex-fill" id="new_member-${i}">
                     <h3>${nu.first_name} ${nu.last_name}</h3>
-                    <button class="btn btn-success material-symbols-outlined" style="scale: 0.75;">
+                    <button class="btn btn-success material-symbols-outlined" style="scale: 0.75;" onclick="addMemberToEvent('${nu.id}', ${i})">
                         add
                     </button>
                 </div>
                 `
                 i++;
             });
-            $('#new_event_members').html(newUsersHTML)
-
+            if(!newMembers.length) newMembersHTML = '<div class="alert alert-light">No members to add.</div>'
+            $('#new_event_members').html(newMembersHTML);
         }
 
         function showEditEventModal(event_index) {
@@ -753,6 +764,51 @@
                     console.log(err);
                 }
             });
+        }
+
+        function addMemberToEvent(new_member_id, index) {
+            $("#save_members_btn").show();
+            $(`#new_member-${index}`).remove();
+            let new_member = globalUsers.filter((user) => {
+                return user.id == new_member_id;
+            });
+            var members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+            members.push(new_member[0]);
+            globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(members);
+            showNewMembers();
+        }
+
+        function deleteMember(member_id, index){
+            $("#save_members_btn").show();
+            $(`#member-${index}`).remove();
+            let members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members)
+            let updated_members = members.filter((user) => {
+                return user.id != member_id;
+            });
+    
+            globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(updated_members);
+            showMembers();
+        }
+
+        function saveMembers() {
+            loading(2, el = "#save_members_btn");
+            $.ajax({
+                url: '/events/members/update',
+                method: 'POST',
+                data: { event_id: globalEventId, members: globalEvents[globalEventIndex.split('-')[1]].members},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.r) {
+                        $.ambiance({
+                            message: "Members updated!",
+                            type: "success",
+                            fade: true
+                        });
+                    }
+                    $('#save_members_btn').hide();
+                    return loading(20, el = "#save_members_btn");
+                }
+            })
         }
 
         $("#repetition").on('change', (() => {
