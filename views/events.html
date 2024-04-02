@@ -420,11 +420,16 @@
                 success: function (data) {
                     globalEvents = data
                     var i = 0;
+                    console.log(data)
                     data.forEach((ed) => {
+                      
+                        const formattedDate = new Date(ed.event_date).toLocaleString('default', { month: 'long', day: 'numeric' })
+                        
                         let eventDiv = `
                             <div class="event" id="event-${i}"> 
-                                <div class="time">${ed.time}</div>
-                                <div class="event_name">${ed.event_name}</div>
+                                <div class="date_time"><b>${ed.event_date ? formattedDate : (ed.week_day.charAt(0).toUpperCase() + ed.week_day.slice(1))} ${ed.time}</b></div>
+                                <div class="event_name text-center">${ed.event_name}</div>
+                                <div class="coach_name">Coach: ${ed.coach_name}</div>
                                 <button class="btn btn-primary mx-5 px-5" onclick="showMembersModal('event-${i}')">Members</button>
                                 <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
                                     <div class="more_icon d-flex">
@@ -477,14 +482,13 @@
                 return loading(20, el = "add_event_btn");
             }
 
-            if (coach_id && repetition && event_name && event_type && time && (event_date || week_day)) {
+            if (coach_id && repetition && event_name && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
                     url: "/events/create",
                     data: {
                         repetition: repetition,
                         event_name: event_name,
-                        event_type: event_type,
                         time: time,
                         event_date: event_date,
                         week_day: week_day,
@@ -612,15 +616,13 @@
 
 
         function editEvent() {
-            loading(2, el = "edit_event_btn");
-            let repetition = $("#repetition").val();
-            let event_name = $("#event_name").val();
-            let event_type = $("#event_type").val();
+            loading(2, el = "#edit_event_btn");
+            let event_name = $("#new_event_name").val();
             let time = $("#time").val();
-            let event_date = $("#event_date").val();
-            let week_day = $("#week_day").val();
-            let coach_id = $('#coach_id').val();
-            let coach_name = $('#coach_id option:selected').text();
+            let event_date = $("#new_event_date").val();
+            let week_day = $("#new_week_day").val();
+            let coach_id = $('#new_coach_id').val();
+            let coach_name = $('#new_coach_id option:selected').text();
 
             (repetition == 'single') ? week_day = null : event_date = null;
 
@@ -631,17 +633,16 @@
                     fade: true,
                     width: 400
                 });
-                return loading(20, el = "add_event_btn");
+                return loading(20, el = "#edit_event_btn");
             }
 
-            if (coach_id && repetition && event_name && event_type && time && (event_date || week_day)) {
+            if (coach_id && repetition && event_name && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
                     url: "/events/create",
                     data: {
                         repetition: repetition,
                         event_name: event_name,
-                        event_type: event_type,
                         time: time,
                         event_date: event_date,
                         week_day: week_day,
@@ -667,7 +668,7 @@
                             });
                             return;
                         }
-                        loading(20, el = "add_event_btn");
+                        loading(20, el = "#edit_event_btn");
                     },
                     error: function (error) {
                         console.error("Error:", error);
@@ -697,7 +698,7 @@
         }
 
         function deleteEvent() {
-            loading(2, el = "delete_event_btn");
+            loading(2, el = "#delete_event_btn");
             $.ajax({
                 type: "POST",
                 url: "/events/delete",
@@ -707,15 +708,15 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.r) {
-                        return $.ambiance({
+                        $.ambiance({
                             message: "Event deleted successfully!",
                             type: "success",
                             fade: true,
                             width: 400
                         });
                     }
-                    loading(20, el = "delete_event_btn");
-                    $('#delete_event-modal').modal('hide');
+                    loading(20, el = "#delete_event_btn");
+                    return $('#delete_event-modal').modal('hide');
                 },
                 error: function (error) {
                     console.error("Error:", error);
@@ -725,7 +726,7 @@
                         fade: true,
                         width: 400
                     });
-                    return;
+                    return loading(20, el = "#delete_event_btn");
                 }
             });
 

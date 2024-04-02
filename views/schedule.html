@@ -75,30 +75,6 @@
                 </div>
 
 
-
-                <!-- Delete Modal -->
-                <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
-                    aria-labelledby="delete-modal-title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="delete-modal-title">Confirm Deletion</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center" id="delete-modal-body">
-                                Are you sure you want to delete the event?
-                            </div>
-                            <div class="modal-footer border-0">
-                                <button type="button" class="btn btn-secondary rounded-sm" data-dismiss="modal"
-                                    id="cancel-button">Cancel</button>
-                                <button type="button" class="btn btn-danger rounded-lg"
-                                    id="delete-button">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
 
     </main>
@@ -130,15 +106,7 @@
                             <label class="mb-2">Coach name</label>
                             <select name="coach_id" id="coach_id" class="form-control"></select>
                         </div>
-                        <div class="mb-3 mt-3 hidden" id="event_type-block">
-                            <label class="mb-2">Event type</label>
-                            <select id="event_type" class="form-control">
-                                <option disabled="true" selected="" value="">Choose</option>
-                                <option value="jiu_jitsu">jiu jitsu</option>
-                                <option value="karate">karate</option>
-                                <option value="box">box</option>
-                            </select>
-                        </div>
+
                         <div class="mb-3 mt-3 hidden" id="event_date-block">
                             <label class="mb-2">Event date</label>
                             <input type="date" class="form-control" id="event_date">
@@ -164,8 +132,77 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="add_member_btn" class="btn btn-primary px-md-4"
+                    <button type="button" id="add_event_btn" class="btn btn-primary px-md-4"
                         onclick="addEvent()">Add</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delete-modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="delete-modal-body">
+                    Are you sure you want to delete the event?
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary rounded-sm" data-dismiss="modal"
+                        id="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-danger rounded-lg" id="delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="conduct_event-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Conduct Event</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="" class="form-control" id="event_description" cols="30" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Members</label>
+                        <div id="new_event_members" class="d-flex flex-column gap-3">
+                            <!-- <div class="d-flex justify-content-between flex-fill" id="new_member-0">
+                                <p>Student Name</p>
+                                <div class="d-flex gap-2">
+                                    <label for="">Present</label>
+                                    <label for="">Absent</label>
+                                </div>
+                            </div> -->
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col" class="text-center">Present</th>
+                                        <th scope="col" class="text-center">Absent</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="event_members">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="conduct_event_btn" class="btn btn-primary px-md-4"
+                        onclick="conductEvent()">Save</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -176,7 +213,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        var events = [];
+
+        var globalEventIndex;
+        var globalEventId;
+        var globalEvents;
+        var globalLinkId;
         var globalUsers;
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
@@ -204,14 +245,13 @@
                     $('#event_date-block').hide();
                 }
                 $('#time-block').show();
-                $('#event_type-block').show();
                 $('#event_name-block').show();
                 $('#coach_name-block').show();
             }));
 
             loading(1);
             getEvents();
-            initCalendar();
+
             getStudents();
             loading(0);
         });
@@ -223,9 +263,9 @@
         }
 
         function addEvent() {
+            loading(2, el = "#add_event_btn");
             let repetition = $("#repetition").val();
             let event_name = $("#event_name").val();
-            let event_type = $("#event_type").val();
             let time = $("#time").val();
             let event_date = $("#event_date").val();
             let week_day = $("#week_day").val();
@@ -241,17 +281,16 @@
                     fade: true,
                     width: 400
                 });
-                return;
+                return loading(20, el = "#add_event_btn");
             }
 
-            if (coach_id && repetition && event_name && event_type && time && (event_date || week_day)) {
+            if (coach_id && repetition && event_name && time && (event_date || week_day)) {
                 $.ajax({
                     type: "POST",
                     url: "/events/create",
                     data: {
                         repetition: repetition,
                         event_name: event_name,
-                        event_type: event_type,
                         time: time,
                         event_date: event_date,
                         week_day: week_day,
@@ -262,7 +301,6 @@
                         $('#add_event-modal').modal('hide');
                         $("#repetition").val('');
                         $("#event_name").val('');
-                        $("#event_type").val('');
                         $("#time").val('');
                         $("#event_date").val('');
                         $("#week_day").val('');
@@ -273,7 +311,7 @@
                             fade: true,
                             width: 400
                         });
-                        return;
+                        return loading(20, el = "#add_event_btn");;
                     },
                     error: function (error) {
                         console.error("Error:", error);
@@ -283,7 +321,7 @@
                             fade: true,
                             width: 400
                         });
-                        return;
+                        return loading(20, el = "#add_event_btn");;
                     }
                 });
             } else {
@@ -293,7 +331,7 @@
                     fade: true,
                     width: 400
                 });
-                return;
+                return loading(20, el = "#add_event_btn");;
             }
         }
 
@@ -302,7 +340,8 @@
                 url: 'events/get',
                 method: 'GET',
                 success: function (data) {
-                    events = data;
+                    globalEvents = data;
+                    initCalendar();
                 },
                 error: function (e) {
                     console.log(e)
@@ -348,6 +387,102 @@
                     console.log(err);
                 }
             });
+        }
+
+        function showConductEventModal(event_index) {
+            globalEventIndex = event_index;
+            globalEventId = globalEvents[event_index.split('-')[1]].event_id;
+
+            showMembers();
+            $('#conduct_event-modal').modal('show');
+        }
+
+        function showMembers() {
+            var members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+
+            var membersHTML = '';
+            var i = 0;
+            members.forEach((m) => {
+                membersHTML += `
+                <tr>
+                    <th scope="row">${i + 1}</th>
+                    <td>${m.first_name} ${m.last_name}</td>
+                    <td class="text-center"> <input type="radio" class="form-check-input member-${i}-status" name="member-${i}-status"
+                            value="1"></td>
+                    <td class="text-center"> <input type="radio" class="form-check-input member-${i}-status" name="member-${i}-status"
+                            value="0"></td>
+                </tr>
+                `
+                i++;
+            });
+            if (!members.length) membersHTML = '<div class="alert alert-light">No members.</div>'
+            $('#event_members').html(membersHTML);
+        }
+
+        function conductEvent() {
+            loading(2, el = "#conduct_event_btn")
+            var description = $("#event_description").val().trim();
+            var members_data = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+            let i = 0;
+
+            members_data.forEach((m) => {
+                var member_status = Number($('input[name="member-' + i + '-status"]:checked').val());
+                if (!member_status) {
+                    return
+                }
+                m.status = member_status;
+                i++;
+            });
+     
+            if (i != members_data.length ) {
+                loading(20, el="#conduct_event_btn");
+                return $.ambiance({
+                    message: 'Please fill in all fields!',
+                    type: 'error',
+                    fade: true,
+                    width: 400
+                });
+            }
+            globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(members_data);
+            var eventData = globalEvents[globalEventIndex.split('-')[1]]
+            $.ajax({
+                url: '/schedule/conduct',
+                method: "POST",
+                data: {
+                    description: description,
+                    repetition: eventData.repetition,
+                    event_name: eventData.event_name,
+                    time: eventData.time,
+                    event_date: eventData.event_date,
+                    week_day: eventData.week_day,
+                    coach_id: eventData.coach_id,
+                    coach_name: eventData.coach_name,
+                    members: JSON.stringify(members_data),
+                    event_id: eventData.event_id
+                },
+                dataType: 'json',
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                            message: "Event conducted!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el="#conduct_event_btn");
+                    return  $('#conduct_event-modal').modal('hide');
+                }
+            })
+
+        }
+
+        function showRescheduleEventModal() {
+            $('#reschedule_event-modal').modal('show');
+        }
+
+        function showCancelEventModal() {
+            $('#cancel_event-modal').modal('show');
         }
 
 

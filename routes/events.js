@@ -12,16 +12,15 @@ function isAuthenticated(req, res, next) {
 
 router.post('/create', isAuthenticated, async (req, res) => {
     var r = { r: 0 };
-    const { repetition, event_name, event_type, time, event_date, week_day, coach_id, coach_name } = req.body;
+    const { repetition, event_name, time, event_date, week_day, coach_id, coach_name } = req.body;
     console.log(req.body)
-    if (!repetition || !event_name || !event_type || !time || !coach_id) {
+    if (!repetition || !event_name || !time || !coach_id) {
         return res.status(400).send('All fields are required.');
     }
 
     await fdb.collection('panels').doc(req.session.panel_id).collection('events').add({
         repetition: repetition,
         event_name: event_name,
-        event_type: event_type,
         time: time,
         event_date: event_date,
         week_day: week_day,

@@ -48,7 +48,7 @@ body {
 
 .dropdown-content {
     position: absolute;
-    top: 60px;
+    top: 40px;
     right: 0;
     background-color: #262626;
     display: none;
@@ -938,8 +938,8 @@ body {
 }
 
 .bh-table th:nth-child(1),
-th:nth-child(2),
-th:nth-child(3) {
+.bh-table th:nth-child(2),
+.bh-table th:nth-child(3) {
     border-right: 2px solid #fff;
     color: #fff;
     padding: 20px;
@@ -952,8 +952,8 @@ th:nth-child(3) {
 }
 
 .bh-table td:nth-child(1),
-td:nth-child(2),
-td:nth-child(3) {
+.bh-table td:nth-child(2),
+.bh-table td:nth-child(3) {
     border-right: 2px solid #fff;
 }
 

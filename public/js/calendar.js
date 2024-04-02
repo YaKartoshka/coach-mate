@@ -254,16 +254,14 @@ function showEvents(week_day, month, year) {
   week_day = week_day < 10 ? `0${week_day}` : week_day
   month = month < 10 ? `0${month}` : month
   var dayOfWeek = getDayName(myDate)
-  let counter = 0;
+  let i = 0;
 
 
 
-  events.forEach((ed) => {
-
-
+  globalEvents.forEach((ed) => {
     if (ed.week_day == dayOfWeek) {
       let eventDiv = `
-      <div class="event" id="event-${counter}"> 
+      <div class="event" id="event-${i}"> 
         <div class="time">${ed.time}</div> 
         <div class="d-flex flex-column flex-grow-1 ps-3">
           <div class="event_name">${ed.event_name}</div>
@@ -277,9 +275,9 @@ function showEvents(week_day, month, year) {
           </div>
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Conduct</a>
-          <a class="dropdown-item" href="#">Reschedule</a>
-          <a class="dropdown-item" href="#">Cancel</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showConductEventModal('event-${i}')">Conduct</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showRescheduleEventModal('event-${i}')">Reschedule</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="cancelEventModal('event-${i}')">Cancel</a>
         </div>
       </div>
        `
@@ -288,7 +286,7 @@ function showEvents(week_day, month, year) {
 
     if (ed.event_date == `${year}-${month}-${week_day}`) {
       let eventDiv = `
-       <div class="event" id="event-${counter}"> 
+       <div class="event" id="event-${i}"> 
         <div class="time">${ed.time}</div>
         <div class="d-flex flex-column flex-grow-1 ps-3">
           <div class="event_name">${ed.event_name}</div>
@@ -302,20 +300,20 @@ function showEvents(week_day, month, year) {
           </div>
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Conduct</a>
-          <a class="dropdown-item" href="#">Reschedule</a>
-          <a class="dropdown-item" href="#">Cancel</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showConductEventModal('event-${i}')">Conduct</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showRescheduleEventModal('event-${i}')">Reschedule</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="cancelEventModal('event-${i}')">Cancel</a>
         </div>
       </div>
       `
       $('.events').append(eventDiv);
     }
-    counter++;
+    i++;
 
 
 
   });
-  if (!counter) {
+  if (!i) {
     let noEvents = `
     <div class="no-event">
           <h3>No Events</h3>
