@@ -219,6 +219,7 @@
         var globalEvents;
         var globalLinkId;
         var globalUsers;
+        var globalSchedules;
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
 
@@ -337,11 +338,25 @@
 
         function getEvents() {
             $.ajax({
-                url: 'events/get',
+                url: '/events/get',
                 method: 'GET',
                 success: function (data) {
                     globalEvents = data;
                     initCalendar();
+                },
+                error: function (e) {
+                    console.log(e)
+                }
+            });
+        }
+
+        function getSchedules() {
+            $.ajax({
+                url: '/schedules/get',
+                method: 'GET',
+                success: function (data) {
+                    globalSchedules = data;
+                    // initCalendar();
                 },
                 error: function (e) {
                     console.log(e)

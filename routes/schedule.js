@@ -13,7 +13,7 @@ function isAuthenticated(req, res, next) {
 router.post('/conduct', isAuthenticated, async (req, res) => {
     var r = { r: 0 };
     console.log(req.body)
-    const { repetition, event_name, time, event_date, week_day, coach_id, coach_name, members, event_id,description } = req.body;
+    const { repetition, event_name, time, event_date, week_day, coach_id, coach_name, members, event_id, description } = req.body;
 
     if (!repetition || !event_name || !time || !coach_id) {
         return res.status(400).send('All fields are required.');
@@ -92,6 +92,15 @@ router.post('/cancel', isAuthenticated, async (req, res) => {
     })
 });
 
+router.post('/get', async(req, res) => {
+    var data = [];
+    const panel_id = req.session.panel_id;
+    const schedules = await fdb.collection('panels').doc(panel_id).collection('schedules').get();
+    schedules.docs.forEach((schedule) => {
+        data.push({ ...schedule.data(), schedule_id: schedule.id });
+    })
+    res.send(data);
+});
 
 
 
