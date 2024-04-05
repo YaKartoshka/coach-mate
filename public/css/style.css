@@ -1623,6 +1623,69 @@ body {
 
 /* End of Events Page */
 
+/* Passes Page */
+
+.passes-content {
+    padding: 30px;
+    flex: 0.80;
+    font-family: InterReg;
+}
+
+.passes-content-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.passes-content-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pass-card {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    position: relative;
+    border-radius: 5px;
+    flex: 0.29;
+    padding: 25px 20px 10px;
+}
+
+.pass-section {
+    font-size: 24px;
+}
+
+.pass-price {
+    font-size: 16px;
+    color: #0066FF;
+}
+
+.pass-attendance {
+    font-size: 16px;
+}
+
+.pass-card button {
+    position: absolute;
+    top: 15%;
+    right: 5%;
+}
+
+.pass-card::before {
+    content: "";
+    background-color:#3793FF;
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    top: 0px;
+    left: 0px;
+}
+
+/* End of Passes Page */
+
 /* media queries */
 
 @media screen and (max-width: 1000px) {

@@ -18,8 +18,9 @@ var profile_func = require('./routes/profile');
 var joins = require('./routes/joins');
 var events = require('./routes/events');
 var settings = require('./routes/settings');
-var profile = require('./routes/profile')
-var schedule = require('./routes/schedule')
+var profile = require('./routes/profile');
+var schedule = require('./routes/schedule');
+var passes = require('./routes/passes')
 
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
@@ -59,6 +60,7 @@ app.use('/joins', joins);
 app.use('/events', events);
 app.use('/settings', settings);
 app.use('/schedule', schedule);
+app.use('/passes', passes);
 
 
 
