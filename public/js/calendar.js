@@ -12,6 +12,8 @@ const calendar = document.querySelector(".calendar"),
 
 let today = new Date();
 let activeDay;
+let aciveMonth;
+let activeYear;
 let month = today.getMonth();
 let year = today.getFullYear();
 var first_init = true;
@@ -58,7 +60,7 @@ function initCalendar() {
       year === new Date().getFullYear() &&
       month === new Date().getMonth()
     ) {
-
+     
       if (first_init) {
         first_init = false
         activeDay = i;
@@ -85,14 +87,19 @@ function initCalendar() {
 
       if (event) {
         days += `<div class="day event">${i}</div>`;
+        
       } else if (activeDay == i) {
         days += `<div class="day today active">${i}</div>`;
       } else {
 
         days += `<div class="day ">${i}</div>`;
       }
+     
     }
   }
+  if(!first_init){
+    showEvents(activeDay, aciveMonth, activeYear);
+   }
 
   for (let j = 1; j <= nextDays; j++) {
     days += `<div class="day next-date">${j}</div>`;
@@ -248,20 +255,31 @@ function convertTime(time) {
 }
 
 function showEvents(week_day, month, year) {
-
+  aciveMonth = month;
+  activeYear = year;
   $('.events').html('');
   var myDate = new Date(`${year}-${month}-${week_day}`);
+
   week_day = week_day < 10 ? `0${week_day}` : week_day
   month = month < 10 ? `0${month}` : month
+  globalDate = `${year}-${month}-${week_day}`;
   var dayOfWeek = getDayName(myDate)
   let i = 0;
+ 
 
-
+  let eventsHTML = ''
 
   globalEvents.forEach((ed) => {
-    if (ed.week_day == dayOfWeek) {
-      let eventDiv = `
-      <div class="event" id="event-${i}"> 
+   
+    if (ed.week_day == dayOfWeek && ed.event_date == `${year}-${month}-${week_day}` && ed.schedule_id && (ed.status==1 || ed.status == 0)) {
+      console.log(1)
+      eventsHTML += `
+      <div class="event event-status-${ed.status}" id="event-${i}"> 
+      
+        <span class="material-symbols-outlined event-status">
+          ${ed.status ? 'task_alt' : 'do_not_disturb_on'}
+        </span>
+       
         <div class="time">${ed.time}</div> 
         <div class="d-flex flex-column flex-grow-1 ps-3">
           <div class="event_name">${ed.event_name}</div>
@@ -275,17 +293,53 @@ function showEvents(week_day, month, year) {
           </div>
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="javascript:void(0)" onclick="showConductEventModal('event-${i}')">Conduct</a>
-          <a class="dropdown-item" href="javascript:void(0)" onclick="showRescheduleEventModal('event-${i}')">Reschedule</a>
-          <a class="dropdown-item" href="javascript:void(0)" onclick="cancelEventModal('event-${i}')">Cancel</a>
+          
+         ${ed.status == 1 ? `<a class="dropdown-item" href="javascript:void(0)" onclick="showEditEventModal('event-${i}')">Change</a>` : ''}
+
+          <a class="dropdown-item" href="javascript:void(0)" id="reopen_event_btn" onclick="reopenEvent('event-${i}')"> ${ ed.status ? 'Cancel' : 'Open'}</a>
         </div>
       </div>
        `
-      $('.events').append(eventDiv);
+       return;
+       
     }
 
-    if (ed.event_date == `${year}-${month}-${week_day}`) {
-      let eventDiv = `
+    if (ed.event_date == `${year}-${month}-${week_day}` && (ed.status==1 || ed.status == 0) && !ed.week_day) {
+      
+      eventsHTML += `
+       <div class="event event-status-${ed.status}" id="event-${i}"> 
+        <span class="material-symbols-outlined event-status">
+          ${ed.status ? 'task_alt' : 'do_not_disturb_on'}
+        </span>
+        <div class="time">${ed.time}</div>
+        <div class="d-flex flex-column flex-grow-1 ps-3">
+          <div class="event_name">${ed.event_name}</div>
+          <div class="coach_name">${ed.coach_name}</div>
+        </div>
+        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+          <div class="more_icon d-flex">
+            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+              more_horiz
+            </span>
+          </div>
+        </button>
+        <div class="dropdown-menu">
+          
+         ${ed.status == 1 ? `<a class="dropdown-item" href="javascript:void(0)" onclick="showEditEventModal('event-${i}')">Change</a>` : ''}
+
+          <a class="dropdown-item" href="javascript:void(0)" id="reopen_event_btn" onclick="reopenEvent('event-${i}')"> ${ ed.status ? 'Cancel' : 'Open'}</a>
+        </div>
+      </div>
+      `
+      return;
+
+    }
+
+    console.log(ed)
+    console.log(hasDuplicate(ed))
+
+    if (ed.status == 2 && ed.event_date == `${year}-${month}-${week_day}` ) {
+      eventsHTML += `
        <div class="event" id="event-${i}"> 
         <div class="time">${ed.time}</div>
         <div class="d-flex flex-column flex-grow-1 ps-3">
@@ -302,25 +356,78 @@ function showEvents(week_day, month, year) {
         <div class="dropdown-menu">
           <a class="dropdown-item" href="javascript:void(0)" onclick="showConductEventModal('event-${i}')">Conduct</a>
           <a class="dropdown-item" href="javascript:void(0)" onclick="showRescheduleEventModal('event-${i}')">Reschedule</a>
-          <a class="dropdown-item" href="javascript:void(0)" onclick="cancelEventModal('event-${i}')">Cancel</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showCancelEventModal('event-${i}')">Cancel</a>
         </div>
       </div>
       `
-      $('.events').append(eventDiv);
+      return;
+
     }
+  
+    if (ed.event_date == `${year}-${month}-${week_day}` && !ed.week_day && !ed.status && !hasDuplicate(ed)) {
+     
+      eventsHTML += `
+       <div class="event" id="event-${i}"> 
+        <div class="time">${ed.time}</div>
+        <div class="d-flex flex-column flex-grow-1 ps-3">
+          <div class="event_name">${ed.event_name}</div>
+          <div class="coach_name">${ed.coach_name}</div>
+        </div>
+        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+          <div class="more_icon d-flex">
+            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+              more_horiz
+            </span>
+          </div>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showConductEventModal('event-${i}')">Conduct</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showRescheduleEventModal('event-${i}')">Reschedule</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showCancelEventModal('event-${i}')">Cancel</a>
+        </div>
+      </div>
+      `
+      return;
+    }
+   
+    if (ed.week_day == dayOfWeek && !hasDuplicate(ed) && !ed.schedule_id && !ed.status ) {
+      eventsHTML += `
+      <div class="event" id="event-${i}"> 
+        <div class="time">${ed.time}</div> 
+        <div class="d-flex flex-column flex-grow-1 ps-3">
+          <div class="event_name">${ed.event_name}</div>
+          <div class="coach_name">${ed.coach_name}</div>
+        </div>
+        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+          <div class="more_icon d-flex">
+            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+              more_horiz
+            </span>
+          </div>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showConductEventModal('event-${i}')">Conduct</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showRescheduleEventModal('event-${i}')">Reschedule</a>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="showCancelEventModal('event-${i}')">Cancel</a>
+        </div>
+      </div>
+       `
+       return;
+    }
+
     i++;
-
-
-
+       return;
   });
-  if (!i) {
-    let noEvents = `
+  
+  if (!eventsHTML) {
+    eventsHTML = `
     <div class="no-event">
           <h3>No Events</h3>
       </div>
     `
-    $('.events').append(noEvents);
   }
+  $('.events').html(eventsHTML);
+
 }
 
 
@@ -329,6 +436,27 @@ function getDayName(myDate) {
   var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var dayName = daysOfWeek[dayOfWeek];
   return dayName.toLowerCase();
+}
+
+
+
+function hasDuplicate(event) {
+  var events = globalSchedules;
+  const eventWeekDay = event.week_day;
+  const eventDate = event.event_date;
+  const eventTime = event.time;
+
+
+
+  let count = 0;
+
+  for (var e of events) {
+      if (e.event_id == event.event_id && globalDate == e.event_date && eventTime == e.time) {
+          count++;
+      }
+  }
+  
+  return count > 0;
 }
 
 // if (!week_day || !month || !year) {

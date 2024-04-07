@@ -140,25 +140,31 @@
         </div>
     </div>
 
-    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title"
-        aria-hidden="true">
+    <div class="modal fade" id="cancel_event-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delete-modal-title">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="delete-modal-title">Cancel Event</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center" id="delete-modal-body">
-                    Are you sure you want to delete the event?
+                <div class="modal-body">
+                    <div class="mb-3 mt-3">
+                        <label for="cancel_reason">
+                            Reason (Optional):
+                        </label>
+                        <textarea name="" class="form-control" id="cancel_reason" cols="30" rows="4"></textarea>
+                    </div>
                 </div>
+               
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary rounded-sm" data-dismiss="modal"
-                        id="cancel-button">Cancel</button>
-                    <button type="button" class="btn btn-danger rounded-lg" id="delete-button">Delete</button>
+                    <button type="button" class="btn btn-danger rounded-sm" data-dismiss="modal"
+                        id="cancel_event_btn" onclick="cancelEvent()"> Cancel Event</button>
+                    <button type="button" class="btn btn-secondaryrounded-lg" data-bs-dismiss="modal">Back</button>
                 </div>
             </div>
         </div>
     </div>
+    
 
     <div class="modal fade" id="conduct_event-modal">
         <div class="modal-dialog">
@@ -174,7 +180,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Members</label>
-                        <div id="new_event_members" class="d-flex flex-column gap-3">
+                        <div class="d-flex flex-column gap-3">
                             <!-- <div class="d-flex justify-content-between flex-fill" id="new_member-0">
                                 <p>Student Name</p>
                                 <div class="d-flex gap-2">
@@ -209,6 +215,79 @@
         </div>
     </div>
 
+    <div class="modal fade" id="edit_event-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Event</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="" class="form-control" id="new_event_description" cols="30" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Members</label>
+                        <div class="d-flex flex-column gap-3">
+                    
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col" class="text-center">Present</th>
+                                        <th scope="col" class="text-center">Absent</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="new_event_members">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="edit_event_btn" class="btn btn-primary px-md-4"
+                        onclick="editEvent()">Edit</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reschedule_event-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reschedule Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 mt-3">
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Event date</label>
+                            <input type="date" class="form-control" id="reschedule_event_date">
+                        </div>
+                      
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Time</label>
+                            <input type="time" id="reschedule_time" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-danger rounded-sm" data-dismiss="modal"
+                        id="reschedule_event_btn" onclick="rescheduleEvent()">Reschedule</button>
+                    <button type="button" class="btn btn-secondaryrounded-lg" data-bs-dismiss="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- END OF MODALS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -219,7 +298,10 @@
         var globalEvents;
         var globalLinkId;
         var globalUsers;
+        var globalDate;
         var globalSchedules;
+        var globalScheduleId;
+    
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
 
@@ -237,7 +319,7 @@
 
             $("#repetition").on('change', (() => {
                 let repetition = $('#repetition').val();
-                console.log(repetition)
+            
                 if (repetition == 'single') {
                     $('#event_date-block').show();
                     $('#week_day-block').hide();
@@ -251,10 +333,9 @@
             }));
 
             loading(1);
-            getEvents();
-
+            getSchedules();
             getStudents();
-            loading(0);
+         
         });
 
 
@@ -341,8 +422,9 @@
                 url: '/events/get',
                 method: 'GET',
                 success: function (data) {
-                    globalEvents = data;
+                    globalEvents = globalSchedules.concat(data)
                     initCalendar();
+                    loading(0)
                 },
                 error: function (e) {
                     console.log(e)
@@ -352,11 +434,12 @@
 
         function getSchedules() {
             $.ajax({
-                url: '/schedules/get',
-                method: 'GET',
+                url: '/schedule/get-all',
+                method: 'POST',
                 success: function (data) {
                     globalSchedules = data;
-                    // initCalendar();
+                    getEvents();
+                  
                 },
                 error: function (e) {
                     console.log(e)
@@ -371,7 +454,7 @@
                 data: { roles: 'coach' },
                 dataType: 'json',
                 success: function (coaches_data) {
-                    console.log(coaches_data)
+                   
                     if (!coaches_data.length) {
                         let no_members = `
                         <div class="no_members">No members</div>
@@ -409,12 +492,13 @@
             globalEventId = globalEvents[event_index.split('-')[1]].event_id;
 
             showMembers();
+          
             $('#conduct_event-modal').modal('show');
         }
 
         function showMembers() {
             var members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
-
+            console.log(globalEvents[globalEventIndex.split('-')[1]]);
             var membersHTML = '';
             var i = 0;
             members.forEach((m) => {
@@ -434,6 +518,7 @@
             $('#event_members').html(membersHTML);
         }
 
+
         function conductEvent() {
             loading(2, el = "#conduct_event_btn")
             var description = $("#event_description").val().trim();
@@ -441,8 +526,9 @@
             let i = 0;
 
             members_data.forEach((m) => {
-                var member_status = Number($('input[name="member-' + i + '-status"]:checked').val());
-                if (!member_status) {
+                var member_status = Number($('#event_members input[name="member-' + i + '-status"]:checked').val());
+                
+                if (!member_status && member_status !=0) {
                     return
                 }
                 m.status = member_status;
@@ -468,12 +554,13 @@
                     repetition: eventData.repetition,
                     event_name: eventData.event_name,
                     time: eventData.time,
-                    event_date: eventData.event_date,
                     week_day: eventData.week_day,
                     coach_id: eventData.coach_id,
                     coach_name: eventData.coach_name,
                     members: JSON.stringify(members_data),
-                    event_id: eventData.event_id
+                    event_id: eventData.event_id,
+                    event_date: globalDate,
+                    schedule_id: eventData.schedule_id
                 },
                 dataType: 'json',
                 success: function(res){
@@ -486,18 +573,235 @@
                         });
                     }
                     loading(20, el="#conduct_event_btn");
+                    getSchedules();
+                    initCalendar()
+                  
+                    
                     return  $('#conduct_event-modal').modal('hide');
                 }
             })
 
         }
 
-        function showRescheduleEventModal() {
+        function showRescheduleEventModal(event_index) {
+            globalEventIndex = event_index;
+            globalEventId = globalEvents[event_index.split('-')[1]].event_id;
             $('#reschedule_event-modal').modal('show');
         }
 
-        function showCancelEventModal() {
+        function showCancelEventModal(event_index) {
+            globalEventIndex = event_index;
+            globalEventId = globalEvents[event_index.split('-')[1]].event_id;
             $('#cancel_event-modal').modal('show');
+        }
+
+        function cancelEvent(){
+            loading(2, el = "#cancel_event_btn")
+            var description = $("#cancel_reason").val().trim();
+            var members_data = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+            let i = 0;
+
+            members_data.forEach((m) => {
+                m.status = 2;
+                i++;
+            });
+     
+            globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(members_data);
+            var eventData = globalEvents[globalEventIndex.split('-')[1]];
+        
+
+            $.ajax({
+                url: '/schedule/cancel',
+                method: "POST",
+                data: {
+                    description: description,
+                    repetition: eventData.repetition,
+                    event_name: eventData.event_name,
+                    time: eventData.time,
+                    week_day: eventData.week_day,
+                    coach_id: eventData.coach_id,
+                    coach_name: eventData.coach_name,
+                    members: JSON.stringify(members_data),
+                    event_id: eventData.event_id,
+                    event_date: globalDate,
+                    schedule_id: eventData.schedule_id
+                },
+                dataType: 'json',
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                            message: "Event canceled!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el="#cancel_event_btn");
+                    loading(1);
+                    getSchedules();
+                    initCalendar();
+                    return  $('#cancel_event-modal').modal('hide');
+                }
+            })
+        }
+
+        function reopenEvent(event_index){
+            loading(2, el="#reopen_event_btn");
+            globalEventIndex = event_index;
+            globalScheduleId = globalEvents[event_index.split('-')[1]].schedule_id;
+            console.log(globalScheduleId)
+            $.ajax({
+                url: '/schedule/delete',
+                method: "POST",
+                data: {
+                    schedule_id: globalScheduleId
+                },
+                dataType: 'json',
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                            message: "Event reopened!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el="#reopen_event_btn");
+                    loading(1);
+                    getSchedules();
+                    initCalendar();
+                    return  $('#conduct_event-modal').modal('hide');
+                }
+            })
+        }
+
+        
+        function showEditEventModal(event_index){
+            globalEventIndex = event_index;
+            globalEventId = globalEvents[event_index.split('-')[1]].event_id;
+            var description = globalEvents[event_index.split('-')[1]].description;
+            
+            showCurrentMembers();
+            $('#new_event_description').html(description)
+            $('#edit_event-modal').modal('show');
+        }
+
+
+        function showCurrentMembers() {
+            var members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+           
+            var membersHTML = '';
+            var i = 0;
+            members.forEach((m) => {
+                console.log(m)
+                membersHTML += `
+                <tr>
+                    <th scope="row">${i + 1}</th>
+                    <td>${m.first_name} ${m.last_name}</td>
+                    <td class="text-center"> <input type="radio" ${m.status ? 'checked' : ''} class="form-check-input member-${i}-status" name="member-${i}-status"
+                            value="1"></td>
+                    <td class="text-center"> <input type="radio" ${!m.status ? 'checked' : ''}  class="form-check-input member-${i}-status" name="member-${i}-status"
+                            value="0"></td>
+                </tr>
+                `
+                i++;
+            });
+            if (!members.length) membersHTML = '<div class="alert alert-light">No members.</div>'
+            $('#new_event_members').html(membersHTML);
+        }
+        
+
+
+        function editEvent() {
+            loading(2, el = "#edit_event_btn")
+            var description = $("#new_event_description").val().trim();
+            var members_data = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
+            var schedule_id = globalEvents[globalEventIndex.split('-')[1]].schedule_id;
+            let i = 0;
+
+            members_data.forEach((m) => {
+                var member_status = Number($('#new_event_members input[name="member-' + i + '-status"]:checked').val());
+                
+                if (!member_status && member_status !=0) {
+                    return
+                }
+                m.status = member_status;
+                i++;
+            });
+     
+            if (i != members_data.length ) {
+                loading(20, el="#edit_event_btn");
+                return $.ambiance({
+                    message: 'Please fill in all fields!',
+                    type: 'error',
+                    fade: true,
+                    width: 400
+                });
+            }
+            globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(members_data);
+            var eventData = globalEvents[globalEventIndex.split('-')[1]]
+            $.ajax({
+                url: '/schedule/edit',
+                method: "POST",
+                data: {
+                    description: description,
+                    schedule_id: schedule_id,
+                    members: JSON.stringify(members_data),
+                },
+                dataType: 'json',
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                            message: "Event edited!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el="#edit_event_btn");
+                  
+                    return  $('#edit_event-modal').modal('hide');
+                }
+            })
+
+        }
+
+        function rescheduleEvent(){
+            loading(2, el = "#reschedule_event_btn")
+            var event_date = $("#reschedule_event_date").val();
+            var event_time = $("#reschedule_time").val();
+        
+            var eventData = globalEvents[globalEventIndex.split('-')[1]];
+
+            $.ajax({
+                url: '/schedule/reschedule',
+                method: "POST",
+                data: {
+                    repetition: eventData.repetition,
+                    event_name: eventData.event_name,
+                    time: event_time,
+                    event_date: event_date,
+                    week_day: eventData.week_day,
+                    coach_id: eventData.coach_id,
+                    coach_name: eventData.coach_name,
+                    members: eventData.members,
+                    event_id: eventData.event_id,
+                },
+                dataType: 'json',
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                            message: "Event rescheduled!",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el="#reschedule_event_btn");
+                    cancelEvent();
+                    return  $('#cancel_event-modal').modal('hide');
+                }
+            });
         }
 
 

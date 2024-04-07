@@ -411,12 +411,10 @@
                 success: function (data) {
                     globalEvents = data
                     var i = 0;
-                    console.log(data)
+                    eventsHTML = '';
                     data.forEach((ed) => {
-                      
-                        const formattedDate = new Date(ed.event_date).toLocaleString('default', { month: 'long', day: 'numeric' })
-                        
-                        let eventDiv = `
+                        var formattedDate = new Date(ed.event_date).toLocaleString('default', { month: 'long', day: 'numeric' })
+                        eventsHTML += `
                             <div class="event" id="event-${i}"> 
                                 <div class="date_time"><b>${ed.event_date ? formattedDate : (ed.week_day.charAt(0).toUpperCase() + ed.week_day.slice(1))} ${ed.time}</b></div>
                                 <div class="event_name text-center">${ed.event_name}</div>
@@ -436,8 +434,8 @@
                             </div>
                             `
                         i++;
-                        $('.events').append(eventDiv);
                     });
+                    $('.events').html(eventsHTML);
                 },
                 error: function (e) {
                     console.log(e);
@@ -451,7 +449,7 @@
         }
 
         function addEvent() {
-            loading(2, el = "add_event_btn");
+            loading(2, el = "#add_event_btn");
             let repetition = $("#repetition").val();
             let event_name = $("#event_name").val();
             let event_type = $("#event_type").val();
@@ -470,7 +468,7 @@
                     fade: true,
                     width: 400
                 });
-                return loading(20, el = "add_event_btn");
+                return loading(20, el = "#add_event_btn");
             }
 
             if (coach_id && repetition && event_name && time && (event_date || week_day)) {
@@ -505,7 +503,7 @@
                             });
                             return showEvents();
                         }
-                        loading(20, el = "add_event_btn");
+                        loading(20, el = "#add_event_btn");
                     },
                     error: function (error) {
                         console.error("Error:", error);
