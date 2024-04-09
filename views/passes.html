@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members</title>
+    <title>Passes</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
         <script>
@@ -88,8 +88,8 @@
                             <input type="text" id="pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Amount of attendance</label>
-                            <input type="text" id="pass_attendace" class="form-control" />
+                            <label class="mb-2">Visits number</label>
+                            <input type="text" id="pass_visits_number" class="form-control" />
                         </div>
                     </form>
                 </div>
@@ -113,20 +113,20 @@
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
                             <label class="mb-2">Section name</label>
-                            <input type="text" id="new_section_name" class="form-control" />
+                            <input type="text" id="new_pass_section" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Last Name</label>
+                            <label class="mb-2">Price</label>
                             <input type="text" id="new_pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Phone Number</label>
-                            <input type="text" id="new_pass_attendance" class="form-control" />
+                            <label class="mb-2">Visits number</label>
+                            <input type="text" id="new_pass_visits_number" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="edit_member_btn" class="btn btn-primary px-md-4"
+                    <button type="button" id="edit_pass_btn" class="btn btn-primary px-md-4"
                         onclick="editPass()">Edit</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -145,7 +145,7 @@
                     You won't be able to revert this. Are you sure?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="delete_member_btn" class="btn btn-danger px-md-4"
+                    <button type="button" id="delete_pass_btn" class="btn btn-danger px-md-4"
                         onclick="deletePass()">Delete</button>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                 </div>
@@ -242,10 +242,6 @@
             });
         });
 
-        function showAddPassModal() {
-            $('#create_pass-modal').modal('show');
-        }
-
         function showAddLinkModal() {
             $('#create_link-modal').modal('show');
         }
@@ -334,40 +330,31 @@
         }
 
         function showPasses() {
-            var passes = [
-                {
-                    id: '1',
-                    section: 'Бокс',
-                    price: '18000 ₸',
-                    attendance: '18 посещений',
-                },
-                {
-                    id: '2',
-                    section: 'Карате',
-                    price: '16000 ₸',
-                    attendance: '24 посещений'
-                },
-                {
-                    id: '3',
-                    section: 'Групповое',
-                    price: '12000 ₸',
-                    attendance: '16 посещений'
-                }
-            ]
-            globalPasses = passes
-            var passesHTML = '';
-            let i = 0;
-            passes.forEach((p) => {
-                passesHTML += `
-                <div class="pass-card">
-                    <div class="pass-section">
-                        <p>${p.section}</p>
+            $('#passes').html('');
+            $.ajax({
+                url: '/passes/get-all',
+                method: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    globalPasses = data;
+                    var passes_data = data;
+                    console.log(data);
+                    if (!passes_data.length) {
+                        var no_passes = `<div class="no-passes alert alert-secondary w-100">No passes yet</div>`
+                        $('#passes').html(no_passes);
+                        return;
+                    }
+                    let i = 0;
+                    passes_data.forEach((pass) => {
+                        passesHTML = `<div class="pass-card me-4 ms-4" id="p-${i}">
+                    <div class="pass-section pe-1">
+                        <p>${pass.pass_section}</p>
                     </div>
                     <div class="pass-price">
-                        <p>${p.price}</p>
+                        <p>${pass.pass_price}₸</p>
                     </div>
-                    <div class="pass-attendance">
-                        <p>${p.attendance}</p>
+                    <div class="pass-visits-number">
+                        <p>Количество посещений: ${pass.pass_visits_number}</p>
                     </div>
                     <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="more_icon d-flex">
@@ -381,38 +368,169 @@
                         <a class="dropdown-item" href="#" onclick="showDeletePassModal('p-${i}')">Delete</a>
                     </div>
 
-                </div>`
-                i++;
-            })
-
-            $('#passes').html(passesHTML);
+                </div>`;
+                        i++;
+                        $('#passes').append(passesHTML);
+                    });
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
         }
 
+        function showAddPassModal() {
+            $('#create_pass-modal').modal('show');
+        }
+
+        function createPass() {
+            let pass_section = $('#pass_section').val().trim();
+            let pass_price = $('#pass_price').val().trim();
+            let pass_visits_number = $('#pass_visits_number').val().trim();
+
+            if(!(pass_section && pass_price && pass_visits_number)) {
+                $.ambiance({
+                    message: "Please fill in all fields.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+
+            loading(2, el = '#add_pass_btn');
+
+            $.ajax({
+                url: '/passes/create', 
+                method: 'post', 
+                data: {
+                    pass_section: pass_section,
+                    pass_price: pass_price,
+                    pass_visits_number: pass_visits_number
+                },
+                success: function(r) {
+                    showPasses();
+                    $('#pass_section').val('');
+                    $('#pass_price').val('');
+                    $('#pass_visits_number').val('');
+                    $('#create_pass-modal').modal('hide');
+                    loading(20, el = '#add_pass_btn');
+                    $.ambiance({
+                        message: "Pass added!",
+                        type: "success",
+                        fade: true
+                    });
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        }
 
         function showEditPassModal(pass_index) {
             let pass_data = globalPasses[pass_index.split('-')[1]];
-            globalPassId = pass_data.id;
+            globalPassId = pass_data.pass_id;
             globalPassIndex = pass_index
-            $('#new_section_name').val(pass_data.section_name);
+            $('#new_pass_section').val(pass_data.pass_section);
             $('#new_pass_price').val(pass_data.pass_price);
-            $('#new_pass_attendance').val(pass_data.pass_attendance);
+            $('#new_pass_visits_number').val(pass_data.pass_visits_number);
             $('#edit_pass-modal').modal('show');
         }
 
         function editPass() {
+            let pass_section = $('#new_pass_section').val().trim();
+            let pass_price = $('#new_pass_price').val().trim();
+            let pass_visits_number = $('#new_pass_visits_number').val().trim();
 
+            if((!pass_section || !pass_price || !pass_visits_number)) {
+                $.ambiance({
+                    message: "Please fill in all fields.",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+                return;
+            }
+            loading(2, el = '#edit_pass_btn');
+            $.ajax({
+                url: '/passes/edit',
+                method: 'post',
+                data: {
+                    pass_id: globalPassId,
+                    pass_section: pass_section,
+                    pass_price: pass_price,
+                    pass_visits_number: pass_visits_number
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.r == 1) {
+                        loading(20, el = '#edit_pass_btn');
+                        $.ambiance({
+                            message: `Updated successfully!`,
+                            type: "success",
+                            fade: true
+                        });
+                        loading(1);
+                        showPasses();
+                        loading(0);
+                    }  else {
+                        $.ambiance({
+                            message: `Error. Try again later!`,
+                            type: "error",
+                            fade: true
+                        });
+                    }
+                    $('#edit_pass-modal').modal('hide');
+                    loading(20, el = '#edit_pass_btn');
+
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
         }
 
         function showDeletePassModal(pass_index) {
             let pass_data = globalPasses[pass_index.split('-')[1]];
+            console.log(pass_data);
             globalPassIndex = pass_index;
-            globalPassId = pass_data.id;
+            globalPassId = pass_data.pass_id;
             $('#delete_pass-modal').modal('show');
         }
 
-        function deletePass() {
 
+        function deletePass() {
+            loading(2, el = '#delete_pass_btn');
+            $.ajax({
+                url: "/passes/delete",
+                method: 'post',
+                data: { pass_id: globalPassId },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.r == 1) {
+                        loading(20, el = '#delete_pass_btn');
+                        $.ambiance({
+                            message: `Deleted successfully`,
+                            type: "success",
+                            fade: true
+                        });
+                        $(`#${globalPassIndex}`).remove();
+                    }  else {
+                        $.ambiance({
+                            message: `Error. Try again later!`,
+                            type: "error",
+                            fade: true
+                        });
+                    }
+                    $('#delete_pass-modal').modal('hide');
+                    loading(20, el = '#delete_pass_btn');
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
         }
+
 
     </script>
 </body>

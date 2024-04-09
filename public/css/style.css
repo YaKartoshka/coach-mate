@@ -1659,7 +1659,6 @@ body {
 .passes-content-body {
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 .pass-card {
@@ -1669,12 +1668,12 @@ body {
     position: relative;
     background-color: white;
     border-radius: 5px;
-    flex: 0.29;
+    flex: 0.33;
     padding: 25px 20px 10px;
 }
 
 .pass-section {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .pass-price {
@@ -1682,7 +1681,7 @@ body {
     color: #0066FF;
 }
 
-.pass-attendance {
+.pass-visits-number {
     font-size: 16px;
 }
 

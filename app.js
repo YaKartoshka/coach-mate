@@ -20,7 +20,7 @@ var settings = require('./routes/settings');
 var profile = require('./routes/profile');
 var schedule = require('./routes/schedule');
 var passes = require('./routes/passes');
-var passes = require('./routes/competitions');
+var competitions = require('./routes/competitions');
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
@@ -59,7 +59,7 @@ app.use('/events', events);
 app.use('/settings', settings);
 app.use('/schedule', schedule);
 app.use('/passes', passes);
-app.use('/competitions', passes);
+app.use('/competitions', competitions);
 
 
 module.exports = app;
