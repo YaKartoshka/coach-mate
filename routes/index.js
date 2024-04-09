@@ -58,6 +58,11 @@ router.get('/profile', isAuthenticated, (req, res) => {
 
 router.get('/passes', isAuthenticated, (req, res) => {
     res.render('passes', {role: req.session.role})
-})
+});
+
+router.get('/competitions', isAuthenticated, (req, res) => {
+    res.render('competitions', {role: req.session.role});
+});
+
 
 module.exports = router;

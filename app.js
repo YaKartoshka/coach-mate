@@ -10,7 +10,6 @@ var passport = require('passport');
 // -------- routes --------
 var index = require('./routes/index');
 var users = require('./routes/users');
-var coachers = require('./routes/coachers');
 var auth = require('./routes/auth');
 var news = require('./routes/news');
 var links = require('./routes/links');
@@ -20,8 +19,8 @@ var events = require('./routes/events');
 var settings = require('./routes/settings');
 var profile = require('./routes/profile');
 var schedule = require('./routes/schedule');
-var passes = require('./routes/passes')
-
+var passes = require('./routes/passes');
+var passes = require('./routes/competitions');
 //html ejs
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
@@ -55,13 +54,12 @@ app.use('/auth', auth);
 app.use('/news', news);
 app.use('/links', links);
 app.use('/users', users);
-app.use('/coachers', coachers);
 app.use('/joins', joins);
 app.use('/events', events);
 app.use('/settings', settings);
 app.use('/schedule', schedule);
 app.use('/passes', passes);
-
+app.use('/competitions', passes);
 
 
 module.exports = app;

@@ -1667,6 +1667,7 @@ body {
     flex-direction: column;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     position: relative;
+    background-color: white;
     border-radius: 5px;
     flex: 0.29;
     padding: 25px 20px 10px;
@@ -1704,6 +1705,38 @@ body {
 }
 
 /* End of Passes Page */
+
+
+/* Competitions Page */
+
+
+#competitions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.competition{
+    width: 270px;
+    padding:15px;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.competition img{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.competition .date{
+    font-size: 14px;
+}
+
+.competition .day_left{
+    font-size: 12px;
+}
+
+/* End of Competitions Page */
 
 /* media queries */
 
