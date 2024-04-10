@@ -1737,6 +1737,18 @@ body {
 
 /* End of Competitions Page */
 
+
+/* Competition Page */
+
+.competition-content{
+    padding: 30px;
+    flex: 0.90;
+    font-family: InterReg;
+    margin-top: 50px;
+}
+
+/* End of Competition Page */
+
 /* media queries */
 
 @media screen and (max-width: 1000px) {

@@ -11,17 +11,31 @@ function isAuthenticated(req, res, next) {
 
 router.post('/create', isAuthenticated, async (req, res) => {
     var r = { r: 0 };
-    const { repetition, event_name, time, event_date, week_day, coach_id, coach_name } = req.body;
-    console.log(req.body)
-    if (!repetition || !event_name || !time || !coach_id) {
-        return res.status(400).send('All fields are required.');
+    const { event_name, organizer_name, description, city, address, normal_start_date, normal_end_date, late_start_date, late_end_date, event_start, event_time, phone_number, email, entries } = req.body;
+ 
+    if (!event_name || !organizer_name || !description || !city || !address || !normal_start_date || !normal_end_date || !event_start || !phone_number || !email) {
+        return res.send(JSON.stringify(r));
     }
 
     await fdb.collection('competitions').add({
         event_name: event_name,
-        time: time,
-        event_date: event_date,
-       
+        organizer_name: organizer_name,
+        description: description,
+        city: city,
+        address: address,
+        normal_registration: {
+            start_date: normal_start_date,
+            end_date: normal_end_date
+        },
+        late_registration: {
+            start_date: late_start_date,
+            end_date: late_end_date
+        },
+        event_start: event_start,
+        event_time: event_time,
+        phone_number: phone_number,
+        email: email,
+        entries: entries
     }).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
@@ -42,12 +56,12 @@ router.post('/get-all', isAuthenticated, async (req, res) => {
 
 router.get('/:id', isAuthenticated, async (req, res) => {
     const comp_id = req.params.id;
-    
-    await fdb.collection('competitions').doc(comp_id).get().then((doc) => {
-        if (!doc.exists) {
+
+    await fdb.collection('competitions').doc(comp_id).get().then((comp) => {
+        if (!comp.exists) {
             return res.render('error');
         }
-        res.render('competitions', {comp_data: { ...comp.data(), comp_id: comp.id }})
+        res.render('competition', { comp_data: { ...comp.data(), comp_id: comp.id }, role: req.session.role })
     });
 });
 

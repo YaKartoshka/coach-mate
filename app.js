@@ -61,6 +61,9 @@ app.use('/schedule', schedule);
 app.use('/passes', passes);
 app.use('/competitions', competitions);
 
+app.use((req, res, next) => {
+    res.status(404).render('error')
+});
 
 module.exports = app;
 

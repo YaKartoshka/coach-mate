@@ -37,74 +37,34 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="passes-content">
-                <div class="passes-content-head">
-                    <h1>Competitions</h1>
-                    <% if (role=='admin' ) { %>
-                        <button data-bs-toggle="modal" onclick="showAddPassModal()" data-bs-target="#create_news-modal"
-                            class="btn btn-primary d-flex pe-4 ps-4"><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 700;">add</span>Add</button>
-                        <% } %>
-
-                </div>
-                <div class="divider"></div>
-                <div class="competitions-content-body mt-5 ms-3 me-3" id="competitions">
-                    <div class="competition">
-                        <img src="https://smoothcomp.com/pictures/t/3454392-6hjb/qazaq-batyry-kids-open-2023.jpg"
-                            alt="">
-                        <h4 class="mt-2">Qazaq Batyry Kids Open</h4>
-                        <div class="location mt-1">Astana</div>
-                        <button class="w-100 btn btn-dark d-flex mt-2">Learn more <span class="material-symbols-outlined">
-                            arrow_right_alt
-                            </span></button>
-                        <div class="date-section d-flex justify-content-between mt-3 align-items-center">
-                            <div class="date">January 20-23</div>
-                            <div class="day_left text-muted">7 days left</div>
+            <div class="container competition-content text-dark">
+                <div class="col">
+                    <div class="row">
+                        <h2>Create event</h2>
+                    </div>
+                    <div class="row">
+                        <div class="row ">
+                            <div class="col-3">
+                                <div class="row">
+                                    <label class="mb-2">Event name</label>
+                                    <input type="text" id="pass_section" class="form-control" />
+                                </div>
+                                <div class="row">
+                                    <label class="mb-2">Section name</label>
+                                    <input type="text" id="pass_section" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <label class="mb-2">Section name</label>
+                                    <input type="text" id="pass_section" class="form-control" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="competition">
-                        <img src="https://smoothcomp.com/pictures/t/3454392-6hjb/qazaq-batyry-kids-open-2023.jpg"
-                            alt="">
-                        <h4 class="mt-2">Qazaq Batyry Kids Open</h4>
-                        <div class="location mt-1">Astana</div>
-                        <button class="w-100 btn btn-dark d-flex mt-2">Learn more <span class="material-symbols-outlined">
-                            arrow_right_alt
-                            </span></button>
-                        <div class="date-section d-flex justify-content-between mt-3 align-items-center">
-                            <div class="date">January 20-23</div>
-                            <div class="day_left text-muted">7 days left</div>
-                        </div>
-                    </div>
-
-                    <div class="competition">
-                        <img src="https://smoothcomp.com/pictures/t/3454392-6hjb/qazaq-batyry-kids-open-2023.jpg"
-                            alt="">
-                        <h4 class="mt-2">Qazaq Batyry Kids Open</h4>
-                        <div class="location mt-1">Astana</div>
-                        <button class="w-100 btn btn-dark d-flex mt-2">Learn more <span class="material-symbols-outlined">
-                            arrow_right_alt
-                            </span></button>
-                        <div class="date-section d-flex justify-content-between mt-3 align-items-center">
-                            <div class="date">January 20-23</div>
-                            <div class="day_left text-muted">7 days left</div>
-                        </div>
-                    </div>
-                  
-
                 </div>
-            </div>
 
-            <div class="ad-content">
-                <div class="hot-links">
-                    <ul class="hot-links-list">
 
-                    </ul>
-                    <% if (role=='admin' ) { %>
-                        <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
-                        <% } %>
-                </div>
             </div>
     </main>
     <footer></footer>
