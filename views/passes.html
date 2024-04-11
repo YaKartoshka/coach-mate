@@ -7,25 +7,6 @@
     <title>Passes</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-        <script>
-            function loading(mode, el = null) {
-                if (mode == 1) {
-                    $(el).html('<img src="/public/images/preloader.svg" class="loader_overlay">');
-                } else if (mode == 2) {
-                    $(el).prepend('<div class="spinner-border"></div> ').attr('disabled', true);
-                } else if (mode == 20) {
-                    setTimeout(function () {
-                        $(el).removeAttr('disabled');
-                        $(el).find('.spinner-border').remove();
-                    }, 500);
-                } else if (mode == 3) {
-                    $(el).append(' <div class="spinner-border"></div>');
-                } else if (mode == 30) {
-                    $(el).find('.spinner-border').remove();
-                }
-            }
-        </script>
-
 </head>
 
 <body>
