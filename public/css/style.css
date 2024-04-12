@@ -1195,7 +1195,7 @@ body {
     padding: 35px;
 }
 
-.container {
+.calendar-content .container {
     position: relative;
     width: 1200px;
     min-height: 850px;
@@ -1740,14 +1740,34 @@ body {
 
 /* Competition Page */
 
-.competition-content{
+.competition-content {
     padding: 30px;
-    flex: 0.90;
     font-family: InterReg;
-    margin-top: 50px;
+    flex: 0.9;
 }
 
+.competition-content-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.competition-content-body {
+    display: flex;
+    align-items: center;
+}
+
+
+
 /* End of Competition Page */
+
+
+
+/* Create Competition Page */
+
+
+
+/* End Of Create Competition Page */
 
 /* media queries */
 
