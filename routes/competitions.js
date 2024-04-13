@@ -9,6 +9,10 @@ function isAuthenticated(req, res, next) {
     next();
 };
 
+router.get('/create', isAuthenticated, (req,res)=>{
+    res.render('competition_create', { role: req.session.role });
+});
+
 router.post('/create', isAuthenticated, async (req, res) => {
     var r = { r: 0 };
     const { event_name, organizer_name, description, city, address, normal_start_date, normal_end_date, late_start_date, late_end_date, event_start, event_time, phone_number, email, entries } = req.body;

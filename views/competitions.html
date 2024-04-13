@@ -7,7 +7,7 @@
     <title>Competitions</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-    
+
 
 </head>
 
@@ -32,8 +32,8 @@
                 </div>
                 <div class="divider"></div>
                 <div class="competitions-content-body mt-5 ms-3 me-3" id="competitions">
-   
-                  
+
+
 
                 </div>
             </div>
@@ -178,6 +178,7 @@
                 method: 'POST',
                 success: function (data) {
                     globalCompetitions = data
+                    console.log(globalCompetitions)
                     var i = 0;
                     eventsHTML = '';
                     data.forEach((comp) => {
@@ -188,12 +189,14 @@
                                     alt="">
                                 <h4 class="mt-2">${comp.event_name}</h4>
                                 <div class="location mt-1">${comp.city}</div>
-                                <button class="w-100 btn btn-dark d-flex mt-2">Learn more <span class="material-symbols-outlined">
-                                    arrow_right_alt
+                                <a href="/competitions/${comp.comp_id}">
+                                    <button class="w-100 btn btn-dark d-flex mt-2">Learn more <span class="material-symbols-outlined">
+                                        arrow_right_alt
                                     </span></button>
+                                </a>
                                 <div class="date-section d-flex justify-content-between mt-3 align-items-center">
-                                    <div class="date">January 20-23</div>
-                                    <div class="day_left text-muted">7 days left</div>
+                                    <div class="date">${getMonthAndDay(comp.event_start)}</div>
+                                    <div class="day_left text-muted">${calculateDaysLeft(comp.event_start)} days left</div>
                                 </div>
                             </div>
                             `
@@ -206,6 +209,23 @@
                 }
             });
         }
+
+        function getMonthAndDay(dateString) {
+            const date = new Date(dateString);
+            const month = date.toLocaleString('en-US', { month: 'long' });
+            const day = date.getDate();
+            const result = `${month} ${day}`;
+            return result;
+        }
+
+        function calculateDaysLeft(targetDate) {
+            const targetTime = new Date(targetDate).getTime();
+            const currentTime = new Date().getTime();
+            const difference = targetTime - currentTime;
+            const daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
+            return daysLeft;
+        }
+
 
     </script>
 </body>

@@ -447,7 +447,9 @@ body {
     font-size: 15px;
 }
 
-.sign_up_link:active, .sign_up_link:visited, .sign_up_link:link{
+.sign_up_link:active,
+.sign_up_link:visited,
+.sign_up_link:link {
     color: #545454;
 }
 
@@ -1466,7 +1468,7 @@ body {
     cursor: pointer;
 }
 
-.events .event .event-status{
+.events .event .event-status {
     position: absolute;
     top: -20px;
     left: -15px;
@@ -1474,11 +1476,11 @@ body {
     font-weight: 500;
 }
 
-.event-status-1{
+.event-status-1 {
     box-shadow: 0 0 5px #00FFC2 !important;
 }
 
-.event-status-0{
+.event-status-0 {
     box-shadow: 0 0 5px red !important;
 
 }
@@ -1634,7 +1636,8 @@ body {
 
 /*  Events Page  */
 
-#event_members .member, #new_event_members .member{
+#event_members .member,
+#new_event_members .member {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1693,7 +1696,7 @@ body {
 
 .pass-card::before {
     content: "";
-    background-color:#3793FF;
+    background-color: #3793FF;
     width: 100%;
     height: 5px;
     position: absolute;
@@ -1709,29 +1712,29 @@ body {
 /* Competitions Page */
 
 
-#competitions{
+#competitions {
     display: flex;
     flex-wrap: wrap;
     gap: 50px;
 }
 
-.competition{
+.competition {
     width: 270px;
-    padding:15px;
+    padding: 15px;
     border-radius: 20px;
     background-color: white;
 }
 
-.competition img{
+.competition img {
     width: 100%;
     border-radius: 10px;
 }
 
-.competition .date{
+.competition .date {
     font-size: 14px;
 }
 
-.competition .day_left{
+.competition .day_left {
     font-size: 12px;
 }
 
@@ -1765,7 +1768,38 @@ body {
 
 /* Create Competition Page */
 
+.create_competition_form {
+    padding: 30px;
+    font-family: InterReg;
+    flex: 0.9;
+    margin-top: 30px;
+    background-color: white;
+}
 
+.create_competition_form .selected_image {
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.create_competition_form .selected_image:hover {
+    transition: 0.3s;
+    filter: brightness(70%);
+}
+
+.create_competition_form-footer {
+    margin-top: 6%;
+    position: relative;
+}
+
+.create_competition_form-footer::before {
+    content: "";
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    top: -20px;
+    left: 0;
+}
 
 /* End Of Create Competition Page */
 

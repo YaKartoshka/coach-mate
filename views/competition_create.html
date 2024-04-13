@@ -7,7 +7,7 @@
     <title>Competitions</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-    
+
 
 </head>
 
@@ -20,30 +20,100 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="container competition-content text-dark">
+            <div class="container create_competition_form text-dark rounded">
                 <div class="col">
                     <div class="row">
                         <h2>Create event</h2>
                     </div>
+                    <p class="text-primary mt-5" style="font-size: 18px;">Event Info</p>
                     <div class="row">
-                        <div class="row ">
+                        <div class="row align-items-baseline gap-5">
                             <div class="col-3">
-                                <div class="row">
-                                    <label class="mb-2">Event name</label>
-                                    <input type="text" id="event_name" class="form-control" />
-                                </div>  
-                                <div class="row">
-                                    <label class="mb-2">Organizer name</label>
-                                    <input type="text" id="organizer_name" class="form-control" />
-                                </div>
+
+                                <label class="mb-2 mt-2">Event name</label>
+                                <input type="text" id="event_name" class="form-control" placeholder="Championship" />
+
+                                <label class="mb-2 mt-4">Organizer name</label>
+                                <input type="text" id="organizer_name" class="form-control" placeholder="Organizer" />
+
                             </div>
                             <div class="col-6">
-                                <div class="row">
-                                    <label class="mb-2">Section name</label>
-                                    <input type="text" id="pass_section" class="form-control" />
-                                </div>
-                            </div>  
+
+                                <label class="mb-2">Event preview image</label>
+                                <input type="file" id="event_image" class="form-control file-button w-75" />
+                                <label for="event_image" class="mt-2">
+                                    <img src="/public/images/choose_image.png" class="selected_image" alt=""
+                                        class="w-100">
+                                </label>
+
+                            </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="mb-2 mt-2">Event description</label>
+                            <textarea name="" id="description" class="form-control" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Location</p>
+                    <div class="row align-items-baseline gap-3">
+                        <div class="col-3">
+                            <label class="mb-2">City</label>
+                            <input type="text" id="city" class="form-control" placeholder="Astana" />
+                        </div>
+                        <div class="col-6">
+                            <label class="mb-2 mt-4">Address</label>
+                            <input type="text" id="address" class="form-control" placeholder="Address" />
+                        </div>
+                    </div>
+
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Date Info</p>
+                    <div class="row">
+                        <div class="row align-items-baseline gap-3">
+                            <div class="col-3">
+                                <label class="mb-2">Normal Registration</label>
+                                <input type="date" id="normal_start_date" class="form-control"
+                                    placeholder="Start date" />
+                            </div>
+                            <div class="col-3">
+                                <label class="mb-2 mt-4">&nbsp;</label>
+                                <input type="date" id="normal_end_date" class="form-control" placeholder="End date" />
+                            </div>
+                        </div>
+                        <div class="row align-items-baseline gap-3">
+                            <div class="col-3">
+                                <label class="mb-2">Late Registration</label>
+                                <input type="date" id="late_start_date" class="form-control" placeholder="Start date" />
+                            </div>
+                            <div class="col-3">
+                                <label class="mb-2 mt-4">&nbsp;</label>
+                                <input type="date" id="late_end_date" class="form-control" placeholder="End date" />
+                            </div>
+                        </div>
+                        <div class="row align-items-baseline gap-5">
+                            <div class="col-3 mt-4">
+                                <label class="mb-2">Event starts</label>
+                                <input type="date" id="event_start" class="form-control" placeholder="Astana" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Contacts</p>
+                    <div class="row align-items-baseline gap-3">
+                        <div class="col-3">
+                            <label class="mb-2">Phone Number</label>
+                            <input type="text" id="phone_number" class="form-control" placeholder="+77" />
+                        </div>
+                        <div class="col-6">
+                            <label class="mb-2 mt-4">Email</label>
+                            <input type="text" id="email" class="form-control" placeholder="coachmate@gmail.com" />
+                        </div>
+                    </div>
+                    <div class="create_competition_form-footer">
+
+                        <button type="button" id="create_competition_btn" class="btn btn-outline-primary px-5 py-2"
+                            onclick="createCompetion()"> Save changes</button>
                     </div>
                 </div>
 
@@ -53,37 +123,7 @@
     <footer></footer>
 
     <!-- MODALS -->
-    <div class="modal fade" id="create_pass-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add new pass</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form autocomplete="off">
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Section name</label>
-                            <input type="text" id="pass_section" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Price</label>
-                            <input type="text" id="pass_price" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Amount of attendance</label>
-                            <input type="text" id="pass_attendace" class="form-control" />
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="add_competition_btn" class="btn btn-primary px-md-4"
-                        onclick="createCompetition()">Add</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <div class="modal fade" id="create_link-modal">
         <div class="modal-dialog">
@@ -209,6 +249,38 @@
                     console.log(e);
                 }
             });
+        }
+
+        function createCompetion() {
+            var eventData = {
+                eventName: $("#event_name").val().trim(),
+                organizerName: $("#organizer_name").val().trim(),
+                eventImage: $("#event_image").val().trim(),
+                eventDescription: $("#description").val().trim(),
+                city: $("#city").val().trim(),
+                address: $("#address").val().trim(),
+                normalStartDate: $("#normal_start_date").val().trim(),
+                normalEndDate: $("#normal_end_date").val().trim(),
+                lateStartDate: $("#late_start_date").val().trim(),
+                lateEndDate: $("#late_end_date").val().trim(),
+                eventStart: $("#event_start").val().trim(),
+                phoneNumber: $("#phone_number").val().trim(),
+                email: $("#email").val().trim()
+            };
+
+            // Check for empty values
+            for (var key in eventData) {
+                if (eventData.hasOwnProperty(key) && eventData[key] === "") {
+                    return $.ambiance({
+                        message: "Fill in required fields",
+                        type: "error",
+                        fade: true,
+                        width: 400
+                    });
+                    // Exit the function if any field is empty
+                }
+            }
+
         }
 
     </script>

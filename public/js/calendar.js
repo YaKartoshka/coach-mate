@@ -12,8 +12,8 @@ const calendar = document.querySelector(".calendar"),
 
 let today = new Date();
 let activeDay;
-let aciveMonth;
-let activeYear;
+let aciveMonth = today.getMonth() + 1;
+let activeYear = today.getFullYear();
 let month = today.getMonth();
 let year = today.getFullYear();
 var first_init = true;
@@ -98,6 +98,8 @@ function initCalendar() {
     }
   }
   if(!first_init){
+    console.log(activeDay)
+ 
     showEvents(activeDay, aciveMonth, activeYear);
    }
 
@@ -263,6 +265,7 @@ function showEvents(week_day, month, year) {
   week_day = week_day < 10 ? `0${week_day}` : week_day
   month = month < 10 ? `0${month}` : month
   globalDate = `${year}-${month}-${week_day}`;
+  
   var dayOfWeek = getDayName(myDate)
   let i = 0;
  
@@ -445,11 +448,7 @@ function hasDuplicate(event) {
   const eventWeekDay = event.week_day;
   const eventDate = event.event_date;
   const eventTime = event.time;
-
-
-
   let count = 0;
-
   for (var e of events) {
       if (e.event_id == event.event_id && globalDate == e.event_date && eventTime == e.time) {
           count++;

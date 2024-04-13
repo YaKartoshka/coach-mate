@@ -54,7 +54,7 @@
                             <h3>Late Registration</h3>
                             <p id="late_registration"> 23 Jan - 25 Jan 23:59 </p>
                             <h3>Event starts</h3>
-                            <p id="event_starts">26 Jan 12:00</p>
+                            <p id="event_starts"><%= comp_data.event_start %></p>
                             <button class="btn btn-primary">Register</button>
                         </div>
                     </div>
@@ -107,12 +107,6 @@
                             <div class="competition_entries_block"></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-
-                        </div>
-                        <div class="col"></div>
-                    </div>
                 </div>
             </div>
     </main>
@@ -156,6 +150,9 @@
             });
             loading(1);
             showCompetitions();
+            $("#event_starts").html(getMonthAndDay('<%= comp_data.event_start %>'));
+            $("#normal_registration").html(getMonthAndDay('<%= comp_data.normal_registration.start_date %>') + ' - ' + getMonthAndDay('<%= comp_data.normal_registration.end_date %>') + ' 23:59');
+            $("#late_registration").html(getMonthAndDay('<%= comp_data.late_registration.start_date %>') + ' - ' + getMonthAndDay('<%= comp_data.late_registration.end_date %>') + ' 23:59');
             loading(0);
 
         });
@@ -199,6 +196,15 @@
                 }
             });
         }
+
+        function getMonthAndDay(dateString) {
+            const date = new Date(dateString);
+            const month = date.toLocaleString('en-US', { month: 'long' });
+            const day = date.getDate();
+            const result = `${month} ${day}`;
+            return result;
+        }
+
 
     </script>
 </body>
