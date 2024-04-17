@@ -212,5 +212,35 @@ router.get('/payments', async function (req, res, next) {
     }
 });
 
+router.post('/get', async (req, res) => {
+    var panel_id = req.session.panel_id;
+    try {
+        await fdb.collection('panels').doc(panel_id).get().then((user) => {
+            res.send(JSON.stringify({ ...user.data(), panel_creation_date: user.createTime.toDate() }));
+        });
+    } catch (e) {
+        console.log(e)
+        var r = { r: 0 };
+        res.send(JSON.stringify(r));
+    }
+});
+
+router.post('/update', async (req, res) => {
+    var r = { r: 0 };
+    var panel_name = req.body.panel_name;
+    var panel_id = req.session.panel_id;
+    try {
+        await fdb.collection('panels').doc(panel_id).update({
+            panel_name: panel_name
+        }).then(() => {
+            r['r'] = 1;
+            res.send(JSON.stringify(r));
+        });
+    } catch (e) {
+        console.log(e);
+        res.send(JSON.stringify(r));
+    }
+});
+
 
 module.exports = router;

@@ -33,7 +33,7 @@
                         <div class="panel-header">
                             <div class="panel-name mb-3 mt-3">
                                 <label class="mb-2">Panel name</label>
-                                <input type="text" class="form-control" id="first_name" placeholder="Qazaq Arlany"
+                                <input type="text" class="form-control" id="panel_name" placeholder="Panel name"
                                     required>
                             </div>
                         </div>
@@ -49,14 +49,14 @@
                             </div>
                             <div class="creation-date mb-3 mt-3">
                                 <label class="mb-2">Panel creation date</label>
-                                <input type="text" class="form-control" id="panel_creation_date" value="12.01.2024"
+                                <input type="text" class="form-control" id="panel_creation_date" value="?"
                                     disabled>
                             </div>
                         </div>
 
                         <div class="panel-footer">
                             <div class="save-btn">
-                                <button type="button" class="btn btn-outline-primary" id="panel_save_btn">Save
+                                <button type="button" class="btn btn-outline-primary" id="panel_save_btn" onclick="updatePanelSettings()"> Save
                                     changes</button>
                             </div>
                         </div>
@@ -119,6 +119,7 @@
     <script>
         $(document).ready(function () {
             loading(1);
+            showPanelSettings();
             loading(0);
         });
 
@@ -157,6 +158,46 @@
             });
             tabs.first().click();
         });
+
+        function showPanelSettings(){
+            $.ajax({
+                url: '/settings/get',
+                method: 'POST',
+                dataType: 'json',
+                success: function(res){
+                    $('#panel_name').val(res.panel_name);
+                    $('#panel_creation_date').val(res.panel_creation_date.toString().split('T')[0])
+                }, error: function(e){
+                    console.log(e)
+                }
+            })
+        }
+
+        function updatePanelSettings(){ 
+            loading(2, el='#panel_save_btn');
+
+            var panel_name = $('#panel_name').val();
+
+            $.ajax({
+                url: '/settings/update',
+                method: 'POST',
+                dataType: 'json',
+                data: { panel_name:panel_name },
+                success: function(res){
+                    if(res.r){
+                        $.ambiance({
+                            message: "Panel updated",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el='#panel_save_btn');
+                }, error: function(e){
+                    console.log(e)
+                }
+            })
+        }
 
 
     </script>

@@ -1727,6 +1727,7 @@ body {
 
 .competition img {
     width: 100%;
+    height: 120px;
     border-radius: 10px;
 }
 
@@ -1749,10 +1750,10 @@ body {
     flex: 0.9;
 }
 
-.competition-content-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.nav-tabs .active {
+    background-color: #0d6efd !important;
+    color: white !important;
+    border-radius: 5px !important;
 }
 
 .competition-content-body {
@@ -1768,7 +1769,7 @@ body {
 
 /* Create Competition Page */
 
-.create_competition_form {
+#create_competition_form {
     padding: 30px;
     font-family: InterReg;
     flex: 0.9;
@@ -1776,18 +1777,18 @@ body {
     background-color: white;
 }
 
-.create_competition_form .selected_image {
+#create_competition_form .selected_image {
     transition: 0.3s;
     cursor: pointer;
 }
 
-.create_competition_form .selected_image:hover {
+#create_competition_form .selected_image:hover {
     transition: 0.3s;
     filter: brightness(70%);
 }
 
 .create_competition_form-footer {
-    margin-top: 6%;
+    margin-top: 50px;
     position: relative;
 }
 
@@ -1799,6 +1800,19 @@ body {
     position: absolute;
     top: -20px;
     left: 0;
+}
+
+.competition_entries_block .entries{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.competition_entries_block .entry{
+    background-color: #0066FF;
+    color: white;
+    padding: 7px;
+    border-radius: 4px;
 }
 
 /* End Of Create Competition Page */

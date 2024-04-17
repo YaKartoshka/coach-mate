@@ -28,7 +28,6 @@
                             class="btn btn-primary d-flex pe-4 ps-4"><span class="material-symbols-outlined"
                                 style="font-size: 25px; font-weight: 700;">add</span>Add</button>
                         <% } %>
-
                 </div>
                 <div class="divider"></div>
                 <div class="competitions-content-body mt-5 ms-3 me-3" id="competitions">
@@ -178,14 +177,13 @@
                 method: 'POST',
                 success: function (data) {
                     globalCompetitions = data
-                    console.log(globalCompetitions)
                     var i = 0;
                     eventsHTML = '';
                     data.forEach((comp) => {
                         // var formattedDate = new Date(ed.event_date).toLocaleString('default', { month: 'long', day: 'numeric' })
                         eventsHTML += `
                             <div class="competition" id="competition-${i}">
-                                <img src="${comp.event_image}"
+                                <img src="${comp.event_img}"
                                     alt="">
                                 <h4 class="mt-2">${comp.event_name}</h4>
                                 <div class="location mt-1">${comp.city}</div>

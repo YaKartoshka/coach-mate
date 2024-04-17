@@ -20,7 +20,7 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="container create_competition_form text-dark rounded">
+            <div class="container text-dark rounded" id="create_competition_form">
                 <div class="col">
                     <div class="row">
                         <h2>Create event</h2>
@@ -40,8 +40,8 @@
                             <div class="col-6">
 
                                 <label class="mb-2">Event preview image</label>
-                                <input type="file" id="event_image" class="form-control file-button w-75" />
-                                <label for="event_image" class="mt-2">
+                                <input type="file" id="event_img" class="form-control file-button w-75" />
+                                <label for="event_img" class="mt-2">
                                     <img src="/public/images/choose_image.png" class="selected_image" alt=""
                                         class="w-100">
                                 </label>
@@ -91,10 +91,14 @@
                                 <input type="date" id="late_end_date" class="form-control" placeholder="End date" />
                             </div>
                         </div>
-                        <div class="row align-items-baseline gap-5">
+                        <div class="row align-items-baseline gap-3">
                             <div class="col-3 mt-4">
                                 <label class="mb-2">Event starts</label>
                                 <input type="date" id="event_start" class="form-control" placeholder="Astana" />
+                            </div>
+                            <div class="col-3 mt-4">
+                                <label class="mb-2">Event time</label>
+                                <input type="time" id="event_time" class="form-control" placeholder="Astana" />
                             </div>
                         </div>
                     </div>
@@ -110,10 +114,20 @@
                             <input type="text" id="email" class="form-control" placeholder="coachmate@gmail.com" />
                         </div>
                     </div>
-                    <div class="create_competition_form-footer">
 
-                        <button type="button" id="create_competition_btn" class="btn btn-outline-primary px-5 py-2"
-                            onclick="createCompetion()"> Save changes</button>
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Entries</p>
+                    <div class="row ">
+                        <div class="col">
+                            <div id="entries">
+
+                            </div>
+                            <button class="btn btn-outline-primary mt-2" onclick="addNewEntry()"> + New Entry</button>
+
+                        </div>
+                    </div>
+                    <div class="create_competition_form-footer">
+                        <button type="button" id="create_competition_btn" class="btn btn-primary px-5 py-2"
+                            onclick="createCompetition()"> Save changes</button>
                     </div>
                 </div>
 
@@ -191,6 +205,7 @@
         var globalPasses;
         var globalPassId;
         var globalPassIndex;
+        var globalNewEntryIndex = 1;
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
 
@@ -206,81 +221,138 @@
                 }
             });
             loading(1);
-            showCompetitions();
             loading(0);
 
         });
 
 
-        function showCompetitions() {
-            $.ajax({
-                url: '/events/get',
-                method: 'GET',
-                success: function (data) {
-                    globalEvents = data
-                    var i = 0;
-                    eventsHTML = '';
-                    data.forEach((ed) => {
-                        var formattedDate = new Date(ed.event_date).toLocaleString('default', { month: 'long', day: 'numeric' })
-                        eventsHTML += `
-                            <div class="event" id="event-${i}"> 
-                                <div class="date_time"><b>${ed.event_date ? formattedDate : (ed.week_day.charAt(0).toUpperCase() + ed.week_day.slice(1))} ${ed.time}</b></div>
-                                <div class="event_name text-center">${ed.event_name}</div>
-                                <div class="coach_name">Coach: ${ed.coach_name}</div>
-                                <button class="btn btn-primary mx-5 px-5" onclick="showMembersModal('event-${i}')">Members</button>
-                                <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
-                                    <div class="more_icon d-flex">
-                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
-                                    more_horiz
-                                    </span>
-                                </div>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="showEditEventModal('event-${i}')">Edit</a>
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="showDeleteEventModal('event-${i}')">Delete</a>
-                                </div>
-                            </div>
-                            `
-                        i++;
-                    });
-                    $('.events').html(eventsHTML);
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }
 
-        function createCompetion() {
-            var eventData = {
-                eventName: $("#event_name").val().trim(),
-                organizerName: $("#organizer_name").val().trim(),
-                eventImage: $("#event_image").val().trim(),
-                eventDescription: $("#description").val().trim(),
-                city: $("#city").val().trim(),
-                address: $("#address").val().trim(),
-                normalStartDate: $("#normal_start_date").val().trim(),
-                normalEndDate: $("#normal_end_date").val().trim(),
-                lateStartDate: $("#late_start_date").val().trim(),
-                lateEndDate: $("#late_end_date").val().trim(),
-                eventStart: $("#event_start").val().trim(),
-                phoneNumber: $("#phone_number").val().trim(),
-                email: $("#email").val().trim()
-            };
 
-            // Check for empty values
-            for (var key in eventData) {
-                if (eventData.hasOwnProperty(key) && eventData[key] === "") {
-                    return $.ambiance({
+        function createCompetition() {
+            var competitionData = new FormData();
+            loading(2, el = "#create_competition_btn");
+            if (!$('#event_img')[0].files[0]) {
+                loading(20, el = "#create_competition_btn");
+                $('#event_img').focus();
+                return $.ambiance({
+                    message: "Upload event image",
+                    type: "error",
+                    fade: true,
+                    width: 400
+                });
+            }
+
+
+            var isValid = true;
+
+            $("#create_competition_form input, #create_competition_form textarea").each(function () {
+                if ($(this).val().trim() == "") {
+                    loading(20, el = "#create_competition_btn");
+                    $(this).focus()
+                    $.ambiance({
                         message: "Fill in required fields",
                         type: "error",
                         fade: true,
                         width: 400
                     });
-                    // Exit the function if any field is empty
+                    isValid = false;
+                    return false;
                 }
-            }
+            });
 
+            if (!isValid) return;
+
+
+            var entriesValid = true;
+            $("#entries .row").each(function () {
+                var name = $(this).find("input[type='text']").val();
+                var from = parseInt($(this).find("input[type='number']").eq(0).val());
+                var to = parseInt($(this).find("input[type='number']").eq(1).val());
+
+                if (name && !isNaN(from) && !isNaN(to)) {
+                    competitionData.append("entries[]", JSON.stringify({ name: name, from: from, to: to }));
+                } else {
+                    loading(20, el = "#create_competition_btn");
+                    $.ambiance({
+                        message: "Fill in required fields",
+                        type: "error",
+                        fade: true,
+                        width: 400
+                    });
+                    entriesValid = false;
+                    return false;
+                }
+            });
+
+            if (!entriesValid) return;
+
+
+
+            competitionData.append("event_img", $('#event_img')[0].files[0]);
+            competitionData.append("event_name", $("#event_name").val().trim());
+            competitionData.append("organizer_name", $("#organizer_name").val().trim());
+            competitionData.append("description", $("#description").val().trim());
+            competitionData.append("city", $("#city").val().trim());
+            competitionData.append("address", $("#address").val().trim());
+            competitionData.append("normal_start_date", $("#normal_start_date").val().trim());
+            competitionData.append("normal_end_date", $("#normal_end_date").val().trim());
+            competitionData.append("late_start_date", $("#late_start_date").val().trim());
+            competitionData.append("late_end_date", $("#late_end_date").val().trim());
+            competitionData.append("event_start", $("#event_start").val().trim());
+            competitionData.append("event_time", $("#event_time").val().trim());
+            competitionData.append("phone_number", $("#phone_number").val().trim());
+            competitionData.append("email", $("#email").val().trim());
+
+            $.ajax({
+                url: '/competitions/create',
+                method: 'POST',
+                processData: false,
+                contentType: false,
+                data: competitionData,
+                success: function (res) {
+                    if (res.r) {
+                        $.ambiance({
+                            message: "Competition created",
+                            type: "success",
+                            fade: true,
+                            width: 400
+                        });
+                    } else {
+                        $.ambiance({
+                            message: "Something went wrong",
+                            type: "error",
+                            fade: true,
+                            width: 400
+                        });
+                    }
+                    loading(20, el = "#create_competition_btn");
+                }
+            });
+        }
+
+
+        function addNewEntry() {
+            var entryHTML = `
+                <div id="entry-${globalNewEntryIndex}" class="row align-items-baseline gap-3">
+                    <div class="col-3">
+                        <label class="mb-2">Name</label>
+                        <input type="text" id="entry_name-${globalNewEntryIndex}" class="form-control" placeholder="U7" />
+                    </div>
+                    <div class="col-3">
+                        <label class="mb-2 mt-4">From</label>
+                        <input type="number" id="entry_from-${globalNewEntryIndex}" class="form-control" placeholder="7" />
+                    </div>
+                    <div class="col-3">
+                        <label class="mb-2 mt-4">To</label>
+                        <input type="number" id="entry_to-${globalNewEntryIndex}" class="form-control" placeholder="8" />
+                    </div>
+                    <div class="col-3">
+
+                    </div>    
+                </div>
+            `
+            $('#entries').append(entryHTML);
+            globalNewEntryIndex++;
         }
 
     </script>
