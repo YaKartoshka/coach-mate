@@ -429,6 +429,7 @@ body {
     padding: 6px 6px 6px 6px;
     cursor: pointer;
     height: 30px;
+    transition: 0.3s;
 }
 
 .sign_up_btn {
@@ -438,7 +439,7 @@ body {
 }
 
 .sign_up_btn .google_icon {
-    flex: 0.7;
+    flex: 0.63;
     margin-top: 4px;
 }
 
@@ -451,6 +452,17 @@ body {
 .sign_up_link:visited,
 .sign_up_link:link {
     color: #545454;
+}
+.sign_in_btn:hover, .sign_up_btn:hover {
+    background-color: #DADDE2;
+}
+
+.forgot a {
+    transition: 0.2s;
+}
+
+.forgot a:hover {
+    color: #858585;
 }
 
 :is(.sign_in_btn, .sign_up_btn) img {
@@ -546,7 +558,7 @@ body {
 }
 
 .sign_in_btn .google_icon {
-    flex: 0.7;
+    flex: 0.63;
     margin-top: 4px;
 }
 

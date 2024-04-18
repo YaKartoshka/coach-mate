@@ -45,8 +45,8 @@
             </div>
 
             <div class="switcher">
-                <button id="signUpButton" class="active" onclick="showForm('signUp')">Sign Up</button>
-                <button id="signInButton" onclick="showForm('signIn')">Sign In</button>
+                <button id="signInButton" class="active" onclick="showForm('signIn')">Sign In</button>
+                <button id="signUpButton" onclick="showForm('signUp')">Sign Up</button>
             </div>
 
             <div class="sign_in_form mt-3">
@@ -57,10 +57,10 @@
                 </div>
                 <div class="form">
                     <div class="email">
-                        <input type="text" name="email" id="email" placeholder="Email">
+                        <input type="text" autocomplete="on" name="email" id="email" placeholder="Email">
                     </div>
                     <div class="password">
-                        <input type="password" name="password" id="password" placeholder="Password">
+                        <input type="password" autocomplete="on" name="password" id="password" placeholder="Password">
                         <div class="forgot">
                             <a href="#">Forgot a password ?</a>
                         </div>
@@ -77,7 +77,7 @@
                         <a href="/auth/google_sign_in" class="sign_up_link">
                             <div class="sign_in_btn google">
                                 <div class="google_icon">
-                                    <img src="../public/images/google_icon.png" alt="" width="30">
+                                    <img src="../public/images/google_icon.png" alt="" width="24">
                                 </div>
                                 <div class="google_text">
                                     <p>Continue with Google</p>
@@ -99,10 +99,10 @@
                         <input type="text" autocomplete="on" name="email" id="email" placeholder="Email">
                     </div>
                     <div class="password">
-                        <input type="password" autocomplete="off" name="password" id="password" placeholder="Password">
+                        <input type="password" autocomplete="on" name="password" id="password" placeholder="Password">
                     </div>
                     <div class="rep_password">
-                        <input type="password" autocomplete="off" name="rep_password" id="rep_password"
+                        <input type="password" autocomplete="on" name="rep_password" id="rep_password"
                             placeholder="Repeat password">
                     </div>
                     <div class="sign_up_btn_block">
@@ -117,7 +117,7 @@
                         <a href="/auth/google_sign_up" class="sign_up_link">
                             <div class="sign_up_btn google">
                                 <div class="google_icon">
-                                    <img src="../public/images/google_icon.png" alt="" width="30">
+                                    <img src="../public/images/google_icon.png" alt="" width="24">
                                 </div>
                                 <div class="google_text">
                                     <p>Continue with Google</p>
@@ -142,7 +142,13 @@
     </div>
 
     <script>
-       
+
+        $(document).ready(function () {
+            loading(1);
+            showForm('signIn');
+            loading(0);
+        });
+
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
