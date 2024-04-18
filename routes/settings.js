@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { fdb, admin_fauth } = require("../libs/firebase_db");
-
-
+const stripe = require('stripe')(conf.stripe_sk_key);
 
 async function addCustomer(email, username, cb) {
     var description = ' ';
@@ -34,31 +33,46 @@ async function addCustomer(email, username, cb) {
 
 router.post('/payments', async function (req, res, next) {
     console.log('/payments', req.body.action);
-    var action = req.body.action, r = { r: 200 };
+    var action = req.body.action, r = { r: 1 };
 
     if (action == 'add_payment_method') {
-        getAdminInfo(req.session.panel_id, req.session.user_id, function (u) {
-            addCustomer(u.email, u.user_name, async function (cid) {
+
+        await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(req.session.user_id).get().then((user_data) => {
+            addCustomer(user_data.data().email, user_data.data().first_name, async function (cid) {
                 if (!cid) {
                     r['r'] = 0;
                     res.send(JSON.stringify(r));
                 } else {
+                    console.log(req.body)
+                    console.log(cid)
+
                     const card_number = req.body.card_number;
                     const exp_month = req.body.exp_month;
                     const exp_year = req.body.exp_year;
                     const cvc = req.body.cvc;
                     const name_on_card = req.body.name_on_card;
                     try {
-                        const paymentMethod = await stripe.paymentMethods.create({
-                            type: "card",
-                            card: {
-                                number: card_number,
-                                exp_month: exp_month,
-                                exp_year: exp_year,
-                                cvc: cvc,
-                            },
-                        });
 
+                        const paymentMethod = await stripe.paymentMethods.create({
+                            type: 'card',
+                            card: {
+                                number: '5555555555554444',
+                                exp_month: 8,
+                                exp_year: 2026,
+                                cvc: '314',
+                            },
+                            
+                        });
+                        // const paymentMethod = await stripe.paymentMethods.create({
+                        //     type: "card",
+                        //     card: {
+                        //         number: card_number,
+                        //         exp_month: exp_month,
+                        //         exp_year: exp_year,
+                        //         cvc: cvc
+                        //     },
+                        // });
+                        console.log(paymentMethod)
                         var card_id = paymentMethod.id;
                         const cardAttach = await stripe.paymentMethods.attach(
                             card_id,
@@ -75,16 +89,16 @@ router.post('/payments', async function (req, res, next) {
                             customer: cid,
                             payment_method: card_id,
                             confirm: true,
-                            return_url: 'http://localhost:3104',
+                            return_url: 'http://localhost:4000',
                             automatic_payment_methods: { enabled: true },
                         });
 
                         if (paymentIntent.status == 'succeeded') {
                             var last_digits = card_number.slice(-4);
-                            await fdb.collection('panels').doc(req.session.panel_id).set({
+                            await fdb.collection('panels').doc(req.session.panel_id).update({
                                 last_digits: `${last_digits}`,
                                 expiration_date: `${exp_month}.${exp_year}`,
-                                type: cardAttach.card.brand,
+                                card_type: cardAttach.card.brand,
                                 cid: cid,
                                 name_on_card: name_on_card
                             }).then(() => {
@@ -99,6 +113,7 @@ router.post('/payments', async function (req, res, next) {
                         }
                     } catch (e) {
                         r['r'] = 0;
+                        console.log(e)
                         if (e.raw.code == 'incorrect_number') {
                         } else if (e.raw.code == 'resource_missing') {
                             console.log(e.raw.code, 'or user does not exist');
@@ -106,9 +121,13 @@ router.post('/payments', async function (req, res, next) {
                         res.send(JSON.stringify(r));
                     }
                 }
-            });
-        });
+            })
+
+        })
+
+
     }
+
 
     else
 
@@ -149,7 +168,7 @@ router.post('/payments', async function (req, res, next) {
                         customer: cid,
                         payment_method: card_id,
                         confirm: true,
-                        return_url: 'http://localhost:3104',
+                        return_url: 'http://localhost:4000',
                         automatic_payment_methods: { enabled: true },
                     });
 
@@ -157,7 +176,7 @@ router.post('/payments', async function (req, res, next) {
                         await fdb.collection('panels').doc(req.session.panel_id).update({
                             "last_digits": `${last_digits}`,
                             expiration_date: `${exp_month}.${exp_year}`,
-                            type: cardAttach.card.brand,
+                            card_type: cardAttach.card.brand,
                             cid: cid,
                             name_on_card: name_on_card
                         }).then(() => {
@@ -191,15 +210,16 @@ router.get('/payments', async function (req, res, next) {
     var action = req.query.action, r = { r: 200 };
     try {
         if (action == 'getPaymentMethod') {
-            await fdb.collection('panels').doc(req.session.panel_id).get(async function (data) {
-                if (!data) {
+            await fdb.collection('panels').doc(req.session.panel_id).get().then((panel_data) => {
+                console.log(panel_data)
+                if (!panel_data.data().card_type) {
                     r['r'] = 2;
                     res.send(JSON.stringify(r));
                 } else {
                     var paymentMethod = {
-                        card_type: data.value.type,
-                        last_digits: data.value.last_digits,
-                        expiration_date: data.value.expiration_date,
+                        card_type: panel_data.data().card_type,
+                        last_digits: panel_data.data().last_digits,
+                        expiration_date: panel_data.data().expiration_date,
                     }
                     res.send(JSON.stringify(paymentMethod));
                 }

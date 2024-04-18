@@ -41,22 +41,22 @@
                         <div class="panel-body">
                             <div class="panel-language mb-3 mt-3">
                                 <label class="mb-2">Select language</label>
-                                <select name="" id="">
-                                    <option value="English">English</option>
-                                    <option value="Kazakh">Kazakh</option>
-                                    <option value="Russian">Russian</option>
+                                <select name="" id="language">
+                                    <option value="en">English</option>
+                                    <option value="kz">Kazakh</option>
+                                    <option value="ru">Russian</option>
                                 </select>
                             </div>
                             <div class="creation-date mb-3 mt-3">
                                 <label class="mb-2">Panel creation date</label>
-                                <input type="text" class="form-control" id="panel_creation_date" value="?"
-                                    disabled>
+                                <input type="text" class="form-control" id="panel_creation_date" value="" disabled>
                             </div>
                         </div>
 
                         <div class="panel-footer">
                             <div class="save-btn">
-                                <button type="button" class="btn btn-outline-primary" id="panel_save_btn" onclick="updatePanelSettings()"> Save
+                                <button type="button" class="btn btn-outline-primary" id="panel_save_btn"
+                                    onclick="updatePanelSettings()"> Save
                                     changes</button>
                             </div>
                         </div>
@@ -65,24 +65,26 @@
                         <div class="billing-content">
                             <div class="payment-methods">
                                 <p class="pm-title">Payment methods</p>
-                                <div class="card-info">
-                                    <div class="card-img">
-                                        <img src="../public/images/cards/visa.png" alt="" width="105">
+                                <div class="card-info d-flex gap-3">
+                                    <div>
+                                        <img id="card-img" src="" alt="" width="105">
                                     </div>
                                     <div class="card-data">
-                                        <div class="card-name">
-                                            <p>VISA</p>
+                                        <div id="card-type">
+                                            
                                         </div>
-                                        <div class="card-number">
-                                            <p>****3311</p>
+                                        <div id="card-digits">
+                                          
                                         </div>
-                                        <div class="expiration-date">
-                                            <p>Expires 07.2024</p>
+                                        <div id="card-expiration">
+                                            
                                         </div>
                                     </div>
                                 </div>
                                 <div class="change-payment-button">
-                                    <button>ADD PAYMENT METHOD</button>
+                                    <button type="button" onclick="showAddPaymentModal()" id="add_payment_btn" style="display: none;">ADD PAYMENT METHOD</button>
+                                    <button type="button" onclick="showChangePaymentModal()" id="change_payment_btn" style="display: none;">CHANGE PAYMENT METHOD</button>
+
                                 </div>
                             </div>
                             <div class="billing-history">
@@ -115,8 +117,97 @@
     </main>
 
 
+    <!-- Modals -->
+
+    <div aria-labelledby="add_payment-modal" id="add_payment-modal" class="modal fade hidden"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add payment method</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add_card_form">
+                        <div class="mb-3 mt-3">
+                            <label>Name on Card</label>
+                            <input type="text" class="form-control" id="name_on_card" placeholder="MyCard"
+                                name="name_on_card" required />
+                        </div>
+                        <div class="mb-3 mt-3 card_number-block">
+                            <label for="card_number">Card number</label>
+                            <input type="text" class="form-control" id="card_number" placeholder="1234123412341234"
+                                name="card_number" required />
+                            <div class="card-icon">
+                                <i class="fa fa-credit-card-alt"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3 validity_period-block">
+                            <label for="pwd" inputmode="numeric">Validity period</label>
+                            <input type="text" id="validity_period" class="form-control"
+                                pattern="(0[1-9]|1[0-2])\/[0-9]{2}" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+
+                        <div class="mb-3 cvc-block">
+                            <label for="pwd">CVC</label>
+                            <input type="password" class="form-control" id="cvc" placeholder="132" name="cvc"
+                                required />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="addPayment()">Submit</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div aria-labelledby="change_payment-modal" id="change_payment-modal" class="modal fade hidden" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Change payment method</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add_card_form">
+                        <div class="mb-3 mt-3">
+                            <label for="card_number">Name on Card</label>
+                            <input type="text" class="form-control" id="new_name_on_card" placeholder="My Card"
+                                name="new_name_on_card" required />
+                        </div>
+                        <div class="mb-3 mt-3 card_number-block">
+                            <label>Card number</label>
+                            <input type="text" class="form-control" id="new_card_number" placeholder="1234123412341234"
+                                name="new_card_number" required />
+                            <div class="card-icon">
+                                <i class="fa fa-credit-card-alt"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3 validity_period-block">
+                            <label for="pwd" inputmode="numeric"">Validity period</label>
+						<input 
+						  type=" text" id="new_validity_period" class="form-control" pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
+                                placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="mb-3 cvc-block">
+                            <label for="pwd">CVC</label>
+                            <input type="password" class="form-control" id="new_cvc" placeholder="132" name="new_cvc"
+                                required />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="changePayment()">Submit</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        var globalPaymentData;
         $(document).ready(function () {
             loading(1);
             showPanelSettings();
@@ -140,6 +231,30 @@
                     listItem.removeClass("active");
                 }
             });
+            $.ajax({
+                url: '/settings/payments',
+                method: 'GET',
+                data: { 'action': 'getPaymentMethod' },
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res)
+                    globalPaymentData = res;
+                    if (res.r == 2) {
+                        $('#add_payment_btn').show();
+                    } else {
+                        $('#card-img').attr('src', `/public/images/cards/${res.card_type}.png`);
+                        $('#card-type').text(res.card_type.toUpperCase());
+                        $('#card-digits').text(`•••• ${res.last_digits}`);
+                        $('#card-expiration').text(`Expires ${res.expiration_date}`);
+                        $('#change_payment_btn').show();
+                    }
+                    loading(40, el = 'fieldset[name=payment_methods] legend span');
+                    loading(30, el = '#change_payment_btn');
+                }, error: function(e){
+                    console.log(e)
+                }
+            })
+
         });
 
         $(document).ready(function () {
@@ -159,22 +274,22 @@
             tabs.first().click();
         });
 
-        function showPanelSettings(){
+        function showPanelSettings() {
             $.ajax({
                 url: '/settings/get',
                 method: 'POST',
                 dataType: 'json',
-                success: function(res){
+                success: function (res) {
                     $('#panel_name').val(res.panel_name);
                     $('#panel_creation_date').val(res.panel_creation_date.toString().split('T')[0])
-                }, error: function(e){
+                }, error: function (e) {
                     console.log(e)
                 }
             })
         }
 
-        function updatePanelSettings(){ 
-            loading(2, el='#panel_save_btn');
+        function updatePanelSettings() {
+            loading(2, el = '#panel_save_btn');
 
             var panel_name = $('#panel_name').val();
 
@@ -182,9 +297,9 @@
                 url: '/settings/update',
                 method: 'POST',
                 dataType: 'json',
-                data: { panel_name:panel_name },
-                success: function(res){
-                    if(res.r){
+                data: { panel_name: panel_name },
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
                             message: "Panel updated",
                             type: "success",
@@ -192,11 +307,132 @@
                             width: 400
                         });
                     }
-                    loading(20, el='#panel_save_btn');
-                }, error: function(e){
+                    loading(20, el = '#panel_save_btn');
+                }, error: function (e) {
                     console.log(e)
                 }
             })
+        }
+        const validityIDs = ['validity_period', 'new_validity_period'];
+        const validityPattern = /^(0[1-9]|1[0-2])\/[0-9]{2}$/;
+        validityIDs.forEach(validityID => {
+            const validityInput = document.getElementById(validityID);
+            validityInput.addEventListener('input', function () {
+                let validityValue = this.value;
+                validityValue = validityValue.replace(/\D/g, '');
+
+                if (validityValue.length >= 2) {
+                    validityValue = validityValue.slice(0, 2) + '/' + validityValue.slice(2);
+                }
+
+                this.value = validityValue;
+
+                if (!validityPattern.test(validityValue)) {
+                    this.setCustomValidity('Please enter a valid validity period (MM/YY).');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        })
+
+        function showAddPaymentModal() {
+            $('#add_payment-modal').modal('show');
+        }
+
+
+        function showChangePaymentModal() {
+            $('#change_payment-modal').modal('show');
+            $('#new_name_on_card').val(globalPaymentData.name_on_card);
+            $('#new_card_number').val(globalPaymentData.last_digits);
+            $('#new_validity_period').val(globalPaymentData.expiration_date);
+        }
+
+
+        function addPayment() {
+            var name_on_card = $('#name_on_card').val().trim()
+            var validity_period = $('#validity_period').val().trim().split('/')
+            var exp_month = validity_period[0], exp_year = `20${validity_period[1]}`
+            var card_number = $("#card_number").val().trim();
+            var cvc = $("#cvc").val().trim();
+
+            if (card_number && name_on_card && cvc && validity_period && validity_period[1]) {
+                loading(1);
+                $.ajax({
+                    url: "/settings/payments",
+                    data: {
+                        action: 'add_payment_method',
+                        card_number: card_number,
+                        exp_month: exp_month,
+                        exp_year: exp_year,
+                        cvc: cvc,
+                        name_on_card: name_on_card
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        loading(0);
+                        if (res.r == 1) {
+                            $('#add_payment-modal').modal('hide');
+                            $('#add_payment_btn').prop('disabled', true);
+                            $.ambiance({ message: "Your payment method has been added", title: "Success", type: "success", timeout: 5 });
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2500);
+                        } else {
+                            $.ambiance({ message: "The entered data is incorrect or something is wrong", title: "Error!", type: "error", timeout: 5 });
+                        }
+                    }, error: function (e) {
+                        loading(0);
+                        $.ambiance({ message: "Something went wrong. Please try again later", title: "Error!", type: "error", timeout: 5 });
+                    }
+                });
+            } else {
+                $.ambiance({ message: "All fields are required", title: "Error", type: "error", timeout: 5 });
+            }
+        }
+
+
+        function changePayment() {
+            var name_on_card = $('#new_name_on_card').val().trim()
+            var card_number = $("#new_card_number").val().trim();
+            var validity_period = $('#new_validity_period').val().trim().split('/')
+            var exp_month = validity_period[0], exp_year = `20${validity_period[1]}`
+            var cvc = $("#new_cvc").val().trim();
+            if (card_number && cvc && name_on_card && validity_period && validity_period[1]) {
+                loading(1);
+                $.ajax({
+                    url: "/billingfunc/payments",
+                    data: {
+                        action: 'change_payment_method',
+                        card_number: card_number,
+                        exp_month: exp_month,
+                        exp_year: exp_year,
+                        cvc: cvc,
+                        name_on_card: name_on_card
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        loading(0);
+                        if (res.r == 1) {
+                            $('#change_payment-modal').modal('hide');
+                            $('#change_payment_btn').prop('disabled', true);
+                            $.ambiance({ message: "Your payment method have been changed", title: "Success!", type: "success", timeout: 5 });
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2500);
+                        } else {
+                            $.ambiance({ message: "The entered data is incorrect or something is wrong", title: "Error!", type: "error", timeout: 5 });
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        $.ambiance({ message: "Something went wrong. Please try again later", title: "Error!", type: "error", timeout: 5 });
+                    },
+                });
+            } else {
+                $.ambiance({ message: "All fields are required", title: "Error!", type: "error", timeout: 5 });
+            }
         }
 
 

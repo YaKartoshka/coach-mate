@@ -34,6 +34,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "path": "^0.12.7",
+    "stripe": "^9.16.0",
     "uuid-v4": "^0.1.0",
     "validator": "^13.11.0"
   }
