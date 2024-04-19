@@ -441,6 +441,7 @@ body {
 .sign_up_btn .google_icon {
     flex: 0.63;
     margin-top: 4px;
+    margin-left: 5px;
 }
 
 .sign_up_btn p {
@@ -557,9 +558,10 @@ body {
     width: 280px;
 }
 
-.sign_in_btn .google_icon {
+.sign_in_btn .google_icon{
     flex: 0.63;
     margin-top: 4px;
+    margin-left: 5px;
 }
 
 .sign_in_btn p {

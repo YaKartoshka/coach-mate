@@ -146,6 +146,8 @@
         $(document).ready(function () {
             loading(1);
             showForm('signIn');
+            handleGoogleSignInFailure()
+            handleGoogleSignUpFailure();
             loading(0);
         });
 
@@ -264,6 +266,36 @@
                     console.log(err);
                 }
             });
+        }
+
+        function handleGoogleSignInFailure() {
+            let currentUrl = window.location.href;
+
+            if (currentUrl.includes('status=0')) {
+                const ambianceElement = $('.sign_in_form #ambiance');
+                ambianceElement.html('<p>User not found</p>').addClass('show info');
+                setTimeout(function () {
+                    ambianceElement.removeClass('show info').html('');
+                }, 3000);
+
+                currentUrl = currentUrl.replace('?status=0', '');
+                window.history.replaceState(null, '', currentUrl);
+            }
+        }
+
+
+        function handleGoogleSignUpFailure() {
+            let currentUrl = window.location.href;
+
+            if (currentUrl.includes('status=1')) {
+                const ambianceElement = $('.sign_in_form #ambiance');
+                ambianceElement.html('<p>Email address already in use</p>').addClass('show warning');
+                setTimeout(function () {
+                    ambianceElement.removeClass('show warning').html('');
+                }, 3000);
+                currentUrl = currentUrl.replace('?status=1', '');
+                window.history.replaceState(null, '', currentUrl);
+            }
         }
 
         function showForm(formType) {

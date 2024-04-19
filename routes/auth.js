@@ -180,7 +180,7 @@ router.get(
 
 router.get(
   "/google_sign_up/index",
-  passport.authenticate("google_sign_up", { failureRedirect: "/login" }),
+  passport.authenticate("google_sign_up", { failureRedirect: "/login?status=1" }),
   async function (req, res) {
     const google_id = req.user.id;
     const email = req.user.emails[0].value;
@@ -213,7 +213,7 @@ router.get(
       res.redirect('/');
     }, (err) => {
       if (err.code == 'auth/email-already-in-use') {
-        res.redirect('/login')
+        res.redirect('/login?status=1')
       }
     });
   }
