@@ -1921,6 +1921,39 @@ body {
 
 /* Error page */
 
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 100px auto;
+    font-family: RedHatDisplayMed;
+}
+
+.error-header p {
+    font-size: 170px;
+}
+
+.error-code {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.homepage-button button {
+    border-radius: 30px;
+    padding: 10px 20px;
+    border: none;
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #007bff;
+    transition: 0.4s;
+    /* background: linear-gradient(to bottom left, #408CFF, #00FFC2); */
+}
+
+.homepage-button button:hover {
+    background-color: #004c9d;
+}
+
 
 
 /* End Error page */
