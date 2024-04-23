@@ -37,7 +37,11 @@
                                     required>
                             </div>
                         </div>
-
+                        <div class="mt-2">
+                            <label for="join_link">Join Link</label>
+                            <input type="text" class="form-control w-50" id="join_link" disabled>
+                            <a href="javascript:void(0)" style="font-size: 12px;" onclick="copyLink()">Click to copy</a>
+                        </div>
                         <div class="panel-body">
                             <div class="panel-language mb-3 mt-3">
                                 <label class="mb-2">Select language</label>
@@ -71,19 +75,21 @@
                                     </div>
                                     <div class="card-data">
                                         <div id="card-type">
-                                            
+
                                         </div>
                                         <div id="card-digits">
-                                          
+
                                         </div>
                                         <div id="card-expiration">
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="change-payment-button">
-                                    <button type="button" onclick="showAddPaymentModal()" id="add_payment_btn" style="display: none;">ADD PAYMENT METHOD</button>
-                                    <button type="button" onclick="showChangePaymentModal()" id="change_payment_btn" style="display: none;">CHANGE PAYMENT METHOD</button>
+                                    <button type="button" onclick="showAddPaymentModal()" id="add_payment_btn"
+                                        style="display: none;">ADD PAYMENT METHOD</button>
+                                    <button type="button" onclick="showChangePaymentModal()" id="change_payment_btn"
+                                        style="display: none;">CHANGE PAYMENT METHOD</button>
 
                                 </div>
                             </div>
@@ -119,7 +125,7 @@
 
     <!-- Modals -->
 
-    <div aria-labelledby="add_payment-modal" id="add_payment-modal" class="modal fade hidden"  aria-hidden="true">
+    <div aria-labelledby="add_payment-modal" id="add_payment-modal" class="modal fade hidden" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -250,10 +256,11 @@
                     }
                     loading(40, el = 'fieldset[name=payment_methods] legend span');
                     loading(30, el = '#change_payment_btn');
-                }, error: function(e){
+                }, error: function (e) {
                     console.log(e)
                 }
             })
+
 
         });
 
@@ -274,6 +281,14 @@
             tabs.first().click();
         });
 
+        function copyLink() {
+            $('#join_link').attr('disabled', false);
+            $('#join_link').select();
+            document.execCommand('copy');
+            $('#join_link').blur();
+            $('#join_link').attr('disabled', true);
+        }
+
         function showPanelSettings() {
             $.ajax({
                 url: '/settings/get',
@@ -281,7 +296,10 @@
                 dataType: 'json',
                 success: function (res) {
                     $('#panel_name').val(res.panel_name);
+                    $("#join_link").val(window.location.host + '/join?panel_id=' + res.panel_id)
                     $('#panel_creation_date').val(res.panel_creation_date.toString().split('T')[0])
+
+
                 }, error: function (e) {
                     console.log(e)
                 }

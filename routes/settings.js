@@ -236,7 +236,7 @@ router.post('/get', async (req, res) => {
     var panel_id = req.session.panel_id;
     try {
         await fdb.collection('panels').doc(panel_id).get().then((user) => {
-            res.send(JSON.stringify({ ...user.data(), panel_creation_date: user.createTime.toDate() }));
+            res.send(JSON.stringify({ ...user.data(), panel_creation_date: user.createTime.toDate(), panel_id: panel_id }));
         });
     } catch (e) {
         console.log(e)

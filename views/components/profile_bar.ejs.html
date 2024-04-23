@@ -1,7 +1,7 @@
-<div class="profile">
+<div class="profile" id="dropdown_profile">
     <div id="profile-data">
         <div class="profile-name">Erasyl</div>
-        <img src="https://i.pinimg.com/564x/0a/2f/79/0a2f795becbe7758afdd792f0620bc55.jpg" alt="">
+        <img src="" class="profile-img">
         <div class="profile-dropdown">
             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="6" viewBox="0 0 8 6" fill="none"
                 class="mr-1.5 h-2 w-2 ">
@@ -27,3 +27,21 @@
         </ul>
     </div>
 </div>
+
+<script>
+    function showProfile() {
+            if(sessionStorage.getItem('profile_src'))  $('#dropdown_profile .profile-img').attr('src', sessionStorage.getItem('profile_src'));
+            $.ajax({
+                url: '/users/get', method: 'get', success: function (data) {
+                    var user = JSON.parse(data);
+                    $("#dropdown_profile .profile-name").val(user.first_name);
+                    let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
+                    $('#dropdown_profile .profile-img').attr('src', profile_src)
+                    sessionStorage.setItem('profile_src', profile_src)
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+        showProfile()
+</script>
