@@ -29,6 +29,11 @@
 </div>
 
 <script>
+    
+    $('#profile-data').on('click', () => {
+            $('.dropdown-content').slideToggle(300);
+        });
+
     function showProfile() {
             if(sessionStorage.getItem('profile_src'))  $('#dropdown_profile .profile-img').attr('src', sessionStorage.getItem('profile_src'));
             $.ajax({
