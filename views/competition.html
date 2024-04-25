@@ -33,7 +33,9 @@
         <div class="logo">
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
-        <%- include('./components/profile_bar.ejs.html') %>
+        <% if (role) { %>
+            <%- include('./components/profile_bar.ejs.html') %>
+                <% } %>
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
@@ -49,6 +51,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#participants_info">Participants</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#requests_info">Requests</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#menu2">Brackets</a>
@@ -141,17 +146,19 @@
                         </div>
                     </div>
                     <div class="mt-3 tab-pane fade" id="participants_info">
-                       <div class="container bg-white p-3 rounded">
-                        <h2>Participants</h2>
-                        <div class="search position-relative w-100 mt-2">
-                            <input class="form-control me-2 w-100 search-input border-secondary ps-5"
-                                onkeyup="searchProduct(this.value)" type="search" placeholder="Введите" aria-label="Search" />
-                            <img src="/public/images/search-icon.webp" class="position-absolute top-50 translate-middle ps-5" style="height: 12px;">
+                        <div class="container bg-white p-3 rounded">
+                            <h2>Participants</h2>
+                            <div class="search position-relative w-100 mt-2">
+                                <input class="form-control me-2 w-100 search-input border-secondary ps-5"
+                                    onkeyup="searchProduct(this.value)" type="search" placeholder="Введите"
+                                    aria-label="Search" />
+                                <img src="/public/images/search-icon.webp"
+                                    class="position-absolute top-50 translate-middle ps-5" style="height: 12px;">
+                            </div>
                         </div>
-                       </div>
-                       <div class="container bg-white p-3 rounded mt-2" id="participants">
-                            
-                       </div>
+                        <div class="container bg-white p-3 rounded mt-2" id="participants">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,7 +186,7 @@
         var globalPassId;
         var globalPassIndex;
 
-        
+
 
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;

@@ -7,25 +7,7 @@
     <title>Members</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-        <script>
-            function loading(mode, el = null) {
-                if (mode == 1) {
-                    $(el).html('<img src="/public/images/preloader.svg" class="loader_overlay">');
-                } else if (mode == 2) {
-                    $(el).prepend('<div class="spinner-border"></div> ').attr('disabled', true);
-                } else if (mode == 20) {
-                    setTimeout(function () {
-                        $(el).removeAttr('disabled');
-                        $(el).find('.spinner-border').remove();
-                    }, 500);
-                } else if (mode == 3) {
-                    $(el).append(' <div class="spinner-border"></div>');
-                } else if (mode == 30) {
-                    $(el).find('.spinner-border').remove();
-                }
-            }
-        </script>
-
+ 
 </head>
 
 <body>
@@ -46,14 +28,15 @@
                     <div class="search-content-body mt-4">
                         <div class="search-search">
                             <label for="" class="form-label">Name</label>
-                            <input type="text" class="form-control" placeholder="Search by name">
+                            <input type="text" onkeyup="searchByName(this)" class="form-control"
+                                placeholder="Search by name">
                             <br>
                             <label for="" class="form-label">Role</label>
                             <select class="form-select mt-1" onchange="showMembers()" id="roles">
                                 <option value="all">All</option>
                                 <option value="student">Student</option>
                                 <option value="admin">Admin</option>
-                                <option value="box">Coach</option>
+                                <option value="coach">Coach</option>
                             </select>
                         </div>
                     </div>
@@ -214,10 +197,9 @@
             loading(1);
             showMembers();
             showRequests();
-            loading(0);
         });
 
-       
+
 
         $(document).ready(function () {
             var currentUrl = window.location.pathname;
@@ -280,7 +262,10 @@
                         i++;
                         // Append the memberHTML to the "members" div
                         $('.members').append(memberHTML);
+                        
                     });
+                    loading(0);
+
                 }, error: function (err) {
                     console.log(err)
                 }
@@ -304,7 +289,7 @@
                             </div>
                         `;
                     });
-                    
+
                     $('.join_requests').html(requestsHTML);
                 }, error: function (err) {
                     console.log(err)
@@ -453,12 +438,12 @@
             $('#edit_member-modal').modal('show');
         }
 
-        function editMember(){
+        function editMember() {
             let first_name = $('#new_first_name').val().trim();
             let last_name = $('#new_last_name').val().trim();
             let role = $('#new_role').val();
             let phone_number = $('#new_phone_number').val();
-        
+
 
             if ((!role || !first_name || !last_name)) {
                 $.ambiance({
@@ -487,7 +472,7 @@
                         loading(1);
                         showMembers();
                         loading(0);
-                    }  else {
+                    } else {
                         $.ambiance({
                             message: `Error. Try again later!`,
                             type: "error",
@@ -510,7 +495,7 @@
             $('#delete_member-modal').modal('show');
         }
 
-        function deleteMember(){
+        function deleteMember() {
             loading(2, el = '#delete_member_btn');
             $.ajax({
                 url: "/users/delete",
@@ -527,7 +512,7 @@
                             fade: true
                         });
                         $(`#${globalMemberIndex}`).remove()
-                    }  else {
+                    } else {
                         $.ambiance({
                             message: `Error. Try again later!`,
                             type: "error",
@@ -545,9 +530,43 @@
 
 
 
+        function searchByName(ths) {
+            
+            let i = 0;
+            let membersHTML = ''
+            globalMembers.forEach((member) => {
+                let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
+                if (member.first_name.includes(ths.value.trim()) || member.last_name.includes(ths.value.trim())) {
+                    membersHTML += `<div class="member"> 
+                                <div class="member-img"> 
+                                    <img src='${profile_src}' alt="" width="50" height="50">
+                                </div>
+                                <div class="member-info">
+                                    <h3>${member.first_name} ${member.last_name == null ? '' : member.last_name}</h3>
+                                    <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
+                                </div>
+                                <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+                                    <div class="more_icon d-flex">
+                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+                                    more_horiz
+                                    </span>
+                                </div>
+                                </button>
+                                <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="showEditMemberModal('member-${i}')">Edit</a>
+                                <a class="dropdown-item" href="#" onclick="showDeleteMemberModal('member-${i}')">Delete</a>
+                                </div>
+                            </div>`;
+                }
 
-
-
+                i++;
+            });
+            if (!membersHTML) {
+                membersHTML += `
+                        <div class="no_members">No members</div>                        `
+            }
+            $('.members').html(membersHTML);
+        }
 
     </script>
 </body>

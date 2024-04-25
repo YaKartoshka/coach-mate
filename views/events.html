@@ -190,7 +190,7 @@
                     </div>
                     <div id="event_members_block">
                         <div id="event_members" class="d-flex flex-column gap-3">
-                          
+
                         </div>
                     </div>
                 </div>
@@ -229,7 +229,6 @@
         var globalEvents;
         var globalLinkId;
         var globalUsers;
-     
 
         $(document).ready(function () {
             loading(1);
@@ -404,7 +403,7 @@
                 `
                 i++;
             });
-            if(!members.length) membersHTML = '<div class="alert alert-light">No members.</div>'
+            if (!members.length) membersHTML = '<div class="alert alert-light">No members.</div>'
             $('#event_members').html(membersHTML);
             // console.log(globalUsers);
             // console.log(globalEvents);
@@ -435,7 +434,7 @@
                 `
                 i++;
             });
-            if(!newMembers.length) newMembersHTML = '<div class="alert alert-light">No members to add.</div>'
+            if (!newMembers.length) newMembersHTML = '<div class="alert alert-light">No members to add.</div>'
             $('#new_event_members').html(newMembersHTML);
         }
 
@@ -618,14 +617,14 @@
             showNewMembers();
         }
 
-        function deleteMember(member_id, index){
+        function deleteMember(member_id, index) {
             $("#save_members_btn").show();
             $(`#member-${index}`).remove();
             let members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members)
             let updated_members = members.filter((user) => {
                 return user.id != member_id;
             });
-    
+
             globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(updated_members);
             showMembers();
         }
@@ -635,7 +634,7 @@
             $.ajax({
                 url: '/events/members/update',
                 method: 'POST',
-                data: { event_id: globalEventId, members: globalEvents[globalEventIndex.split('-')[1]].members},
+                data: { event_id: globalEventId, members: globalEvents[globalEventIndex.split('-')[1]].members },
                 dataType: 'json',
                 success: function (res) {
                     if (res.r) {

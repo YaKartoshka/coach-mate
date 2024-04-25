@@ -2,6 +2,7 @@
     <ul>
         <li class=""><a href="/"><span class="material-symbols-outlined"
                     style="font-size: 25px; font-weight: 500;">home</span>Home</a></li>
+        <% if (role) { %>
         <li><a href="/members"><span class="material-symbols-outlined"
                     style="font-size: 25px; font-weight: 500;">group</span>Members</a></li>
         <li><a href="/schedule"><span class="material-symbols-outlined"
@@ -18,5 +19,10 @@
                     style="font-size: 25px; font-weight: 500;">confirmation_number</span>Passes</a></li>
         <li><a href="/competitions"><span class="material-symbols-outlined"
                     style="font-size: 25px; font-weight: 500;">trophy</span>Competitions</a></li>
+        <% } else {%>
+            <li><a href="/login"><span class="material-symbols-outlined"
+                style="font-size: 25px; font-weight: 500;">login</span>Login</a></li>
+        <% } %>
+
     </ul>
 </div>

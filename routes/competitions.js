@@ -96,7 +96,7 @@ router.post('/create', isAuthenticated, upload.single('event_img'), async (req, 
     })
 });
 
-router.post('/get-all', isAuthenticated, async (req, res) => {
+router.post('/get-all', async (req, res) => {
     var data = [];
     const competitions = await fdb.collection('competitions').get();
     competitions.docs.forEach((comp) => {
@@ -105,7 +105,7 @@ router.post('/get-all', isAuthenticated, async (req, res) => {
     res.send(data);
 });
 
-router.get('/:id', isAuthenticated, async (req, res) => {
+router.get('/:id', async (req, res) => {
     const comp_id = req.params.id;
 
     await fdb.collection('competitions').doc(comp_id).get().then((comp) => {

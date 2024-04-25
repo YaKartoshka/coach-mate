@@ -16,7 +16,9 @@
         <div class="logo">
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
-        <%- include('./components/profile_bar.ejs.html') %>
+        <% if (role) { %>
+            <%- include('./components/profile_bar.ejs.html') %>
+        <% } %>
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
@@ -36,8 +38,9 @@
 
                 </div>
             </div>
-
-            <%- include('./components/links_bar.ejs.html') %>
+            <% if (role) { %>
+                <%- include('./components/links_bar.ejs.html') %>
+            <% } %>
     </main>
     <footer></footer>
 
@@ -165,7 +168,7 @@
             const currentTime = new Date().getTime();
             const difference = targetTime - currentTime;
             const daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
-            return daysLeft;
+            return daysLeft > 0 ? daysLeft : 0;
         }
 
 
