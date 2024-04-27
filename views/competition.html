@@ -52,9 +52,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#participants_info">Participants</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#requests_info">Requests</a>
-                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#menu2">Brackets</a>
                             </li>
@@ -75,7 +73,12 @@
                                 <p id="event_starts">
 
                                 </p>
-                                <button class="btn btn-primary">Register</button>
+                                <% if(role=='student' ) { %>
+                                    <button class="btn btn-primary" onclick="showRegisterModal()"
+                                        id="register_btn">Register</button>
+                                    <button class="btn btn-success" id="registered_btn"
+                                        style="display: none;">Registered</button>
+                                    <% } %>
                             </div>
                         </div>
 
@@ -158,12 +161,121 @@
                         </div>
                         <div class="container bg-white p-3 rounded mt-2" id="participants">
 
+
+                            <% if(comp_data.participants.length){ %>
+                                <% let participants=JSON.parse(comp_data.participants) %>
+                                    <% participants.forEach((p, index)=> { %>
+                                        <div
+                                            class="participant d-flex justify-content-between gap-5 align-items-center">
+                                            <img src="https://smoothcomp.com/pictures/t/3419919-sr6f/nurasyl-tayzhanov.jpg"
+                                                alt="" width="75" height="75" class="rounded">
+                                            <div class="name h4">
+                                                <%= p.first_name %>
+                                                    <%= p.last_name %>
+                                            </div>
+                                            <div class="birth">
+                                                <%= p.year_of_birth %>
+                                            </div>
+                                            <div class="academy">
+                                                <%= p.panel_name %>
+                                            </div>
+                                            <div class="entry flex-fill">
+                                                <%= p.entry %>
+                                            </div>
+                                            <% if( user_id==comp_data.organizer_id) { %>
+                                                <div class="actions  flex-fill">
+                                                    <button type="button" class="btn btn-light dropdown-toggle d-flex"
+                                                        data-bs-toggle="dropdown">
+                                                        <div class="more_icon d-flex">
+                                                            <span class="material-symbols-outlined"
+                                                                style="font-size: 25px; font-weight: 900;">
+                                                                more_horiz
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"
+                                                            onclick="showEditParticipantModal(`participant-<%= index %>`)">Edit</a>
+                                                        <a class="dropdown-item" href="#"
+                                                            onclick="showDeleteParticipantModal(`participant-<%= index %>`)">Delete</a>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                        <% }) %>
+                                            <% } %>
                         </div>
                     </div>
                 </div>
             </div>
     </main>
     <footer></footer>
+
+    <!-- Modals -->
+
+    <div class="modal fade" id="register-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Register</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">First Name</label>
+                            <input type="text" class="form-control" id="first_name" placeholder="First name">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" placeholder="Last name">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Year of birth</label>
+                            <input type="number" class="form-control" id="year_of_birth" placeholder="2004">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Entry</label>
+                            <select name="" id="entry" class="form-control">
+                                <option value="none" disable selected>None</option>
+                                <% if(comp_data.entries.length){ %>
+                                    <% comp_data.entries.forEach((entry)=> { %>
+                                        <option value=" <%= JSON.parse(entry).name %>">
+                                            <%= JSON.parse(entry).name %>
+                                        </option>
+                                        <% }) %>
+                                            <% } %>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="register_modal_btn" class="btn btn-primary px-md-4"
+                        onclick="register()">Register</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete_participant-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure? You won't be able to revert this
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete_participant_btn" class="btn btn-danger px-md-4"
+                        onclick="deleteParticipant()">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
@@ -185,7 +297,10 @@
         var globalPasses;
         var globalPassId;
         var globalPassIndex;
-
+        var globalCompetitionId;
+        var globalParticipants = JSON.parse("<%= comp_data.participants %>".replace(/&#34;/g, '"'));
+        var globalParticipantsIndex;
+        var globalParticipantId;
 
 
         $(document).ready(async function () {
@@ -207,6 +322,11 @@
             $("#normal_registration").html(getMonthAndDay('<%= comp_data.normal_registration.start_date %>') + ' - ' + getMonthAndDay('<%= comp_data.normal_registration.end_date %> ') + ' 23:59');
             $("#late_registration").html(getMonthAndDay('<%= comp_data.late_registration.start_date %>') + ' - ' + getMonthAndDay('<%= comp_data.late_registration.end_date %> ') + ' 23:59');
 
+            if(globalParticipants.includes('<%= user_id %>')){
+                $("#register_btn").hide();
+                        $("#registered_btn").show();
+            }
+
             loading(0);
         });
 
@@ -218,6 +338,79 @@
             const day = date.getDate();
             const result = `${month} ${day}`;
             return result;
+        }
+
+        function showRegisterModal() {
+            $("#first_name").val(globalUser.first_name);
+            $("#last_name").val(globalUser.last_name);
+            $('#register-modal').modal('show');
+        }
+
+        function register() {
+            loading(2, el='#register_modal_btn');
+
+            var first_name = $('#first_name').val();
+            var last_name = $('#last_name').val();
+            var year_of_birth = $('#year_of_birth').val(); // Assuming this is a typo and it should be a different ID
+            var entry = $('#entry').val();
+
+
+            if (first_name.trim() == '' || last_name.trim() == '' || year_of_birth.trim() == '' || entry == 'none') {
+                loading(20, el='#register_modal_btn');
+                return $.ambiance({
+                    message: "Please fill in all fields.",
+                    type: "error",
+                    fade: true
+                });
+            }
+
+            $.ajax({
+                url: '/competitions/<%= comp_data.comp_id %>/participant',
+                method: 'POST',
+                data: { action: 'addParticipant', first_name: first_name, last_name: last_name, year_of_birth: year_of_birth, entry: entry },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.r) {
+                        $("#register-modal").modal("hide");
+                        $("#register_btn").hide();
+                        $("#registered_btn").show();
+                    }
+                    loading(20, el='#register_modal_btn');
+                }, error: function (e) {
+                    console.log(e)
+                }
+            })
+        }
+
+        function showDeleteParticipantModal(p_index) {
+            globalParticipantId = globalParticipants[p_index.split('-')[1]].user_id;
+            console.log(globalParticipantId)
+            globalParticipantsIndex = p_index;
+            $('#delete_participant-modal').modal('show');
+
+        }
+
+        function deleteParticipant() {
+            loading(2, el='#delete_participant_btn');
+            $.ajax({
+                url: '/competitions/<%= comp_data.comp_id %>/participant',
+                method: 'POST',
+                data: { action: 'deleteParticipant', user_id: globalParticipantId },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.r) {
+                        $.ambiance({
+                            message: "Deleted succesfully.",
+                            type: "success",
+                            fade: true
+                        });
+                    }
+                    loading(20, el='#delete_participant_btn');
+
+                    $('#delete_participant-modal').modal('hide');
+                    $(`#${globalParticipantsIndex}`).remove();
+                }
+            })
         }
 
 

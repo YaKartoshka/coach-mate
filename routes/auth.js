@@ -65,6 +65,7 @@ router.post("/sign-in", async (req, res) => {
           req.session.user_id = user_id;
           req.session.isAuthenticated = true;
           req.session.panel_id = panel.id;
+          req.session.panel_name = panel.data().panel_name;
           req.session.role = user.data().role;
           res.send(JSON.stringify(r));
         }
@@ -106,6 +107,7 @@ router.post("/sign-up", async (req, res) => {
     req.session.user_id = user_id;
     req.session.isAuthenticated = true;
     req.session.panel_id = new_panel.id;
+    req.session.panel_name = panel.data().panel_name;
     req.session.role = 'admin';
 
     const new_user = await panels.doc(new_panel.id).collection('users').doc(user_id).set({
@@ -156,7 +158,7 @@ router.get(
               req.session.user_id = user.id;
               req.session.isAuthenticated = true;
               req.session.panel_id = panel.id;
-    
+              req.session.panel_name = panel.data().panel_name;
               req.session.role = user.data().role;
               res.redirect('/');
             }
@@ -209,6 +211,7 @@ router.get(
 
       req.session.user_id = user_id;
       req.session.role = 'admin';
+      req.session.panel_name = 'Default'
       req.session.isAuthenticated = true;
       res.redirect('/');
     }, (err) => {

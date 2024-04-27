@@ -29,16 +29,18 @@
 </div>
 
 <script>
+    var globalUser;
     
     $('#profile-data').on('click', () => {
             $('.dropdown-content').slideToggle(300);
-        });
+    });
 
     function showProfile() {
             if(sessionStorage.getItem('profile_src'))  $('#dropdown_profile .profile-img').attr('src', sessionStorage.getItem('profile_src'));
             $.ajax({
                 url: '/users/get', method: 'get', success: function (data) {
                     var user = JSON.parse(data);
+                    globalUser = user
                     $("#dropdown_profile .profile-name").val(user.first_name);
                     let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
                     $('#dropdown_profile .profile-img').attr('src', profile_src)

@@ -54,10 +54,11 @@ router.post('/create', isAuthenticated, upload.single('event_img'), async (req, 
     if (!event_name || !organizer_name || !description || !city || !address || !normal_start_date || !normal_end_date || !event_start || !phone_number || !email) {
         return res.send(JSON.stringify(r));
     }
-  
+
     await fdb.collection('competitions').add({
         event_name: event_name,
         organizer_name: organizer_name,
+        organizer_id: req.session.user_id,
         description: description,
         city: city,
         address: address,
@@ -75,7 +76,7 @@ router.post('/create', isAuthenticated, upload.single('event_img'), async (req, 
         email: email,
         entries: entries,
         event_img: event_img
-    }).then(async(comp) => {
+    }).then(async (comp) => {
         await storage.upload(event_img.path, {
             gzip: true,
             metadata: metadata,
@@ -88,7 +89,7 @@ router.post('/create', isAuthenticated, upload.single('event_img'), async (req, 
             res.send(r);
             fs.unlink(event_img.path, () => { });
         });
-      
+
     }).catch((e) => {
         console.log(e)
         res.send(JSON.stringify(r));
@@ -112,8 +113,60 @@ router.get('/:id', async (req, res) => {
         if (!comp.exists) {
             return res.render('error');
         }
-        res.render('competition', { comp_data: { ...comp.data(), comp_id: comp.id }, role: req.session.role })
+        console.log(comp.data());
+        res.render('competition', { comp_data: { ...comp.data(), comp_id: comp.id }, role: req.session.role, user_id: req.session.user_id })
     });
+});
+
+router.post('/:id/participant', async (req, res) => {
+    var r = { r: 0 };
+    const comp_id = req.params.id;
+    const action = req.body.action;
+
+    if (action == 'addParticipant') {
+        let { first_name, last_name, year_of_birth, entry } = req.body;
+        await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
+            var participants = comp.data().participants;
+            if (!comp.exists) {
+                return res.send(JSON.stringify(r));
+            }
+            
+            if (!participants) {
+                participants = [];
+            } else participants = JSON.parse(participants);
+
+            await fdb.collection('competitions').doc(comp_id).update({
+                participants: JSON.stringify([...participants, { first_name: first_name, last_name: last_name, user_id: req.session.user_id, panel_name: req.session.panel_name, panel_id: req.session.panel_id, year_of_birth: year_of_birth, entry: entry }])
+            }).then(() => {
+                r['r'] = 1;
+                return res.send(JSON.stringify(r));
+            });
+        });
+    }
+
+    else
+
+        if (action == 'deleteParticipant') {
+            let { user_id } = req.body;
+            await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
+                var participants = JSON.parse(comp.data().participants);
+                if (!comp.exists) {
+                    return res.send(JSON.stringify(r));
+                }
+
+                    console.log(user_id)
+                var updated_participants = participants.filter(p=> p.user_id != user_id);
+                console.log(updated_participants)
+                await fdb.collection('competitions').doc(comp_id).update({
+                    participants: JSON.stringify(updated_participants)
+                }).then(() => {
+                    r['r'] = 1;
+                    return res.send(JSON.stringify(r));
+                });
+            });
+        }
+
+
 });
 
 

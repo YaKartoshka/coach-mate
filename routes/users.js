@@ -23,7 +23,7 @@ router.post('/create', async (req, res) => {
     const email = req.body.email;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
-    const password = `${first_name.toLowerCase()}123456`
+    const password = `${first_name.toLowerCase()}123456`;
     const role = req.body.role;
 
 
