@@ -7,6 +7,7 @@
     <title>Competitions</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+    <link rel="stylesheet" href="/public/css/brackets.css">
         <script>
             function loading(mode, el = null) {
                 if (mode == 1) {
@@ -54,7 +55,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#menu2">Brackets</a>
+                                <a class="nav-link" data-bs-toggle="tab" href="#brackets_info">Brackets</a>
                             </li>
                         </ul>
                     </div>
@@ -159,51 +160,21 @@
                                     class="position-absolute top-50 translate-middle ps-5" style="height: 12px;">
                             </div>
                         </div>
-                        <div class="container bg-white p-3 rounded mt-2" id="participants">
+                        <div class="container p-0 rounded mt-2" id="participants">
 
 
-                            <% if(comp_data.participants.length){ %>
-                                <% let participants=JSON.parse(comp_data.participants) %>
-                                    <% participants.forEach((p, index)=> { %>
-                                        <div
-                                            class="participant d-flex justify-content-between gap-5 align-items-center">
-                                            <img src="https://smoothcomp.com/pictures/t/3419919-sr6f/nurasyl-tayzhanov.jpg"
-                                                alt="" width="75" height="75" class="rounded">
-                                            <div class="name h4">
-                                                <%= p.first_name %>
-                                                    <%= p.last_name %>
-                                            </div>
-                                            <div class="birth">
-                                                <%= p.year_of_birth %>
-                                            </div>
-                                            <div class="academy">
-                                                <%= p.panel_name %>
-                                            </div>
-                                            <div class="entry flex-fill">
-                                                <%= p.entry %>
-                                            </div>
-                                            <% if( user_id==comp_data.organizer_id) { %>
-                                                <div class="actions  flex-fill">
-                                                    <button type="button" class="btn btn-light dropdown-toggle d-flex"
-                                                        data-bs-toggle="dropdown">
-                                                        <div class="more_icon d-flex">
-                                                            <span class="material-symbols-outlined"
-                                                                style="font-size: 25px; font-weight: 900;">
-                                                                more_horiz
-                                                            </span>
-                                                        </div>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#"
-                                                            onclick="showEditParticipantModal(`participant-<%= index %>`)">Edit</a>
-                                                        <a class="dropdown-item" href="#"
-                                                            onclick="showDeleteParticipantModal(`participant-<%= index %>`)">Delete</a>
-                                                    </div>
-                                                </div>
-                                                <% } %>
-                                        </div>
-                                        <% }) %>
-                                            <% } %>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-3 tab-pane fade" id="brackets_info">
+                        <div id="add" class="metroBtn">Add Bracket</div>
+                        <div id="clear" class="metroBtn">Clear</div>
+                        <div class="brackets" id="brackets"></div>
+                    </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -258,6 +229,52 @@
         </div>
     </div>
 
+    <div class="modal fade" id="edit_participant-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Participant</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">First Name</label>
+                            <input type="text" class="form-control" id="new_first_name" placeholder="First name">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Last Name</label>
+                            <input type="text" class="form-control" id="new_last_name" placeholder="Last name">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Year of birth</label>
+                            <input type="number" class="form-control" id="new_year_of_birth" placeholder="2004">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="mb-2">Entry</label>
+                            <select name="" id="new_entry" class="form-control">
+                                <option value="none" disable selected>None</option>
+                                <% if(comp_data.entries.length){ %>
+                                    <% comp_data.entries.forEach((entry)=> { %>
+                                        <option value=" <%= JSON.parse(entry).name %>">
+                                            <%= JSON.parse(entry).name %>
+                                        </option>
+                                        <% }) %>
+                                            <% } %>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="edit_participant_btn" class="btn btn-primary px-md-4"
+                        onclick="editParticipant()">Edit</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal fade" id="delete_participant-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -276,7 +293,7 @@
             </div>
         </div>
     </div>
-
+  <!-- END OF MODALS -->
 
     <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
 
@@ -291,7 +308,7 @@
     </script>
 
 
-    <!-- END OF MODALS -->
+    <script src="/public/js/brackets.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         var globalPasses;
@@ -301,7 +318,6 @@
         var globalParticipants = JSON.parse("<%= comp_data.participants %>".replace(/&#34;/g, '"'));
         var globalParticipantsIndex;
         var globalParticipantId;
-
 
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
@@ -317,14 +333,15 @@
                     listItem.removeClass("active");
                 }
             });
+            showParticipants()
             loading(1);
             $("#event_starts").html(getMonthAndDay('<%= comp_data.event_start %>') + ' <%= comp_data.event_time %>');
             $("#normal_registration").html(getMonthAndDay('<%= comp_data.normal_registration.start_date %>') + ' - ' + getMonthAndDay('<%= comp_data.normal_registration.end_date %> ') + ' 23:59');
             $("#late_registration").html(getMonthAndDay('<%= comp_data.late_registration.start_date %>') + ' - ' + getMonthAndDay('<%= comp_data.late_registration.end_date %> ') + ' 23:59');
 
-            if(globalParticipants.includes('<%= user_id %>')){
+            if (JSON.stringify(globalParticipants).includes('<%= user_id %>')) {
                 $("#register_btn").hide();
-                        $("#registered_btn").show();
+                $("#registered_btn").show();
             }
 
             loading(0);
@@ -332,12 +349,38 @@
 
 
 
-        function getMonthAndDay(dateString) {
-            const date = new Date(dateString);
-            const month = date.toLocaleString('en-US', { month: 'long' });
-            const day = date.getDate();
-            const result = `${month} ${day}`;
-            return result;
+
+        function showParticipants() {
+            var participantsHTML = ''
+
+            if (globalParticipants && globalParticipants.length) {
+                const participants = globalParticipants;
+                participants.forEach((p, index) => {
+                    participantsHTML += `
+                        <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
+                        <img src="${p.user_img}" alt="" width="75" height="75" class="rounded">
+                        <div class="name h4 w-25">${p.first_name} ${p.last_name}</div>
+                        <div class="birth">${p.year_of_birth}</div>
+                        <div class="academy">${p.panel_name}</div>
+                        <div class="entry flex-fill">${p.entry}</div>
+                        <% if( user_id == comp_data.organizer_id) { %> 
+                            <div class="actions flex-fill">
+                                <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+                                    <div class="more_icon d-flex">
+                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">more_horiz</span>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" onclick="showEditParticipantModal('participant-${index}')">Edit</a>
+                                    <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('participant-${index}')">Delete</a>
+                                </div>
+                                </div>
+                        <% } %> 
+                        </div>
+                    `;
+                });
+                $('#participants').html(participantsHTML);
+            }
         }
 
         function showRegisterModal() {
@@ -347,16 +390,17 @@
         }
 
         function register() {
-            loading(2, el='#register_modal_btn');
+            loading(2, el = '#register_modal_btn');
 
-            var first_name = $('#first_name').val();
-            var last_name = $('#last_name').val();
-            var year_of_birth = $('#year_of_birth').val(); // Assuming this is a typo and it should be a different ID
+            var first_name = $('#first_name').val().trim();
+            var last_name = $('#last_name').val().trim();
+            var year_of_birth = $('#year_of_birth').val();
             var entry = $('#entry').val();
+            var user_img = $('#profile-data .profile-img').attr('src');
 
 
             if (first_name.trim() == '' || last_name.trim() == '' || year_of_birth.trim() == '' || entry == 'none') {
-                loading(20, el='#register_modal_btn');
+                loading(20, el = '#register_modal_btn');
                 return $.ambiance({
                     message: "Please fill in all fields.",
                     type: "error",
@@ -367,17 +411,66 @@
             $.ajax({
                 url: '/competitions/<%= comp_data.comp_id %>/participant',
                 method: 'POST',
-                data: { action: 'addParticipant', first_name: first_name, last_name: last_name, year_of_birth: year_of_birth, entry: entry },
+                data: { action: 'addParticipant', first_name: first_name, last_name: last_name, year_of_birth: year_of_birth, entry: entry, user_img: user_img },
                 dataType: 'json',
                 success: function (res) {
                     if (res.r) {
                         $("#register-modal").modal("hide");
                         $("#register_btn").hide();
                         $("#registered_btn").show();
+                        globalParticipants.push({ first_name: first_name, last_name: last_name, user_id: res.user_id, panel_name: res.panel_name, panel_id: res.panel_id, year_of_birth: year_of_birth, entry: entry, user_img: user_img })
+                        showParticipants();
                     }
-                    loading(20, el='#register_modal_btn');
+                    loading(20, el = '#register_modal_btn');
                 }, error: function (e) {
                     console.log(e)
+                }
+            })
+        }
+
+        function showEditParticipantModal(p_index) {
+            var participant = globalParticipants[p_index.split('-')[1]];
+            globalParticipantsIndex = p_index;
+            globalParticipantId = globalParticipants[p_index.split('-')[1]].user_id;
+            $('#new_first_name').val(participant.first_name);
+            $('#new_last_name').val(participant.last_name);
+            $('#new_year_of_birth').val(participant.year_of_birth);
+            $('#new_entry').val(participant.entry);
+            $('#edit_participant-modal').modal('show');
+        }
+
+        function editParticipant() {
+            var first_name = $('#new_first_name').val().trim();
+            var last_name = $('#new_last_name').val().trim();
+            var year_of_birth = $('#new_year_of_birth').val();
+            var entry = $('#new_entry').val();
+
+            if (first_name.trim() == '' || last_name.trim() == '' || year_of_birth.trim() == '' || entry == 'none') {
+                loading(20, el = '#register_modal_btn');
+                return $.ambiance({
+                    message: "Please fill in all fields.",
+                    type: "error",
+                    fade: true
+                });
+            }
+
+            loading(2, el = '#edit_participant_btn');
+            $.ajax({
+                url: '/competitions/<%= comp_data.comp_id %>/participant',
+                method: 'POST',
+                data: { action: 'editParticipant', user_id: globalParticipantId, first_name: first_name, last_name: last_name, year_of_birth: year_of_birth, entry: entry },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.r) {
+                        $.ambiance({
+                            message: "Updated succesfully.",
+                            type: "success",
+                            fade: true
+                        });
+
+                    }
+                    loading(20, el = '#edit_participant_btn');
+                    $('#edit_participant-modal').modal('hide');
                 }
             })
         }
@@ -391,7 +484,7 @@
         }
 
         function deleteParticipant() {
-            loading(2, el='#delete_participant_btn');
+            loading(2, el = '#delete_participant_btn');
             $.ajax({
                 url: '/competitions/<%= comp_data.comp_id %>/participant',
                 method: 'POST',
@@ -405,7 +498,7 @@
                             fade: true
                         });
                     }
-                    loading(20, el='#delete_participant_btn');
+                    loading(20, el = '#delete_participant_btn');
 
                     $('#delete_participant-modal').modal('hide');
                     $(`#${globalParticipantsIndex}`).remove();
@@ -413,6 +506,13 @@
             })
         }
 
+        function getMonthAndDay(dateString) {
+            const date = new Date(dateString);
+            const month = date.toLocaleString('en-US', { month: 'long' });
+            const day = date.getDate();
+            const result = `${month} ${day}`;
+            return result;
+        }
 
     </script>
 </body>

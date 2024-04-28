@@ -269,17 +269,20 @@
                                 <div class="event_name text-center">${ed.event_name}</div>
                                 <div class="coach_name">Coach: ${ed.coach_name}</div>
                                 <button class="btn btn-primary mx-5 px-5" onclick="showMembersModal('event-${i}')">Members</button>
-                                <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
-                                    <div class="more_icon d-flex">
-                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
-                                    more_horiz
-                                    </span>
-                                </div>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="showEditEventModal('event-${i}')">Edit</a>
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="showDeleteEventModal('event-${i}')">Delete</a>
-                                </div>
+                                <% if (role=='admin' ) { %>
+                                    <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
+                                        <div class="more_icon d-flex">
+                                        <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+                                        more_horiz
+                                        </span>
+                                        </div>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="showEditEventModal('event-${i}')">Edit</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="showDeleteEventModal('event-${i}')">Delete</a>
+                                    </div>
+                                 <% } %>
+                               
                             </div>
                             `
                         i++;

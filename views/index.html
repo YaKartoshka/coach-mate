@@ -177,22 +177,25 @@
                         var image = $("<img>").attr("src", news.image_url).attr("alt", "");
                         var newsTitle = $("<div>").addClass("news-title");
                         var title = $("<h3>").text(news.title).addClass("clickable-title");
-                        title.on('click', function () {
-                            alert(news.news_id)
-                        });
+                        // title.on('click', function () {
+                        //     alert(news.news_id)
+                        // });
                         var newsContent = $("<div>").addClass("news-content");
                         var dropdownHTML = `
-                        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
+                        <% if (role=='admin' ) { %>
+                            <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
                             <div class="more_icon d-flex">
-                            <span class="material-symbols-outlined d-flex" style="font-size: 25px; font-weight: 900;">
-                            more_horiz
-                            </span>
-                        </div>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" onclick="showEditNewsModal('${news.news_id}')">Edit</a>
-                            <a class="dropdown-item" href="#" onclick="showDeleteNewsModal('${news.news_id}')">Delete</a>
-                        </div>
+                                <span class="material-symbols-outlined d-flex" style="font-size: 25px; font-weight: 900;">
+                                more_horiz
+                                </span>
+                            </div>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="showEditNewsModal('${news.news_id}')">Edit</a>
+                                <a class="dropdown-item" href="#" onclick="showDeleteNewsModal('${news.news_id}')">Delete</a>
+                            </div>
+                        <% } %>
+                       
                         `;
                         var newsText = $("<div>").addClass("news-text").text(news.text);
                         newsTitle.append(title);

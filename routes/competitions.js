@@ -124,7 +124,7 @@ router.post('/:id/participant', async (req, res) => {
     const action = req.body.action;
 
     if (action == 'addParticipant') {
-        let { first_name, last_name, year_of_birth, entry } = req.body;
+        let { first_name, last_name, year_of_birth, entry, user_img } = req.body;
         await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
             var participants = comp.data().participants;
             if (!comp.exists) {
@@ -136,7 +136,46 @@ router.post('/:id/participant', async (req, res) => {
             } else participants = JSON.parse(participants);
 
             await fdb.collection('competitions').doc(comp_id).update({
-                participants: JSON.stringify([...participants, { first_name: first_name, last_name: last_name, user_id: req.session.user_id, panel_name: req.session.panel_name, panel_id: req.session.panel_id, year_of_birth: year_of_birth, entry: entry }])
+                participants: JSON.stringify([...participants, { first_name: first_name, last_name: last_name, user_id: req.session.user_id, panel_name: req.session.panel_name, panel_id: req.session.panel_id, year_of_birth: year_of_birth, entry: entry, user_img: user_img }])
+            }).then(() => {
+                r['r'] = 1;
+                r['user_id'] = req.session.user_id;
+                r['panel_id'] = req.session.panel_id;
+                r['panel_name'] = req.session.panel_name;
+                return res.send(JSON.stringify(r));
+            });
+        });
+    }
+
+    else
+
+    if (action == 'editParticipant') {
+        let { first_name, last_name, year_of_birth, entry, user_id } = req.body;
+        await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
+            var participants = comp.data().participants;
+            if (!comp.exists) {
+                return res.send(JSON.stringify(r));
+            }
+            
+            if (!participants) {
+                participants = [];
+            } else participants = JSON.parse(participants);
+
+            var updated_participants = participants.map(p => {
+                if(p.user_id == user_id){
+                    return {
+                        ...p,
+                        first_name: first_name,
+                        last_name: last_name,
+                        year_of_birth: year_of_birth,
+                        entry: entry
+                    }
+                }
+                return p;
+            });
+
+            await fdb.collection('competitions').doc(comp_id).update({
+                participants: JSON.stringify(updated_participants)
             }).then(() => {
                 r['r'] = 1;
                 return res.send(JSON.stringify(r));
@@ -146,25 +185,25 @@ router.post('/:id/participant', async (req, res) => {
 
     else
 
-        if (action == 'deleteParticipant') {
-            let { user_id } = req.body;
-            await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
-                var participants = JSON.parse(comp.data().participants);
-                if (!comp.exists) {
-                    return res.send(JSON.stringify(r));
-                }
+    if (action == 'deleteParticipant') {
+        let { user_id } = req.body;
+        await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
+            var participants = JSON.parse(comp.data().participants);
+            if (!comp.exists) {
+                return res.send(JSON.stringify(r));
+            }
 
-                    console.log(user_id)
-                var updated_participants = participants.filter(p=> p.user_id != user_id);
-                console.log(updated_participants)
-                await fdb.collection('competitions').doc(comp_id).update({
-                    participants: JSON.stringify(updated_participants)
-                }).then(() => {
-                    r['r'] = 1;
-                    return res.send(JSON.stringify(r));
-                });
+        
+            var updated_participants = participants.filter(p=> p.user_id != user_id);
+        
+            await fdb.collection('competitions').doc(comp_id).update({
+                participants: JSON.stringify(updated_participants)
+            }).then(() => {
+                r['r'] = 1;
+                return res.send(JSON.stringify(r));
             });
-        }
+        });
+    }
 
 
 });

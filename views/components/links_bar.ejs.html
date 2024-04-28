@@ -77,7 +77,13 @@
                     return;
                 }
                 links_data.forEach((link) => {
-                    var list = `<li class="d-flex align-items-center justify-content-between"><a href="${link.link_url}" target="_blank">${link.link_text}</a><span class="material-symbols-outlined" onclick="showDeleteLinkModal('${link.link_id}')">delete</span></li>`;
+                    var list = `
+                    <li class="d-flex align-items-center justify-content-between">
+                        <a href="${link.link_url}" target="_blank">${link.link_text}</a>
+                        <% if (role=='admin' ) { %>
+                        <span class="material-symbols-outlined" onclick="showDeleteLinkModal('${link.link_id}')">delete</span>
+                        <% } %>
+                    </li>`;
                     $(".hot-links-list").append(list);
                 });
             }, error: function (err) {

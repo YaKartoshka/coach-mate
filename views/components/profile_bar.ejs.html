@@ -42,7 +42,7 @@
                     var user = JSON.parse(data);
                     globalUser = user
                     $("#dropdown_profile .profile-name").val(user.first_name);
-                    let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
+                    let profile_src = !user.profile_img ? "/public/images/user_avatar.png" : user.profile_img;
                     $('#dropdown_profile .profile-img').attr('src', profile_src)
                     sessionStorage.setItem('profile_src', profile_src)
                 }, error: function (err) {

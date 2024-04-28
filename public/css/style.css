@@ -1836,7 +1836,7 @@ body {
         align-items: flex-start;
         justify-content: flex-start;
     }
-
+/* 
     .container {
         min-height: 100vh;
         flex-direction: column;
@@ -1854,7 +1854,7 @@ body {
         height: 100%;
         padding: 20px 0;
     }
-
+ */
 
 
     .events {
