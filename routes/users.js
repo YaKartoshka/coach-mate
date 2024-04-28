@@ -25,6 +25,7 @@ router.post('/create', async (req, res) => {
     const last_name = req.body.last_name;
     const password = `${first_name.toLowerCase()}123456`;
     const role = req.body.role;
+    const pass = req.body.pass;
 
 
     await admin_fauth.createUser({
@@ -39,7 +40,8 @@ router.post('/create', async (req, res) => {
             last_name: last_name,
             role: role,
             user_id: userRecord.uid,
-            profile_img: ''
+            profile_img: '',
+            pass: pass
         }).then(() => {
             r['r'] = 1;
             res.send(JSON.stringify(r));
@@ -57,7 +59,7 @@ router.post('/create', async (req, res) => {
 router.get('/get-all', async (req, res) => {
     const panel_id = req.session.panel_id;
     const roles = req.query.roles;
-   
+
     const data = [];
     try {
         if (roles == 'all') {
@@ -70,13 +72,14 @@ router.get('/get-all', async (req, res) => {
                         email: u_doc.data().email,
                         role: u_doc.data().role,
                         profile_img: u_doc.data().profile_img,
-                        phone_number: u_doc.data().phone_number
+                        phone_number: u_doc.data().phone_number,
+                        pass: u_doc.data().pass
                     });
                 });
                 res.send(JSON.stringify(data));
             });
         } else {
-            await fdb.collection('panels').doc(panel_id).collection('users').where('role','==', roles).get().then((users) => {
+            await fdb.collection('panels').doc(panel_id).collection('users').where('role', '==', roles).get().then((users) => {
                 users.forEach((u_doc) => {
                     data.push({
                         id: u_doc.id,
@@ -137,12 +140,14 @@ router.post('/edit', async (req, res) => {
     const last_name = req.body.last_name;
     const phone_number = req.body.phone_number;
     const role = req.body.role;
+    const pass = req.body.pass;
 
     await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update({
         first_name: first_name,
         last_name: last_name,
         phone_number: phone_number,
-        role: role
+        role: role,
+        pass: pass
     }).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
@@ -154,7 +159,7 @@ router.post('/edit', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
     var r = { r: 0 }
-    
+
     const user_id = req.body.user_id;
     await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).delete().then(() => {
         r['r'] = 1;

@@ -96,6 +96,10 @@
                             <label class="mb-2">Last Name</label>
                             <input type="text" id="last_name" class="form-control" />
                         </div>
+                        <div class="mb-3 mt-3" id="pass" style="display: none;">
+                            <label class="mb-2">Pass</label>
+                            <select name="pass_id" id="pass_id" class="form-control"></select>
+                        </div>
                         <div class="mb-3 mt-3">
                             <label class="mb-2">Role</label>
                             <select name="role" class="form-select" id="role">
@@ -135,6 +139,10 @@
                         <div class="mb-3 mt-3">
                             <label class="mb-2">Phone Number</label>
                             <input type="text" id="new_phone_number" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3" id="new_pass" style="display: none;">
+                            <label class="mb-2">Pass</label>
+                            <select name="pass_id" id="new_pass_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3">
                             <label class="mb-2">Role</label>
@@ -193,10 +201,38 @@
         var globalMembers;
         var globalMemberId;
         var globalMemberIndex;
+        var globalPasses;
         $(document).ready(async function () {
             loading(1);
             showMembers();
+            getPasses();
             showRequests();
+
+            function togglePassSelect() {
+                const addRoleSelect = $('#role');
+                const editRoleSelect = $('#new_role');
+                const passFieldAdd = $('#pass');
+                const passFieldEdit = $('#new_pass');
+
+                if (addRoleSelect.val().toLowerCase() == 'student') {
+                    passFieldAdd.show();
+                } else {
+                    passFieldAdd.hide();
+                }
+
+                if (editRoleSelect.val().toLowerCase() == 'student') {
+                    passFieldEdit.show();
+                } else {
+                    passFieldEdit.hide();
+                }
+            }
+
+            $('#role').on('change', togglePassSelect);
+            $('#new_role').on('change', togglePassSelect);
+
+            togglePassSelect();
+
+            loading(0);
         });
 
 
@@ -217,6 +253,30 @@
             });
         });
 
+        function getPasses() {
+            $('#passes').html('');
+            $.ajax({
+                url: '/passes/get-all',
+                method: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    globalPasses = data;
+                }, error: function (err) {
+                    globalPasses = [];
+                    console.log(err);
+                }
+            });
+        }
+
+        async function showPasses() {
+            var passes_data = globalPasses;
+            var passHTML = '<option value="none" disabled selected="true">None</option>'
+            passes_data.forEach((pass) => {
+                passHTML += `<option value="${pass.pass_id}">${pass.pass_section}</option>`;
+            });
+            $('#pass_id').html(passHTML);
+            $('#new_pass_id').html(passHTML);
+        }
 
         function showMembers() {
             $('.members').html('');
@@ -363,6 +423,7 @@
         }
 
         function showAddMemberModal() {
+            showPasses()
             $('#create_member-modal').modal('show');
         }
 
@@ -371,7 +432,9 @@
             let first_name = $('#first_name').val().trim();
             let last_name = $('#last_name').val().trim();
             let role = $('#role').val();
-
+            let pass_id = $('#pass_id').val();
+            let pass_section = $('#pass_id option:selected').text();
+            let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
             if ((!email || !role || !first_name || !last_name)) {
                 $.ambiance({
                     message: "Please provide an email, full name and role for the member.",
@@ -385,7 +448,7 @@
             $.ajax({
                 url: "/users/create",
                 method: 'post',
-                data: { email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase() },
+                data: { user_id: globalMemberId, email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase(), pass: passes_data },
                 success: function (r) {
                     let data = JSON.parse(r);
                     if (data.r == 1) {
@@ -431,18 +494,34 @@
             let member_data = globalMembers[member_index.split('-')[1]];
             globalMemberId = member_data.id;
             globalMemberIndex = member_index
+            showPasses()
             $('#new_first_name').val(member_data.first_name);
             $('#new_last_name').val(member_data.last_name);
+            $('#new_pass_id').val(member_data.pass_id)
             $('#new_phone_number').val(member_data.phone_number);
             $('#new_role').val(member_data.role)
+
+            if (member_data.role == 'student') {
+                $('#new_pass_id').val(JSON.parse(member_data.pass).pass_id)
+            }
+
+            if (member_data.role.toLowerCase() == 'student') { 
+                $('#new_pass').show();
+            } else {
+                $('#new_pass').hide();
+            }
             $('#edit_member-modal').modal('show');
+
         }
 
         function editMember() {
             let first_name = $('#new_first_name').val().trim();
             let last_name = $('#new_last_name').val().trim();
             let role = $('#new_role').val();
+            let pass_id = $('#new_pass_id').val();
+            let pass_section = $('#new_pass_id option:selected').val();
             let phone_number = $('#new_phone_number').val();
+            let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
 
 
             if ((!role || !first_name || !last_name)) {
@@ -458,7 +537,7 @@
             $.ajax({
                 url: "/users/edit",
                 method: 'post',
-                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number },
+                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passes_data },
                 success: function (r) {
                     let data = JSON.parse(r);
                     if (data.r == 1) {
@@ -511,7 +590,7 @@
                             type: "success",
                             fade: true
                         });
-                        $(`#${globalMemberIndex}`).remove()
+                        $(`#${globalMemberIndex}`).remove();
                     } else {
                         $.ambiance({
                             message: `Error. Try again later!`,

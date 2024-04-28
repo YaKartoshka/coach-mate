@@ -1930,6 +1930,23 @@ body {
 
 .error-header p {
     font-size: 170px;
+    background: linear-gradient(to right, #B10031, #007bff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 300% auto;
+    animation: textShine 2s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 .error-code {
@@ -1945,7 +1962,6 @@ body {
     font-weight: bold;
     background-color: #007bff;
     transition: 0.4s;
-    /* background: linear-gradient(to bottom left, #408CFF, #00FFC2); */
 }
 
 .homepage-button button:hover {
