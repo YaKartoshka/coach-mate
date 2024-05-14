@@ -7,6 +7,8 @@ const fs = require('fs');
 const admin = require('firebase-admin');
 const storage = admin.storage().bucket('gs://coach-mate-b8795.appspot.com')
 const uuid = require('uuid-v4');
+const { JsonDatabase } = require('brackets-json-db');
+
 
 const multer_storage = multer.diskStorage({
     destination(req, file, cb) {
@@ -130,7 +132,7 @@ router.post('/:id/participant', async (req, res) => {
             if (!comp.exists) {
                 return res.send(JSON.stringify(r));
             }
-            
+
             if (!participants) {
                 participants = [];
             } else participants = JSON.parse(participants);
@@ -149,64 +151,94 @@ router.post('/:id/participant', async (req, res) => {
 
     else
 
-    if (action == 'editParticipant') {
-        let { first_name, last_name, year_of_birth, entry, user_id } = req.body;
-        await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
-            var participants = comp.data().participants;
-            if (!comp.exists) {
-                return res.send(JSON.stringify(r));
-            }
-            
-            if (!participants) {
-                participants = [];
-            } else participants = JSON.parse(participants);
-
-            var updated_participants = participants.map(p => {
-                if(p.user_id == user_id){
-                    return {
-                        ...p,
-                        first_name: first_name,
-                        last_name: last_name,
-                        year_of_birth: year_of_birth,
-                        entry: entry
-                    }
+        if (action == 'editParticipant') {
+            let { first_name, last_name, year_of_birth, entry, user_id } = req.body;
+            await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
+                var participants = comp.data().participants;
+                if (!comp.exists) {
+                    return res.send(JSON.stringify(r));
                 }
-                return p;
+
+                if (!participants) {
+                    participants = [];
+                } else participants = JSON.parse(participants);
+
+                var updated_participants = participants.map(p => {
+                    if (p.user_id == user_id) {
+                        return {
+                            ...p,
+                            first_name: first_name,
+                            last_name: last_name,
+                            year_of_birth: year_of_birth,
+                            entry: entry
+                        }
+                    }
+                    return p;
+                });
+
+                await fdb.collection('competitions').doc(comp_id).update({
+                    participants: JSON.stringify(updated_participants)
+                }).then(() => {
+                    r['r'] = 1;
+                    return res.send(JSON.stringify(r));
+                });
             });
+        }
 
-            await fdb.collection('competitions').doc(comp_id).update({
-                participants: JSON.stringify(updated_participants)
-            }).then(() => {
-                r['r'] = 1;
-                return res.send(JSON.stringify(r));
-            });
-        });
-    }
+        else
 
-    else
+            if (action == 'deleteParticipant') {
+                let { user_id } = req.body;
+                await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
+                    var participants = JSON.parse(comp.data().participants);
+                    if (!comp.exists) {
+                        return res.send(JSON.stringify(r));
+                    }
 
-    if (action == 'deleteParticipant') {
-        let { user_id } = req.body;
-        await fdb.collection('competitions').doc(comp_id).get().then(async (comp) => {
-            var participants = JSON.parse(comp.data().participants);
-            if (!comp.exists) {
-                return res.send(JSON.stringify(r));
+
+                    var updated_participants = participants.filter(p => p.user_id != user_id);
+
+                    await fdb.collection('competitions').doc(comp_id).update({
+                        participants: JSON.stringify(updated_participants)
+                    }).then(() => {
+                        r['r'] = 1;
+                        return res.send(JSON.stringify(r));
+                    });
+                });
             }
+});
 
-        
-            var updated_participants = participants.filter(p=> p.user_id != user_id);
-        
-            await fdb.collection('competitions').doc(comp_id).update({
-                participants: JSON.stringify(updated_participants)
-            }).then(() => {
-                r['r'] = 1;
-                return res.send(JSON.stringify(r));
-            });
+router.post('/:id/bracket', async(req, res) => {
+    var action = req.body.action, r = { r: 200 };
+    console.log(req.body)
+    if (action == "createBracket") {
+        var participants = req.body.participants;
+        const bracketStorage = new JsonDatabase(req.params.id + '.json');
+        const { BracketsManager } = require('brackets-manager');
+        const manager = new BracketsManager(bracketStorage);
+   
+        const data = await manager.create({
+            name: 'CoachMate',
+            tournamentId: req.params.id, 
+            type: 'single_elimination',
+            seeding: participants
         });
+
+        res.json(data);
     }
 
+    else 
 
-});
+    if(action == "updateMatch"){
+        var match_id = req.body.match_id;
+        await manager.update.match({
+            id: match_id, // First match of winner bracket (round 1)
+            opponent1: { score: 1, result: 'win' },
+            opponent2: { score: 0 },
+          });
+    }
+
+})
 
 
 
