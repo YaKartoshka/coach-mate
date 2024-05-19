@@ -41,6 +41,7 @@ router.post('/create', async (req, res) => {
             role: role,
             user_id: userRecord.uid,
             profile_img: '',
+            phone_number: '',
             pass: pass
         }).then(() => {
             r['r'] = 1;

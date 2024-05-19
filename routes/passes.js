@@ -9,11 +9,18 @@ router.post('/create', async (req, res, next) => {
     try {
         const passesRef = fdb.collection('panels').doc(panel_id).collection('passes');
         const pass = await passesRef.add({});
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // месяцы начинаются с 0
+        const year = today.getFullYear();
+        const formattedDate = `${day}/${month}/${year}`;
         var data = {
             pass_id: pass.id,
             pass_section: req.body.pass_section,
             pass_price: req.body.pass_price,
-            pass_visits_number: req.body.pass_visits_number
+            pass_visits_number: req.body.pass_visits_number,
+            pass_exp_date: formattedDate,
+            pass_status: '1'
         }
         await passesRef.doc(pass.id).update(data);
         res.send(JSON.stringify(r));

@@ -626,7 +626,7 @@ body {
 /* Styles for the settings content container */
 .settings-content {
     padding: 50px;
-    flex: 1;
+    flex: 0.8;
     background-color: white;
     font-family: InterReg;
     box-shadow: 0 0 10px 3px #59D7FF;
@@ -703,7 +703,7 @@ body {
 }
 
 .photo {
-    flex: 0.25;
+    flex: 0.3;
 }
 
 .photo img {
