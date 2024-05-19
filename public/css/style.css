@@ -1773,7 +1773,15 @@ body {
     align-items: center;
 }
 
-
+.bracket_participant{
+    display: flex;
+    align-items: center;
+    gap:30px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    padding: 10px 25px;
+    transition: 0.3s;
+}
 
 /* End of Competition Page */
 

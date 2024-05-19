@@ -209,38 +209,89 @@ router.post('/:id/participant', async (req, res) => {
 });
 
 router.post('/:id/bracket', async(req, res) => {
-    var action = req.body.action, r = { r: 200 };
+    var action = req.body.action, r = { r: 0 };
     console.log(req.body)
     if (action == "createBracket") {
         var participants = req.body.participants;
-        const bracketStorage = new JsonDatabase(req.params.id + '.json');
+        var name = req.body.name;
+        const bracketStorage = new JsonDatabase(req.params.id+ '-'+ name + '.json');
         const { BracketsManager } = require('brackets-manager');
         const manager = new BracketsManager(bracketStorage);
-   
+        
         const data = await manager.create({
-            name: 'CoachMate',
+            name: name,
             tournamentId: req.params.id, 
             type: 'single_elimination',
             seeding: participants
         });
-
-        res.json(data);
+        if(data){
+            fs.readFile('./' + req.params.id+ '-'+ name + '.json' , 'utf8', async (err, data) => {
+                if (err) {
+                  console.error('Error reading file:', err);
+                  return;
+                }
+              
+                try {
+                  await fdb.collection('competitions').doc(req.params.id).collection('brackets').add({
+                    name: name,
+                    bracket_data: data
+                  }).then(()=>{
+                    fs.unlink('./' + req.params.id+ '-'+ name + '.json', function(){
+                        r['r'] = 1;
+                        res.send(JSON.stringify(r));
+                    })
+                  })
+                 
+                  
+                } catch (error) {
+                  console.error('Error parsing JSON:', error);
+                  r['r'] = 0;
+                  res.send(JSON.stringify(r));
+                }
+              });
+            
+        } else {
+            r['r'] = 0;
+            res.send(JSON.stringify(r));
+        }
+       
     }
 
     else 
 
-    if(action == "updateMatch"){
-        var match_id = req.body.match_id;
-        await manager.update.match({
-            id: match_id, // First match of winner bracket (round 1)
-            opponent1: { score: 1, result: 'win' },
-            opponent2: { score: 0 },
+    if(action == "getBrackets"){
+        var data = [];
+        var data = [];
+        const brackets = await fdb.collection('competitions').doc(req.params.id).collection('brackets').get();
+        brackets.docs.forEach((bracket) => {
+            data.push({ ...bracket.data(), bracket_id: bracket.id });
+        });
+        res.send(data);
+    }
+
+    else
+
+    if(action == "updateBracket"){
+        var bracket_id = req.body.bracket_id;
+        var bracket_data = req.body.bracket_data;
+        await fdb.collection('competitions').doc(req.params.id).collection('brackets').doc(bracket_id).update({
+            bracket_data: bracket_data
+          }).then(()=>{
+            r['r'] = 1;
+            res.send(JSON.stringify(r));
           });
     }
 
+    else 
+
+    if(action == "deleteBracket"){
+        var bracket_id = req.body.bracket_id;
+        await fdb.collection('competitions').doc(req.params.id).collection('brackets').doc(bracket_id).delete().then(()=>{
+            r['r'] = 1;
+            res.send(JSON.stringify(r));
+          });
+    }
 })
-
-
 
 
 

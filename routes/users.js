@@ -25,7 +25,21 @@ router.post('/create', async (req, res) => {
     const last_name = req.body.last_name;
     const password = `${first_name.toLowerCase()}123456`;
     const role = req.body.role;
-    const pass = req.body.pass;
+
+    var data = {
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        role: role,
+        user_id: userRecord.uid,
+        profile_img: '',
+        phone_number: '',
+    }
+
+    if(role=='student') {
+        data.pass = req.body.pass
+        /// exp date
+    }
 
 
     await admin_fauth.createUser({
@@ -34,16 +48,7 @@ router.post('/create', async (req, res) => {
         password: password,
         displayName: `${first_name} ${last_name}`,
     }).then(async (userRecord) => {
-        await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(userRecord.uid).set({
-            email: email,
-            first_name: first_name,
-            last_name: last_name,
-            role: role,
-            user_id: userRecord.uid,
-            profile_img: '',
-            phone_number: '',
-            pass: pass
-        }).then(() => {
+        await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(userRecord.uid).set(data).then(() => {
             r['r'] = 1;
             res.send(JSON.stringify(r));
         });
