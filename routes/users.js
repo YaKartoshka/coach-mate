@@ -36,7 +36,7 @@ router.post('/create', async (req, res) => {
         phone_number: '',
     }
 
-    if (role == 'student') {
+    if(role=='student') {
         data.pass = req.body.pass
         /// exp date
     }
@@ -140,22 +140,21 @@ router.post('/edit', async (req, res) => {
         res.send(JSON.stringify(r));
     }
 
+
     const user_id = req.body.user_id;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
-    const phone_number = req.body.phone_number || '';
+    const phone_number = req.body.phone_number;
     const role = req.body.role;
+    const pass = req.body.pass;
 
-    var data = {
+    await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update({
         first_name: first_name,
         last_name: last_name,
         phone_number: phone_number,
         role: role,
-    }
-
-    if(role=='student') data.pass = req.body.pass;
-
-    await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update(data).then(() => {
+        pass: pass
+    }).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
     }).catch((e) => {
