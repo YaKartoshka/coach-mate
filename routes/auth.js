@@ -20,7 +20,7 @@ passport.use(
     {
       clientID: conf.google.clientID,
       clientSecret: conf.google.clientSecret,
-      callbackURL: "http://localhost:4000/auth/google_sign_in/index",
+      callbackURL: "https://coachmate.kz/auth/google_sign_in/index",
       passReqToCallback: true,
     },
     function (request, accessToken, refreshToken, profile, done) {
@@ -35,7 +35,7 @@ passport.use(
     {
       clientID: conf.google.clientID,
       clientSecret: conf.google.clientSecret,
-      callbackURL: "http://localhost:4000/auth/google_sign_up/index",
+      callbackURL: "https://coachmate.kz/auth/google_sign_up/index",
       scope: ["email", "profile"],
       passReqToCallback: true,
     },
