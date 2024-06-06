@@ -221,7 +221,7 @@ router.post('/:id/bracket', async(req, res) => {
         const data = await manager.create({
             name: name,
             tournamentId: req.params.id, 
-            type: 'single_elimination',
+            type: 'double_elimination',
             seeding: participants
         });
         if(data){

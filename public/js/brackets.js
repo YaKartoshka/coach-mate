@@ -1,4 +1,5 @@
 const globalBrackets = [];
+const globalBracketsParticipants=[];
 var globalBracketIndex;
 $(() => {
     getBrackets()
@@ -17,21 +18,27 @@ function getBrackets() {
                 data.forEach((b, index) => {
                     let bracketHTML = `
                     <div class="bracket mb-3 p-3 rounded container bg-white">
-                        <h3>${b.name}</h3>
-                        <button class="btn btn-primary" onclick="showBracket('bracket-${index}')">Show Bracket</button>
-                        <button class="btn btn-danger" id="delete_bracket_btn_${index}" onclick="showDeleteBracketModal('bracket-${index}')">Delete Bracket</button>
-                        <div id="bracket-${index}" class="brackets-viewer" style="display: none"></div>
+                      <h3 class="mb-2">${b.name}</h3>
+                      <button class="btn btn-primary" onclick="showBracket('bracket-${index}')">Show Bracket</button>
+                      ${globalRole == 'admin' ? `<button class="btn btn-danger" id="delete_bracket_btn_${index}" onclick="showDeleteBracketModal('bracket-${index}')">Delete Bracket</button>` : ''}
+                      <div id="bracket-${index}" class="brackets-viewer" style="display: none"></div>
                     </div>
-                    `
+                  `;
+
                     $('#brackets').append(bracketHTML);
-                    $(`#bracket-${index}`).click(function(){
+                    $(`#bracket-${index}`).click(function () {
                         globalBracketIndex = $(this).attr('id');
                     });
                     var bracket_data = JSON.parse(b.bracket_data)
                     globalBrackets.push({ ...bracket_data, bracket_id: b.bracket_id })
                     renderBracket(bracket_data, index);
+                    globalBrackets.forEach((bracket)=>{
+                        bracket.participant.forEach((participant)=>{
+                            globalBracketsParticipants.push(participant.name)
+                        });
+                    });
                 });
-
+              
                 if (!data.length) {
                     let bracketHTML = `
                     <div class="bracket  p-3 rounded container bg-white">
@@ -43,7 +50,7 @@ function getBrackets() {
 
             }
             window.bracketsViewer.onMatchClicked = async (match) => {
-                
+                if(globalRole != 'admin') return; 
                 $('#update_match-modal').modal('show');
 
                 console.log(match.id)
@@ -64,7 +71,7 @@ function getBrackets() {
 
                     const bracket_index = globalBracketIndex.split('-')[1]
                     const data = globalBrackets[bracket_index];
-                 
+
                     await window.bracketsManager.import(data);
 
                     await window.bracketsManager.update.match({
@@ -75,14 +82,14 @@ function getBrackets() {
                     });
 
                     const newData = await window.bracketsManager.export();
-                   
+
                     $('#bracket-' + bracket_index).html('')
                     renderBracket(newData, bracket_index);
 
                     $('#update_match-modal').modal('hide');
 
                     updateBracket(newData, data.bracket_id)
-                    globalBrackets[bracket_index] = {...newData, bracket_id: data.bracket_id}
+                    globalBrackets[bracket_index] = { ...newData, bracket_id: data.bracket_id }
                     document.removeEventListener('keypress', enterKeyListener)
                 }
 
@@ -107,7 +114,7 @@ function showDeleteBracketModal(index) {
 }
 
 function renderBracket(data, index) {
-    
+
     window.bracketsViewer.render({
         stages: data.stage,
         matches: data.match,
@@ -141,7 +148,7 @@ function updateBracket(bracket_data, bracket_id) {
                     fade: true
                 });
             }
-            
+
             $('#update_match-modal').modal('hide');
         }
     })
@@ -164,15 +171,17 @@ function deleteBracket() {
                 });
             }
             $('#delete_bracket-modal').modal('hide');
-            $('#' + globalBracketIndex).parent().remove()
+            $('#' + globalBracketIndex).parent().remove();
+            getBrackets()
         }
     })
 }
 
 function showBracketParticipants() {
     let bracketParticipantsHTML = '';
-
+    
     globalParticipants.forEach((p, index) => {
+        if(globalBracketsParticipants.includes(p.first_name+' ' + p.last_name)) return;
         bracketParticipantsHTML += `
         <div class="form-check bracket_participant">
             <label class="form-check-label" for="bracket_participant-${index}">
@@ -181,6 +190,8 @@ function showBracketParticipants() {
             <input class="form-check-input" type="checkbox" value="" id="bracket_participant-${index}">
         </div>`;
     });
+
+    if(!bracketParticipantsHTML) bracketParticipantsHTML = '<div class="alert alert-warning mt-3"><strong>Empty!</strong> No participants to select.</div>'
 
     $('#bracket_participants').html(bracketParticipantsHTML);
 }
@@ -195,10 +206,12 @@ function createBracket() {
     }
     var participants = [];
 
-    if (!$('#bracket_participants .form-check-input:checked').length) {
+    if ($('#bracket_participants .form-check-input:checked').length < 2) {
         loading(20, el = "#create_bracket_btn");
-        return $.ambiance({ message: "No selected participants", type: "error", fade: true, timeout: 5 });
+        return $.ambiance({ message: "Not enough participants", type: "error", fade: true, timeout: 5 });
     }
+
+    
 
     $('#bracket_participants .form-check-input:checked').each(function () {
         var participant = globalParticipants[this.id.split('-')[1]]
@@ -218,7 +231,7 @@ function createBracket() {
                     type: "success",
                     fade: true
                 });
-                setTimeout(()=>{
+                setTimeout(() => {
                     getBrackets()
                 }, 1000)
             }

@@ -79,7 +79,7 @@
                                 <p id="event_starts">
 
                                 </p>
-                                <% if(role=='student' ) { %>
+                                <% if (role=='student' ) { %>
                                     <button class="btn btn-primary" onclick="showRegisterModal()"
                                         id="register_btn">Register</button>
                                     <button class="btn btn-success" id="registered_btn"
@@ -159,7 +159,7 @@
                             <h2>Participants</h2>
                             <div class="search position-relative w-100 mt-2">
                                 <input class="form-control me-2 w-100 search-input border-secondary ps-5"
-                                    onkeyup="searchProduct(this.value)" type="search" placeholder="Введите"
+                                    onkeyup="searchParticipant(this.value)" type="search" placeholder="Введите"
                                     aria-label="Search" />
                                 <img src="/public/images/search-icon.webp"
                                     class="position-absolute top-50 translate-middle ps-5" style="height: 12px;">
@@ -175,8 +175,10 @@
                     <div class="mt-3 tab-pane fade" id="brackets_info">
                         <div class="p-3 rounded mb-3 container bg-white d-flex gap-5">
                             <h2>Brackets</h2>
-                            <button type="button" id="register_modal_btn" class="btn btn-primary px-md-4 mt-1"
-                                onclick="showCreateBracketModal()">+ Create Bracket</button>
+                            <% if(role=='admin' ) { %>
+                                <button type="button" id="register_modal_btn" class="btn btn-primary px-md-4 mt-1"
+                                    onclick="showCreateBracketModal()">+ Create Bracket</button>
+                                <% } %>
                         </div>
                         <div class="divider"></div>
                         <div class="mt-3" id="brackets">
@@ -345,7 +347,7 @@
                         <h3></h3>
                         <label id="opponent1-label" class="form-label" for="opponent1">Opponent 1: </label>
                         <input type="number" class="form-control" id="opponent1"><br>
-                        <label id="opponent2-label" class="form-label"  for="opponent2">Opponent 2: </label>
+                        <label id="opponent2-label" class="form-label" for="opponent2">Opponent 2: </label>
                         <input type="number" class="form-control" id="opponent2"><br>
                     </div>
                 </div>
@@ -400,6 +402,7 @@
         var globalPassId;
         var globalPassIndex;
         const globalCompetitionId = "<%= comp_data.comp_id %>";
+        const globalRole = "<%= role %>";
         var globalParticipants = JSON.parse("<%= comp_data.participants %>".replace(/&#34;/g, '"'));
         var globalParticipantsIndex;
         var globalParticipantId;
@@ -440,31 +443,83 @@
         function showParticipants() {
             var participantsHTML = ''
             if (globalParticipants && globalParticipants.length) {
-                const participants = globalParticipants;
-                participants.forEach((p, index) => {
-                    participantsHTML += `
-                        <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
-                        <img src="${p.user_img}" alt="" width="75" height="75" class="rounded">
-                        <div class="name h4 w-25">${p.first_name} ${p.last_name}</div>
-                        <div class="birth">${p.year_of_birth}</div>
-                        <div class="academy">${p.panel_name}</div>
-                        <div class="entry flex-fill">${p.entry}</div>
-                        <% if( user_id == comp_data.organizer_id) { %> 
-                            <div class="actions flex-fill">
-                                <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
-                                    <div class="more_icon d-flex">
-                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">more_horiz</span>
+                const participants = groupParticipants(globalParticipants);
+                for (const entry in participants) {
+                    participantsHTML += `<h3><span class="badge bg-primary mt-3">Entry - ${entry}</span></h3>`
+                    participants[entry].forEach((p, index) => {
+                        participantsHTML += `
+                            <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
+                            <img src="${p.user_img}" alt="" width="40" height="40" class="rounded">
+                            <div class="name h4 w-25">${p.first_name} ${p.last_name}</div>
+                            <div class="birth">${p.year_of_birth}</div>
+                            <div class="academy">${p.panel_name}</div>
+                            <div class="entry flex-fill">${p.entry}</div>
+                            <% if( user_id == comp_data.organizer_id) { %> 
+                                <div class="actions flex-fill">
+                                    <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+                                        <div class="more_icon d-flex">
+                                        <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">more_horiz</span>
+                                        </div>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" onclick="showEditParticipantModal('participant-${index}')">Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('participant-${index}')">Delete</a>
                                     </div>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" onclick="showEditParticipantModal('participant-${index}')">Edit</a>
-                                    <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('participant-${index}')">Delete</a>
+                                    </div>
+                            <% } %> 
+                            </div>
+                        `;
+                    });
+                    $('#participants').html(participantsHTML);
+                }
+            }
+        }
+
+
+
+        function searchParticipant(value) {
+            $('#participants').html('');
+
+            if (globalParticipants && globalParticipants.length) {
+                const participants = groupParticipants(globalParticipants);
+                let participantsHTML = '';
+
+                for (const entry in participants) {
+                    const containParticipant = participants[entry].some(p =>
+                        p.first_name.includes(value) ||
+                        p.last_name.includes(value) ||
+                        p.panel_name.includes(value)
+                    );
+
+                    if (containParticipant) {
+                        participantsHTML += `<h3><span class="badge bg-primary mt-3">Entry - ${entry}</span></h3>`;
+                        participants[entry].forEach((p, index) => {
+                            participantsHTML += `
+                                <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
+                                <img src="${p.user_img}" alt="" width="40" height="40" class="rounded">
+                                <div class="name h4 w-25">${p.first_name} ${p.last_name}</div>
+                                <div class="birth">${p.year_of_birth}</div>
+                                <div class="academy">${p.panel_name}</div>
+                                <div class="entry flex-fill">${p.entry}</div>
+                                <% if( user_id == comp_data.organizer_id) { %> 
+                                    <div class="actions flex-fill">
+                                        <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+                                            <div class="more_icon d-flex">
+                                            <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">more_horiz</span>
+                                            </div>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#" onclick="showEditParticipantModal('participant-${index}')">Edit</a>
+                                            <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('participant-${index}')">Delete</a>
+                                        </div>
+                                        </div>
+                                <% } %> 
                                 </div>
-                                </div>
-                        <% } %> 
-                        </div>
-                    `;
-                });
+                            `;
+                        });
+                    }
+                }
+
                 $('#participants').html(participantsHTML);
             }
         }
@@ -475,13 +530,24 @@
             $('#register-modal').modal('show');
         }
 
+        function groupParticipants(participants) {
+            return participants.reduce((groups, participant) => {
+                const entry = participant.entry;
+                if (!groups[entry]) {
+                    groups[entry] = [];
+                }
+                groups[entry].push(participant);
+                return groups;
+            }, {});
+        }
+
         function register() {
             loading(2, el = '#register_modal_btn');
 
             var first_name = $('#first_name').val().trim();
             var last_name = $('#last_name').val().trim();
             var year_of_birth = $('#year_of_birth').val();
-            var entry = $('#entry').val();
+            var entry = $('#entry').val().trim();
             var user_img = $('#profile-data .profile-img').attr('src');
 
 
@@ -529,7 +595,7 @@
             var first_name = $('#new_first_name').val().trim();
             var last_name = $('#new_last_name').val().trim();
             var year_of_birth = $('#new_year_of_birth').val();
-            var entry = $('#new_entry').val();
+            var entry = $('#new_entry').val().trim();
 
             if (first_name.trim() == '' || last_name.trim() == '' || year_of_birth.trim() == '' || entry == 'none') {
                 loading(20, el = '#register_modal_btn');

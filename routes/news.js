@@ -37,45 +37,46 @@ const metadata = {
 router.post('/create', upload.single('img'), async function (req, res, next) {
     var r = { r: 1 };
     const image = req.file;
+
     const panel_id = req.session.panel_id;
     const date = getCurrentDate();
     try {
         const newsRef = fdb.collection('panels').doc(panel_id).collection('news');
-        const news = await newsRef.add({
-            title: req.body.title,
-            text: req.body.text,
-            date: date
-        });
-
-        await storage.upload(image.path, {
-            gzip: true,
-            metadata: metadata,
-            destination: `news/${image.originalname}`
-        });
-
-        var news_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
-        console.log(news.id, news_image_url)
-        await newsRef.doc(news.id).update({ news_id: news.id, news_image: news_image_url });
+        const news = await newsRef.add({});
         var data = {
             news_id: news.id,
             title: req.body.title,
             text: req.body.text,
             date: date,
-            news_image: news_image_url
+            news_image_url: ''
         }
-        res.send(JSON.stringify(data));
+        if (image) {
+            await storage.upload(image.path, {
+                gzip: true,
+                metadata: metadata,
+                destination: `news/${image.originalname}`
+            });
 
-        fs.unlink(image.path, function (err) {
-            if (err) {
-                console.error(err);
-            }
-        });
+            var news_image_url = `https://firebasestorage.googleapis.com/v0/b/coach-mate-b8795.appspot.com/o/news%2F${image.originalname}?alt=media`
+            data.news_image = news_image_url;
+            fs.unlink(image.path, function (err) {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        }
+
+        await newsRef.doc(news.id).update(data)
+        res.send(JSON.stringify(data));
+        await sendTelegramNews(panel_id, data);
+      
+
+      
     } catch (e) {
         r['r'] = 0;
         res.send(JSON.stringify(r))
     }
 });
-
 router.post('/edit', upload.single('img'), async function (req, res, next) {
     var r = { r: 1 };
     const image = req.file;

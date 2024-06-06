@@ -5,6 +5,7 @@ run_mode = args[0];
 require("../config/" + run_mode); //global config -> conf
 
 const firebase = require('../libs/firebase_db');
+require('../libs/telegram')
 const fdb = firebase.fdb;
 const fauth = firebase.fauth
 var app = require("../app");
