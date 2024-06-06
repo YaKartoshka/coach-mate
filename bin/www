@@ -7,7 +7,8 @@ require("../config/" + run_mode); //global config -> conf
 const firebase = require('../libs/firebase_db');
 require('../libs/telegram')
 const fdb = firebase.fdb;
-const fauth = firebase.fauth
+const fauth = firebase.fauth;
+const express = require('express');
 var app = require("../app");
 var http = require("http");
 var server = http.createServer(app);
@@ -18,7 +19,31 @@ server.on("error", onError);
 console.log(`App is listening at host http://localhost:${conf.port}`);
 
 
+var inter = setInterval(async(req, res)=>{
+  var today = new Date();
+  var day = String(today.getDate()).padStart(2, '0');
+  var month = String(today.getMonth() + 1).padStart(2, '0'); 
+  var year = today.getFullYear();
+  var formattedDate = `${year}-${month}-${day}`;
+  var days = formattedDate.split('-')[0];
+  // check status == 1 & days < 5 days ->
+    // status = 0
+    // const data = [];
+    // console.log(req.session.panel_id);
+    // await fdb.collection('panels').doc(req.session.panel_id).collection('users').get().then((users)=>{
 
+    //     })
+    //   })
+    // })
+
+    
+  
+
+    //  if days < 0 && status==2 -> status = 1
+
+},3000)
+
+// in Admin set status always 2 -Ю users.js
 
 
 

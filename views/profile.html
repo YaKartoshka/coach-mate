@@ -30,7 +30,7 @@
                     <div class="profile-content active">
 
 
-                        <div class="profile_header">
+                        <div class="profile-header">
                             <div class="profile-image-settings">
                                 <div class="photo">
                                     <img src="" class="rounded-circle" alt="" id="profile_img" width="150">
@@ -42,6 +42,8 @@
                                             placeholder="Change photo">
                                     </label>
                                 </div>
+                            </div>
+                            <div class="pass-info" id="pass-info">
                             </div>
 
                             <!-- <div class="panel-name mb-3 mt-4">
@@ -148,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <%- include('./components/links_bar.ejs.html') %>   
+            <%- include('./components/links_bar.ejs.html') %>
     </main>
 
 
@@ -212,6 +214,7 @@
         });
 
         function showProfile() {
+            $(".pass-info").html('');
             $.ajax({
                 url: '/users/get', method: 'get', success: function (data) {
                     var user = JSON.parse(data);
@@ -223,6 +226,18 @@
 
                     let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
                     $('#profile_img').attr('src', profile_src)
+
+                    var pass = JSON.parse(user.pass);
+
+                    var passDiv = `
+                    <div class="pass">
+                        <p class="pass-section">Pass section: ${pass.pass_section}</p>
+                        <p class="pass-price">Pass price: ${pass.pass_price}₸</p>
+                        <p class="pass-visits-number">Amount of visits: ${pass.pass_visits_number}</p>
+                    </div>
+                    `
+                    $('.pass-info').html(passDiv);
+
                 }, error: function (err) {
                     console.log(err);
                 }

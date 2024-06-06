@@ -26,20 +26,12 @@ router.post('/create', async (req, res) => {
     const password = `${first_name.toLowerCase()}123456`;
     const role = req.body.role;
 
-    var data = {
-        email: email,
-        first_name: first_name,
-        last_name: last_name,
-        role: role,
-        user_id: userRecord.uid,
-        profile_img: '',
-        phone_number: '',
-    }
-
-    if(role=='student') {
-        data.pass = req.body.pass
-        /// exp date
-    }
+    var today = new Date();
+    var day = String(today.getDate()).padStart(2, '0');
+    var month = String(today.getMonth() + 1).padStart(2, '0');
+    var year = today.getFullYear();
+    var formattedDate = `${year}-${month}-${day}`;
+    var days = formattedDate.split('-')[0];
 
 
     await admin_fauth.createUser({
@@ -48,6 +40,20 @@ router.post('/create', async (req, res) => {
         password: password,
         displayName: `${first_name} ${last_name}`,
     }).then(async (userRecord) => {
+        var data = {
+            email: email,
+            first_name: first_name,
+            last_name: last_name,
+            role: role,
+            user_id: userRecord.uid,
+            profile_img: '',
+            phone_number: '',
+        }
+        if (role == 'student') {
+                data.pass = req.body.pass,
+                data.pass_start_date = formattedDate,
+                data.pass_status = 1
+        }
         await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(userRecord.uid).set(data).then(() => {
             r['r'] = 1;
             res.send(JSON.stringify(r));
@@ -120,6 +126,10 @@ router.get('/get', async (req, res) => {
                 role: user.data().role,
                 description: user.data().description,
                 phone_number: user.data().phone_number
+            }
+
+            if (user.data().role == 'student') {
+                data.pass = user.data().pass;
             }
             res.send(JSON.stringify(data));
         });

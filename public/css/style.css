@@ -454,7 +454,9 @@ body {
 .sign_up_link:link {
     color: #545454;
 }
-.sign_in_btn:hover, .sign_up_btn:hover {
+
+.sign_in_btn:hover,
+.sign_up_btn:hover {
     background-color: #DADDE2;
 }
 
@@ -558,7 +560,7 @@ body {
     width: 280px;
 }
 
-.sign_in_btn .google_icon{
+.sign_in_btn .google_icon {
     flex: 0.63;
     margin-top: 4px;
     margin-left: 5px;
@@ -676,6 +678,56 @@ body {
     display: block;
 }
 
+.profile-content .profile-header {
+    display: flex;
+    width: 100%;
+}
+
+.pass-info .pass {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px 70px 12px;
+    width: 100%;
+}
+
+.pass-info .pass p {
+    font-size: 1vw;
+    color: #000;
+}
+
+.pass-info .pass .pass-section {
+    font-size: 16px;
+}
+
+.pass-info .pass .pass-price {
+    font-size: 16px;
+    color: #0066FF;
+}
+
+.pass-info .pass .pass-visits-number {
+    font-size: 16px;
+}
+
+.pass-info .pass::before {
+    content: "";
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    top: 0;
+    left: 0;
+}
+
+
+
 .personal-info textarea {
     border: 1px solid black;
 }
@@ -700,10 +752,11 @@ body {
 .profile-image-settings {
     display: flex;
     align-items: center;
+    flex: 0.9;
 }
 
 .photo {
-    flex: 0.3;
+    margin-right: 10px;
 }
 
 .photo img {
@@ -1773,10 +1826,10 @@ body {
     align-items: center;
 }
 
-.bracket_participant{
+.bracket_participant {
     display: flex;
     align-items: center;
-    gap:30px;
+    gap: 30px;
     flex-direction: row-reverse;
     justify-content: flex-end;
     padding: 10px 25px;
@@ -1822,13 +1875,13 @@ body {
     left: 0;
 }
 
-.competition_entries_block .entries{
+.competition_entries_block .entries {
     display: flex;
     flex-direction: column;
     width: 60%;
 }
 
-.competition_entries_block .entry{
+.competition_entries_block .entry {
     background-color: #0066FF;
     color: white;
     padding: 7px;
@@ -1844,7 +1897,8 @@ body {
         align-items: flex-start;
         justify-content: flex-start;
     }
-/* 
+
+    /* 
     .container {
         min-height: 100vh;
         flex-direction: column;

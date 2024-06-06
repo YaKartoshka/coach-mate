@@ -435,6 +435,7 @@
             let pass_id = $('#pass_id').val();
             let pass_section = $('#pass_id option:selected').text();
             let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
+            passed_data = passes_data ? passes_data : '';
             if ((!email || !role || !first_name || !last_name)) {
                 $.ambiance({
                     message: "Please provide an email, full name and role for the member.",
@@ -448,9 +449,11 @@
             $.ajax({
                 url: "/users/create",
                 method: 'post',
-                data: { user_id: globalMemberId, email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase(), pass: passes_data },
+                data: { user_id: globalMemberId, email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase(), pass: passed_data},
                 success: function (r) {
                     let data = JSON.parse(r);
+
+                    
                     if (data.r == 1) {
                         $('#create_member-modal').modal('hide');
                         loading(20, el = '#add_member_btn');
