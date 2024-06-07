@@ -10,7 +10,7 @@ function isAuthenticated(req, res, next) {
 };
 
 router.get('/', isAuthenticated, (req, res, next) => {
-    res.render('index', { role: req.session.role });
+    res.render('index', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
 });
 
 router.get('/login', (req, res) => {
@@ -37,31 +37,31 @@ router.get('/join', async (req, res) => {
 });
 
 router.get('/settings', isAuthenticated, (req, res) => {
-    res.render('settings', { role: req.session.role });
+    res.render('settings', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
 });
 
 router.get('/members', isAuthenticated, (req, res) => {
-    res.render('members', { role: req.session.role });
+    res.render('members', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
 });
 
 router.get('/schedule', isAuthenticated, (req, res) => {
-    res.render('schedule', { role: req.session.role });
+    res.render('schedule', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
 });
 
 router.get('/events', isAuthenticated, (req, res) => {
-    res.render('events', { role: req.session.role });
+    res.render('events', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
 });
 
 router.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', {role: req.session.role})
+    res.render('profile', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru'})
 })
 
 router.get('/passes', isAuthenticated, (req, res) => {
-    res.render('passes', {role: req.session.role})
+    res.render('passes', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru'})
 });
 
 router.get('/competitions', (req, res) => {
-    res.render('competitions', {role: req.session.role});
+    res.render('competitions', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru'});
 });
 
 

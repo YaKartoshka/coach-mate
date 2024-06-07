@@ -6,6 +6,7 @@ require("../config/" + run_mode); //global config -> conf
 
 const firebase = require('../libs/firebase_db');
 require('../libs/telegram')
+require("../libs/translate")
 const fdb = firebase.fdb;
 const fauth = firebase.fauth;
 const express = require('express');
