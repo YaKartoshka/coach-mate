@@ -1,6 +1,6 @@
 <div class="profile" id="dropdown_profile">
     <div id="profile-data">
-        <div class="profile-name">Erasyl</div>
+        <div class="profile-name"></div>
         <img src="" class="profile-img">
         <div class="profile-dropdown">
             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="6" viewBox="0 0 8 6" fill="none"
@@ -14,15 +14,15 @@
     <div class="dropdown-content">
         <ul>
             <li>
-                <a href="/profile">Profile</a>
+                <a href="/profile"><%=L('prof_bar1', language, 'Profile') %></a>
             </li>
             <li class="divider"></li>
             <li>
-                <a href="/members">Members</a>
+                <a href="/members"><%=L('prof_bar2', language, 'Members') %></a>
             </li>
             <li class="divider"></li>
             <li>
-                <a href="/auth/logout">Log out</a>
+                <a href="/auth/logout"><%=L('prof_bar3', language, 'Log out') %></a>
             </li>
         </ul>
     </div>

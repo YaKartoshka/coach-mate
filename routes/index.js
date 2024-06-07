@@ -10,7 +10,7 @@ function isAuthenticated(req, res, next) {
 };
 
 router.get('/', isAuthenticated, (req, res, next) => {
-    res.render('index', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
+    res.render('index', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en' });
 });
 
 router.get('/login', (req, res) => {
@@ -37,31 +37,43 @@ router.get('/join', async (req, res) => {
 });
 
 router.get('/settings', isAuthenticated, (req, res) => {
-    res.render('settings', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
+    res.render('settings', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en' });
 });
 
 router.get('/members', isAuthenticated, (req, res) => {
-    res.render('members', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
+    res.render('members', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en' });
 });
 
 router.get('/schedule', isAuthenticated, (req, res) => {
-    res.render('schedule', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
+    res.render('schedule', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en' });
 });
 
 router.get('/events', isAuthenticated, (req, res) => {
-    res.render('events', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru' });
+    res.render('events', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en' });
 });
 
 router.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru'})
+    res.render('profile', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en'})
 })
 
 router.get('/passes', isAuthenticated, (req, res) => {
-    res.render('passes', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru'})
+    res.render('passes', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en'})
 });
 
 router.get('/competitions', (req, res) => {
-    res.render('competitions', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'ru'});
+    res.render('competitions', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en'});
+});
+
+router.post('/', (req,res)=>{
+    var r = {r:0};
+    var action = req.body.action;
+    
+    if(action == 'changeLanguage'){
+        const language = req.body.language;
+        res.cookie("language", language);
+        r['r'] = 1;
+        res.send(JSON.stringify(r));
+    }
 });
 
 

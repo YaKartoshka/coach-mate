@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Competitions</title>
+    <title><%=L('comp_cr1', language, 'Competitions') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
 
@@ -23,23 +23,23 @@
             <div class="container text-dark rounded" id="create_competition_form">
                 <div class="col">
                     <div class="row">
-                        <h2>Create event</h2>
+                        <h2><%=L('comp_cr2', language, 'Create event') %></h2>
                     </div>
-                    <p class="text-primary mt-5" style="font-size: 18px;">Event Info</p>
+                    <p class="text-primary mt-5" style="font-size: 18px;"><%=L('comp_cr3', language, 'Event Info') %></p>
                     <div class="row">
                         <div class="row align-items-baseline gap-5">
                             <div class="col-3">
 
-                                <label class="mb-2 mt-2">Event name</label>
+                                <label class="mb-2 mt-2"><%=L('comp_cr4', language, 'Event name') %></label>
                                 <input type="text" id="event_name" class="form-control" placeholder="Championship" />
 
-                                <label class="mb-2 mt-4">Organizer name</label>
+                                <label class="mb-2 mt-4"><%=L('comp_cr5', language, 'Organizer name') %></label>
                                 <input type="text" id="organizer_name" class="form-control" placeholder="Organizer" />
 
                             </div>
                             <div class="col-6">
 
-                                <label class="mb-2">Event preview image</label>
+                                <label class="mb-2"><%=L('comp_cr6', language, 'Event preview image') %></label>
                                 <input type="file" id="event_img" class="form-control file-button w-75" />
                                 <label for="event_img" class="mt-2">
                                     <img src="/public/images/choose_image.png" class="selected_image" alt=""
@@ -51,28 +51,28 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label class="mb-2 mt-2">Event description</label>
+                            <label class="mb-2 mt-2"><%=L('comp_cr7', language, 'Event description') %></label>
                             <textarea name="" id="description" class="form-control" cols="30" rows="10"></textarea>
                         </div>
                     </div>
 
-                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Location</p>
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;"><%=L('comp_cr8', language, 'Location') %></p>
                     <div class="row align-items-baseline gap-3">
                         <div class="col-3">
-                            <label class="mb-2">City</label>
+                            <label class="mb-2"><%=L('comp_cr9', language, 'City') %></label>
                             <input type="text" id="city" class="form-control" placeholder="Astana" />
                         </div>
                         <div class="col-6">
-                            <label class="mb-2 mt-4">Address</label>
+                            <label class="mb-2 mt-4"><%=L('comp_cr10', language, 'Address') %></label>
                             <input type="text" id="address" class="form-control" placeholder="Address" />
                         </div>
                     </div>
 
-                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Date Info</p>
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;"><%=L('comp_cr11', language, 'Date Info') %></p>
                     <div class="row">
                         <div class="row align-items-baseline gap-3">
                             <div class="col-3">
-                                <label class="mb-2">Normal Registration</label>
+                                <label class="mb-2"><%=L('comp_cr12', language, 'Normal Registration') %></label>
                                 <input type="date" id="normal_start_date" class="form-control"
                                     placeholder="Start date" />
                             </div>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="row align-items-baseline gap-3">
                             <div class="col-3">
-                                <label class="mb-2">Late Registration</label>
+                                <label class="mb-2"><%=L('comp_cr13', language, 'Late Registration') %></label>
                                 <input type="date" id="late_start_date" class="form-control" placeholder="Start date" />
                             </div>
                             <div class="col-3">
@@ -93,41 +93,41 @@
                         </div>
                         <div class="row align-items-baseline gap-3">
                             <div class="col-3 mt-4">
-                                <label class="mb-2">Event starts</label>
+                                <label class="mb-2"><%=L('comp_cr14', language, 'Event starts') %></label>
                                 <input type="date" id="event_start" class="form-control" placeholder="Astana" />
                             </div>
                             <div class="col-3 mt-4">
-                                <label class="mb-2">Event time</label>
+                                <label class="mb-2"><%=L('comp_cr15', language, 'Event time') %></label>
                                 <input type="time" id="event_time" class="form-control" placeholder="Astana" />
                             </div>
                         </div>
                     </div>
 
-                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Contacts</p>
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;"><%=L('comp_cr16', language, 'Contacts') %></p>
                     <div class="row align-items-baseline gap-3">
                         <div class="col-3">
-                            <label class="mb-2">Phone Number</label>
+                            <label class="mb-2"><%=L('comp_cr17', language, '') %></label>
                             <input type="text" id="phone_number" class="form-control" placeholder="+77" />
                         </div>
                         <div class="col-6">
-                            <label class="mb-2 mt-4">Email</label>
+                            <label class="mb-2 mt-4"><%=L('comp_cr18', language, 'Email') %></label>
                             <input type="text" id="email" class="form-control" placeholder="coachmate@gmail.com" />
                         </div>
                     </div>
 
-                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;">Entries</p>
+                    <p class="text-primary mt-5 mb-0" style="font-size: 18px;"><%=L('comp_cr19', language, 'Entries') %></p>
                     <div class="row ">
                         <div class="col">
                             <div id="entries">
 
                             </div>
-                            <button class="btn btn-outline-primary mt-2" onclick="addNewEntry()"> + New Entry</button>
+                            <button class="btn btn-outline-primary mt-2" onclick="addNewEntry()"> + <%=L('comp_cr20', language, 'New Entry') %></button>
 
                         </div>
                     </div>
                     <div class="create_competition_form-footer">
                         <button type="button" id="create_competition_btn" class="btn btn-primary px-5 py-2"
-                            onclick="createCompetition()"> Save changes</button>
+                            onclick="createCompetition()"> <%=L('comp_cr21', language, 'Save changes') %></button>
                     </div>
                 </div>
 
@@ -135,56 +135,6 @@
             </div>
     </main>
     <footer></footer>
-
-    <!-- MODALS -->
-
-
-    <div class="modal fade" id="create_link-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Link</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Link text</label>
-                            <input type="text" class="form-control" id="link_text" placeholder="Text">
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <label class="mb-2">Link URL</label>
-                            <input type="text" class="form-control" id="link_url" placeholder="https://">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="add_link_btn" class="btn btn-primary px-md-4"
-                        onclick="createLink()">Add</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="delete_link-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Link</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    You won't be able to revert this. Are you sure?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="delete_link_btn" class="btn btn-danger px-md-4"
-                        onclick="deleteLink()">Delete</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
 
@@ -235,7 +185,7 @@
                 loading(20, el = "#create_competition_btn");
                 $('#event_img').focus();
                 return $.ambiance({
-                    message: "Upload event image",
+                    message: "<%=L('comp_cr22', language, 'Upload event image') %>",
                     type: "error",
                     fade: true,
                     width: 400
@@ -250,7 +200,7 @@
                     loading(20, el = "#create_competition_btn");
                     $(this).focus()
                     $.ambiance({
-                        message: "Fill in required fields",
+                        message: "<%=L('comp_cr23', language, 'Fill in required fields') %>",
                         type: "error",
                         fade: true,
                         width: 400
@@ -274,7 +224,7 @@
                 } else {
                     loading(20, el = "#create_competition_btn");
                     $.ambiance({
-                        message: "Fill in required fields",
+                        message: "<%=L('comp_cr23', language, 'Fill in required fields') %>",
                         type: "error",
                         fade: true,
                         width: 400
@@ -312,14 +262,14 @@
                 success: function (res) {
                     if (res.r) {
                         $.ambiance({
-                            message: "Competition created",
+                            message: "<%=L('comp_cr24', language, 'Competition created') %>",
                             type: "success",
                             fade: true,
                             width: 400
                         });
                     } else {
                         $.ambiance({
-                            message: "Something went wrong",
+                            message: "<%=L('comp_cr25', language, 'Something went wrong') %>",
                             type: "error",
                             fade: true,
                             width: 400
@@ -335,15 +285,15 @@
             var entryHTML = `
                 <div id="entry-${globalNewEntryIndex}" class="row align-items-baseline gap-3">
                     <div class="col-3">
-                        <label class="mb-2">Name</label>
+                        <label class="mb-2"><%=L('comp_cr', language, '') %>Name</label>
                         <input type="text" id="entry_name-${globalNewEntryIndex}" class="form-control" placeholder="U7" />
                     </div>
                     <div class="col-3">
-                        <label class="mb-2 mt-4">From</label>
+                        <label class="mb-2 mt-4"><%=L('comp_cr', language, '') %>From</label>
                         <input type="number" id="entry_from-${globalNewEntryIndex}" class="form-control" placeholder="7" />
                     </div>
                     <div class="col-3">
-                        <label class="mb-2 mt-4">To</label>
+                        <label class="mb-2 mt-4"><%=L('comp_cr', language, '') %>To</label>
                         <input type="number" id="entry_to-${globalNewEntryIndex}" class="form-control" placeholder="8" />
                     </div>
                     <div class="col-3">

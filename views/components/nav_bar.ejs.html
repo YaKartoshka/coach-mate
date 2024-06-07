@@ -4,25 +4,61 @@
                     style="font-size: 25px; font-weight: 500;">home</span><%=L('nav_bar1', language, 'Home') %></a></li>
         <% if (role) { %>
         <li><a href="/members"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">group</span>Members</a></li>
+                    style="font-size: 25px; font-weight: 500;">group</span><%=L('nav_bar2', language, 'Members') %></a></li>
         <li><a href="/schedule"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">today</span>Schedule</a></li>
+                    style="font-size: 25px; font-weight: 500;">today</span><%=L('nav_bar3', language, 'Schedule') %></a></li>
         <% if (role=='admin' ) { %>
             <li><a href="/settings"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">settings</span>Settings</a></li>
+                    style="font-size: 25px; font-weight: 500;">settings</span><%=L('nav_bar4', language, 'Settings') %></a></li>
             <% } %>
         <li><a href="/profile"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">person</span>Profile</a></li>
+                    style="font-size: 25px; font-weight: 500;">person</span><%=L('nav_bar5', language, 'Profile') %></a></li>
         <li><a href="/events"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">event_list</span>Events</a></li>
+                    style="font-size: 25px; font-weight: 500;">event_list</span><%=L('nav_bar6', language, 'Events') %></a></li>
         <li><a href="/passes"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">confirmation_number</span>Passes</a></li>
+                    style="font-size: 25px; font-weight: 500;">confirmation_number</span><%=L('nav_bar7', language, 'Passes') %></a></li>
         <li><a href="/competitions"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 500;">trophy</span>Competitions</a></li>
+                    style="font-size: 25px; font-weight: 500;">trophy</span><%=L('nav_bar8', language, 'Competitions') %></a></li>
         <% } else {%>
             <li><a href="/login"><span class="material-symbols-outlined"
-                style="font-size: 25px; font-weight: 500;">login</span>Login</a></li>
+                style="font-size: 25px; font-weight: 500;">login</span><%=L('nav_bar9', language, 'Login') %></a></li>
         <% } %>
-
+       
+        <select class="form-select me-3" id="language" onchange="changeLanguage()">
+            <option value="kz">Каз</option>
+            <option value="ru">Рус</option>
+            <option value="en">Eng</option>
+        </select>
+        
     </ul>
 </div>
+
+<script>
+
+    $(()=>{
+      $('#language').val('<%= language %>');
+    });
+
+    function logout() {
+      $.ajax({
+        url: '/api/auth/logout',
+        method: 'POST',
+        success: function (r) {
+          window.location.replace("/login");
+        }
+      })
+    }
+
+    function changeLanguage(){
+      let language = $('#language').val();
+      $.ajax({
+        url: '/',
+        method: 'POST',
+        data: {action: 'changeLanguage', language: language},
+        dataType: 'json',
+        success: function(data){
+          if(data.r) location.reload();
+        }
+      })
+    }
+  </script>

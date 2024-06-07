@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passes</title>
+    <title><%=L('passes1', language, 'Passes') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
 </head>
@@ -20,11 +20,11 @@
         <%- include('./components/nav_bar.ejs.html') %>
             <div class="passes-content">
                 <div class="passes-content-head">
-                    <h1>Passes</h1>
+                    <h1><%=L('passes1', language, 'Passes') %></h1>
                     <% if (role=='admin' ) { %>
                         <button data-bs-toggle="modal" onclick="showAddPassModal()" data-bs-target="#create_news-modal"
                             class="btn btn-primary d-flex pe-4 ps-4"><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 700;">add</span>Add</button>
+                                style="font-size: 25px; font-weight: 700;">add</span><%=L('passes2', language, 'Add') %></button>
                         <% } %>
 
                 </div>
@@ -43,29 +43,29 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add new pass</h4>
+                    <h4 class="modal-title"><%=L('passes3', language, 'Add new pass') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Section name</label>
+                            <label class="mb-2"><%=L('passes4', language, 'Section name') %></label>
                             <input type="text" id="pass_section" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Price</label>
+                            <label class="mb-2"><%=L('passes5', language, 'Price') %></label>
                             <input type="text" id="pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Visits number</label>
+                            <label class="mb-2"><%=L('passes6', language, 'Visits number') %></label>
                             <input type="text" id="pass_visits_number" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="add_pass_btn" class="btn btn-primary px-md-4"
-                        onclick="createPass()">Add</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        onclick="createPass()"><%=L('passes7', language, 'Add') %></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('passes8', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -75,29 +75,29 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit pass</h4>
+                    <h4 class="modal-title"><%=L('passes9', language, 'Edit pass') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Section name</label>
+                            <label class="mb-2"><%=L('passes4', language, 'Section name') %></label>
                             <input type="text" id="new_pass_section" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Price</label>
+                            <label class="mb-2"><%=L('passes5', language, '') %>Price</label>
                             <input type="text" id="new_pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Visits number</label>
+                            <label class="mb-2"><%=L('passes6', language, '') %>Visits number</label>
                             <input type="text" id="new_pass_visits_number" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="edit_pass_btn" class="btn btn-primary px-md-4"
-                        onclick="editPass()">Edit</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        onclick="editPass()"><%=L('passes10', language, 'Edit') %></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('passes8', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -107,16 +107,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete</h4>
+                    <h4 class="modal-title"><%=L('passes11', language, 'Delete') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    You won't be able to revert this. Are you sure?
+                    <%=L('passes12', language, "You won't be able to revert this. Are you sure") %> ?
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_pass_btn" class="btn btn-danger px-md-4"
-                        onclick="deletePass()">Delete</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        onclick="deletePass()"> <%=L('passes11', language, 'Delete') %></button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('passes13', language, 'Cancel') %></button>
                 </div>
             </div>
         </div>
@@ -175,7 +175,7 @@
                     var passes_data = data;
                     console.log(data);
                     if (!passes_data.length) {
-                        var no_passes = `<div class="no-passes alert alert-secondary w-100">No passes yet</div>`
+                        var no_passes = `<div class="no-passes alert alert-secondary w-100"><%=L('passes14', language, 'No passes yet') %></div>`
                         $('#passes').html(no_passes);
                         return;
                     }
@@ -225,7 +225,7 @@
 
             if(!(pass_section && pass_price && pass_visits_number)) {
                 $.ambiance({
-                    message: "Please fill in all fields.",
+                    message: "<%=L('passes15', language, 'Please fill in all fields') %>.",
                     type: "error",
                     fade: true,
                     width: 400
@@ -251,7 +251,7 @@
                     $('#create_pass-modal').modal('hide');
                     loading(20, el = '#add_pass_btn');
                     $.ambiance({
-                        message: "Pass added!",
+                        message: "<%=L('passes16', language, 'Pass added') %>!",
                         type: "success",
                         fade: true
                     });
@@ -279,7 +279,7 @@
 
             if((!pass_section || !pass_price || !pass_visits_number)) {
                 $.ambiance({
-                    message: "Please fill in all fields.",
+                    message: "<%=L('passes17', language, 'Please fill in all fields') %>.",
                     type: "error",
                     fade: true,
                     width: 400
@@ -301,7 +301,7 @@
                     if (res.r == 1) {
                         loading(20, el = '#edit_pass_btn');
                         $.ambiance({
-                            message: `Updated successfully!`,
+                            message: `<%=L('passes18', language, 'Updated successfully') %>!`,
                             type: "success",
                             fade: true
                         });
@@ -310,7 +310,7 @@
                         loading(0);
                     }  else {
                         $.ambiance({
-                            message: `Error. Try again later!`,
+                            message: `<%=L('passes19', language, 'Error. Try again later') %>!`,
                             type: "error",
                             fade: true
                         });
@@ -345,14 +345,14 @@
                     if (data.r == 1) {
                         loading(20, el = '#delete_pass_btn');
                         $.ambiance({
-                            message: `Deleted successfully`,
+                            message: `<%=L('passes20', language, 'Deleted successfully') %>`,
                             type: "success",
                             fade: true
                         });
                         $(`#${globalPassIndex}`).remove();
                     }  else {
                         $.ambiance({
-                            message: `Error. Try again later!`,
+                            message: `<%=L('passes19', language, 'Error. Try again later') %>!`,
                             type: "error",
                             fade: true
                         });

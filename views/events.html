@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events</title>
+    <title><%=L('events1', language, 'Events') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
 </head>
@@ -20,12 +20,11 @@
         <%- include('./components/nav_bar.ejs.html') %>
             <div class="content">
                 <div class="content-head">
-                    <h1>Events</h1>
+                    <h1><%=L('events1', language, 'Events') %></h1>
                     <% if (role=='admin' ) { %>
                         <button onclick="showAddEventModal()" class="btn btn-primary d-flex"><span
                                 class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 700;">add</span>Add
-                            Event</button>
+                                style="font-size: 25px; font-weight: 700;">add</span><%=L('events2', language, 'Add Event') %></button>
                         <% } %>
 
                 </div>
@@ -44,55 +43,55 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Event</h4>
+                    <h4 class="modal-title"><%=L('events2', language, 'Add Event') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Repetition</label>
+                            <label class="mb-2"><%=L('events3', language, 'Repetition') %></label>
                             <select id="repetition" class="form-control">
-                                <option disabled="true" selected="" value="">Choose</option>
-                                <option value="single">Single</option>
-                                <option value="repeat">Repeat</option>
+                                <option disabled="true" selected="" value=""><%=L('events4', language, 'Choose') %></option>
+                                <option value="single"><%=L('events5', language, 'Single') %></option>
+                                <option value="repeat"><%=L('events6', language, 'Repeat') %></option>
                             </select>
                         </div>
                         <div class="mb-3 mt-3 hidden event_name-block">
-                            <label class="mb-2">Event name</label>
+                            <label class="mb-2"><%=L('events7', language, 'Event name') %></label>
                             <input type="text" id="event_name" class="form-control" placeholder="Karate" required />
                         </div>
                         <div class="mb-3 mt-3 hidden coach_name-block">
-                            <label class="mb-2">Coach name</label>
+                            <label class="mb-2"><%=L('events8', language, 'Coach name') %></label>
                             <select name="coach_id" id="coach_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3 hidden event_date-block">
-                            <label class="mb-2">Event date</label>
+                            <label class="mb-2"><%=L('events9', language, 'Event date') %></label>
                             <input type="date" class="form-control" id="event_date">
                         </div>
                         <div class="mb-3 mt-3 hidden week_day-block">
-                            <label class="mb-2">Week day</label>
+                            <label class="mb-2"><%=L('events10', language, 'Week day') %></label>
                             <select id="week_day" class="form-control">
-                                <option disabled="true" selected="" value="">Choose</option>
-                                <option value="monday">Monday</option>
-                                <option value="tuesday">Tuesday</option>
-                                <option value="wednesday">Wednesday</option>
-                                <option value="thursday">Thursday</option>
-                                <option value="friday">Friday</option>
-                                <option value="saturday">Saturday</option>
-                                <option value="sunday">Sunday</option>
+                                <option disabled="true" selected="" value=""><%=L('events11', language, 'Choose') %></option>
+                                <option value="monday"><%=L('events12', language, 'Monday') %></option>
+                                <option value="tuesday"><%=L('events13', language, 'Tuesday') %></option>
+                                <option value="wednesday"><%=L('events14', language, 'Wednesday') %></option>
+                                <option value="thursday"><%=L('events15', language, 'Thursday') %></option>
+                                <option value="friday"><%=L('events16', language, 'Friday') %></option>
+                                <option value="saturday"><%=L('events17', language, 'Saturday') %></option>
+                                <option value="sunday"><%=L('events18', language, 'Sunday') %></option>
                             </select>
 
                         </div>
                         <div class="mb-3 mt-3 hidden time-block">
-                            <label class="mb-2">Time</label>
+                            <label class="mb-2"><%=L('events19', language, 'Time') %></label>
                             <input type="time" id="time" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="add_event_btn" class="btn btn-primary px-md-4"
-                        onclick="addEvent()">Add</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        onclick="addEvent()"><%=L('events20', language, 'Add') %></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('events21', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -102,55 +101,55 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Event</h4>
+                    <h4 class="modal-title"><%=L('events22', language, 'Edit Event') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Repetition</label>
+                            <label class="mb-2"><%=L('events3', language, 'Repetition') %></label>
                             <select id="new_repetition" class="form-control" disabled>
-                                <option disabled="true" selected="" value="">Choose</option>
-                                <option value="single">Single</option>
-                                <option value="repeat">Repeat</option>
+                                <option disabled="true" selected="" value=""><%=L('events4', language, 'Choose') %></option>
+                                <option value="single"><%=L('events5', language, 'Single') %></option>
+                                <option value="repeat"><%=L('events6', language, 'Repeat') %></option>
                             </select>
                         </div>
                         <div class="mb-3 mt-3 hidden event_name-block">
-                            <label class="mb-2">Event name</label>
+                            <label class="mb-2"><%=L('events7', language, 'Event name') %></label>
                             <input type="text" id="new_event_name" class="form-control" placeholder="Karate" required />
                         </div>
                         <div class="mb-3 mt-3 hidden coach_name-block">
-                            <label class="mb-2">Coach name</label>
+                            <label class="mb-2"><%=L('events8', language, 'Coach name') %></label>
                             <select name="coach_id" id="new_coach_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3 hidden event_date-block">
-                            <label class="mb-2">Event date</label>
+                            <label class="mb-2"><%=L('events9', language, 'Event date') %></label>
                             <input type="date" class="form-control" id="new_event_date">
                         </div>
                         <div class="mb-3 mt-3 hidden week_day-block">
-                            <label class="mb-2">Week day</label>
+                            <label class="mb-2"><%=L('events10', language, 'Week day') %></label>
                             <select id="new_week_day" class="form-control">
-                                <option disabled="true" selected="" value="">Choose</option>
-                                <option value="monday">Monday</option>
-                                <option value="tuesday">Tuesday</option>
-                                <option value="wednesday">Wednesday</option>
-                                <option value="thursday">Thursday</option>
-                                <option value="friday">Friday</option>
-                                <option value="saturday">Saturday</option>
-                                <option value="sunday">Sunday</option>
+                                <option disabled="true" selected="" value=""><%=L('events11', language, 'Choose') %></option>
+                                <option value="monday"><%=L('events12', language, 'Monday') %></option>
+                                <option value="tuesday"><%=L('events13', language, 'Tuesday') %></option>
+                                <option value="wednesday"><%=L('events14', language, 'Wednesday') %></option>
+                                <option value="thursday"><%=L('events15', language, 'Thursday') %></option>
+                                <option value="friday"><%=L('events16', language, 'Friday') %></option>
+                                <option value="saturday"><%=L('events17', language, 'Saturday') %></option>
+                                <option value="sunday"><%=L('events18', language, 'Sunday') %></option>
                             </select>
 
                         </div>
                         <div class="mb-3 mt-3 hidden time-block">
-                            <label class="mb-2">Time</label>
+                            <label class="mb-2"><%=L('events19', language, 'Time') %></label>
                             <input type="time" id="new_time" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="edit_event_btn" class="btn btn-primary px-md-4"
-                        onclick="editEvent()">Edit</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        onclick="editEvent()"><%=L('events23', language, 'Edit') %></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('events21', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -160,16 +159,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Event</h4>
+                    <h4 class="modal-title"><%=L('events24', language, 'Delete Event') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    You won't be able to revert this. Are you sure?
+                    <%=L('events25', language, "You won't be able to revert this. Are you sure?") %>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_event_btn" class="btn btn-danger px-md-4"
-                        onclick="deleteEvent()">Delete</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        onclick="deleteEvent()"><%=L('events26', language, 'Delete') %></button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('events21', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -179,7 +178,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Members</h4>
+                    <h4 class="modal-title"><%=L('events27', language, 'Members') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -196,12 +195,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary " onclick="saveMembers()" id="save_members_btn"
-                        style="display: none; ">Save</button>
+                        style="display: none; "><%=L('events28', language, 'Save') %></button>
                     <button type="button" class="btn btn-success " onclick="showMembers()" id="show_members_btn"
-                        style="display: none;">Show Members</button>
-                    <button type="button" class="btn btn-success" onclick="showNewMembers()" id="add_member_btn">+ Add
-                        Member</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        style="display: none;"><%=L('events29', language, 'Show Members') %></button>
+                    <button type="button" class="btn btn-success" onclick="showNewMembers()" id="add_member_btn">+ <%=L('events30', language, 'Add Member') %></button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('events21', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -315,7 +313,7 @@
 
             if (event_name.length > 25) {
                 $.ambiance({
-                    message: 'Event name must be 25 characters or less.',
+                    message: "<%=L('events31', language, 'Event name must be 25 characters or less') %>.",
                     type: 'error',
                     fade: true,
                     width: 400
@@ -348,7 +346,7 @@
                             $("#week_day").val('');
                             $("#coach_id").val('');
                             $.ambiance({
-                                message: "Event added successfully!",
+                                message: "<%=L('events32', language, 'Event added successfully') %>!",
                                 type: "success",
                                 fade: true,
                                 width: 400
@@ -360,7 +358,7 @@
                     error: function (error) {
                         console.error("Error:", error);
                         $.ambiance({
-                            message: 'Error adding event. Please try again.',
+                            message: "<%=L('events33', language, 'Error adding event. Please try again') %>.",
                             type: 'error',
                             fade: true,
                             width: 400
@@ -370,7 +368,7 @@
                 });
             } else {
                 $.ambiance({
-                    message: 'Please fill in all fields!',
+                    message: "<%=L('events34', language, 'Please fill in all fields') %>!",
                     type: 'error',
                     fade: true,
                     width: 400
@@ -406,7 +404,7 @@
                 `
                 i++;
             });
-            if (!members.length) membersHTML = '<div class="alert alert-light">No members.</div>'
+            if (!members.length) membersHTML = "<div class='alert alert-light'><%=L('events35', language, 'No members') %>.</div>"
             $('#event_members').html(membersHTML);
             // console.log(globalUsers);
             // console.log(globalEvents);
@@ -437,7 +435,7 @@
                 `
                 i++;
             });
-            if (!newMembers.length) newMembersHTML = '<div class="alert alert-light">No members to add.</div>'
+            if (!newMembers.length) newMembersHTML = "<div class='alert alert-light'><%=L('events36', language, 'No members to add') %>.</div>"
             $('#new_event_members').html(newMembersHTML);
         }
 
@@ -469,7 +467,7 @@
 
             if (event_name.length > 25) {
                 $.ambiance({
-                    message: 'Event name must be 25 characters or less.',
+                    message: "<%=L('events31', language, 'Event name must be 25 characters or less') %>.",
                     type: 'error',
                     fade: true,
                     width: 400
@@ -502,7 +500,7 @@
                             $("#week_day").val('');
                             $("#coach_id").val('');
                             $.ambiance({
-                                message: "Event added successfully!",
+                                message: "<%=L('events40', language, 'Event updated successfully') %>!",
                                 type: "success",
                                 fade: true,
                                 width: 400
@@ -514,7 +512,7 @@
                     error: function (error) {
                         console.error("Error:", error);
                         $.ambiance({
-                            message: 'Error adding event. Please try again.',
+                            message: "<%=L('events41', language, 'Error editing event. Please try again') %>",
                             type: 'error',
                             fade: true,
                             width: 400
@@ -524,7 +522,7 @@
                 });
             } else {
                 $.ambiance({
-                    message: 'Please fill in all fields!',
+                    message: "<%=L('events34', language, 'Please fill in all fields') %>!",
                     type: 'error',
                     fade: true,
                     width: 400
@@ -550,7 +548,7 @@
                 success: function (res) {
                     if (res.r) {
                         $.ambiance({
-                            message: "Event deleted successfully!",
+                            message: "<%=L('events38', language, 'Event deleted successfully') %>!",
                             type: "success",
                             fade: true,
                             width: 400
@@ -562,7 +560,7 @@
                 error: function (error) {
                     console.error("Error:", error);
                     $.ambiance({
-                        message: 'Error adding event. Please try again.',
+                        message: "<%=L('events39', language, 'Error deleting event. Please try again') %>",
                         type: 'error',
                         fade: true,
                         width: 400
@@ -580,7 +578,7 @@
 
             if (!coaches_data.length) {
                 let no_members = `
-                        <div class="no_members">No members</div>
+                        <div class="no_members"><%=L('events35', language, 'No members') %></div>
                         `
                 $('.members').append(no_members);
 
@@ -642,7 +640,7 @@
                 success: function (res) {
                     if (res.r) {
                         $.ambiance({
-                            message: "Members updated!",
+                            message: "<%=L('events', language, 'Members updated') %>!",
                             type: "success",
                             fade: true
                         });

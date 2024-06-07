@@ -6,7 +6,7 @@
         </ul>
         <% if (role=='admin' ) { %>
             <button type="button" onclick="showAddLinkModal()"><span class="material-symbols-outlined"
-                    style="font-size: 25px; font-weight: 700;">add</span>New Link</button>
+                    style="font-size: 25px; font-weight: 700;">add</span><%=L('links1', language, 'New Link') %></button>
             <% } %>
 
     </div>
@@ -16,25 +16,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add Link</h4>
+                <h4 class="modal-title"><%=L('links2', language, 'Add Link') %></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="mb-3 mt-3">
-                        <label class="mb-2">Link text</label>
+                        <label class="mb-2"><%=L('links3', language, 'Link text') %></label>
                         <input type="text" class="form-control" id="link_text" placeholder="Text">
                     </div>
                     <div class="mb-3 mt-3">
-                        <label class="mb-2">Link URL</label>
+                        <label class="mb-2"><%=L('links4', language, 'Link URL') %></label>
                         <input type="text" class="form-control" id="link_url" placeholder="https://">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" id="add_link_btn" class="btn btn-primary px-md-4"
-                    onclick="createLink()">Add</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    onclick="createLink()"><%=L('links5', language, 'Add') %></button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('links6', language, 'Close') %></button>
             </div>
         </div>
     </div>
@@ -44,16 +44,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Link</h4>
+                <h4 class="modal-title"><%=L('links7', language, 'Delete Link') %></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                You won't be able to revert this. Are you sure?
+                <%=L('links8', language, "You won't be able to revert this. Are you sure?") %>
             </div>
             <div class="modal-footer">
                 <button type="button" id="delete_link_btn" class="btn btn-danger px-md-4"
-                    onclick="deleteLink()">Delete</button>
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    onclick="deleteLink()"><%=L('links9', language, 'Delete') %></button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('links6', language, 'Close') %></button>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@
                 var links_data = JSON.parse(data);
                 console.log(links_data)
                 if (!links_data.length) {
-                    var no_links = `<div class="no_links">No links yet</div>`
+                    var no_links = `<div class="no_links"><%=L('links10', language, 'No links yet') %></div>`
                     $(".hot-links-list").append(no_links);
                     return;
                 }
@@ -104,7 +104,7 @@
 
         if (!(link_text && link_url)) {
             $.ambiance({
-                message: "Please provide link text and link URL.",
+                message: "<%=L('links11', language, 'Please provide link text and link URL') %>.",
                 type: "error",
                 fade: true,
                 width: 400
@@ -122,7 +122,7 @@
                 $('#create_link-modal').modal('hide');
                 loading(20, el = '#add_link_btn');
                 $.ambiance({
-                    message: "Link added!",
+                    message: "<%=L('links12', language, 'Link added') %>!",
                     type: "success",
                     fade: true
                 });
@@ -148,7 +148,7 @@
             success: function (res) {
                 if (res.r) {
                     $.ambiance({
-                        message: "Link deleted!",
+                        message: "<%=L('links13', language, 'Link deleted') %>!",
                         type: "success",
                         fade: true
                     });

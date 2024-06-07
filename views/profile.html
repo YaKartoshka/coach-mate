@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title><%=L('prof', language, 'Profile') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
 </head>
@@ -21,8 +21,8 @@
 
             <div class="settings-content">
                 <div class="tab-switcher">
-                    <div class="profile-tab active">PROFILE</div>
-                    <div class="password-tab">PASSWORD</div>
+                    <div class="profile-tab active"><%=L('prof2', language, 'PROFILE') %></div>
+                    <div class="password-tab"><%=L('prof3', language, 'PASSWORD') %></div>
                 </div>
 
 
@@ -55,37 +55,37 @@
                         <div class="personal-info">
                             <form autocomplete="off">
                                 <div class="mb-3 mt-5">
-                                    <p>Personal info</p>
+                                    <p><%=L('prof4', language, 'Personal info') %></p>
                                 </div>
 
                                 <div class="main-info">
                                     <div class="fname-lname">
                                         <div class="fname mb-3 mt-3">
-                                            <label class="mb-2">First name</label>
+                                            <label class="mb-2"><%=L('prof5', language, 'First name') %></label>
                                             <input type="text" class="form-control" id="first_name" placeholder="Toji"
                                                 required>
                                         </div>
                                         <div class="lname mb-3 mt-3">
-                                            <label class="mb-2">Last name</label>
+                                            <label class="mb-2"><%=L('prof6', language, 'Last name') %></label>
                                             <input type="text" class="form-control" id="last_name"
                                                 placeholder="Fushiguro" required>
                                         </div>
                                     </div>
                                     <div class="email-phone">
                                         <div class="email mb-3 mt-3">
-                                            <label class="mb-2">Email</label>
+                                            <label class="mb-2"><%=L('prof7', language, 'Email') %></label>
                                             <input type="text" class="form-control" id="email"
                                                 placeholder="example@gmail.com" disabled>
                                         </div>
                                         <div class="phone-number mb-3 mt-3">
-                                            <label class="mb-2">Phone number</label>
+                                            <label class="mb-2"><%=L('prof8', language, 'Phone number') %></label>
                                             <input type="text" class="form-control" id="phone_number" placeholder="+7">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="about mb-3 mt-4">
-                                    <label class="mb-2">About me</label>
+                                    <label class="mb-2"><%=L('prof9', language, 'About me') %></label>
                                     <textarea id="description" cols="30" rows="7" class="form-control"></textarea>
                                 </div>
                             </form>
@@ -95,14 +95,12 @@
                         <div class="profile-footer">
                             <div class="save-btn">
                                 <button type="button" id="change_profile_btn" class="btn btn-outline-primary"
-                                    onclick="changeProfile()"> Save changes</button>
+                                    onclick="changeProfile()"> <%=L('prof10', language, 'Save changes') %></button>
                             </div>
 
                             <div class="box-important">
                                 <img src="../public/images/box Important.svg" alt="">
-                                <span>Personalize your profile to provide your colleagues with a deeper understanding of
-                                    who you
-                                    are. Remember to include a photo as well!</span>
+                                <span><%=L('prof11', language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well') %>!</span>
                             </div>
                         </div>
                     </div>
@@ -110,41 +108,38 @@
                         <div class="password-header">
                             <div class="box-important">
                                 <img src="../public/images/password.svg" alt="">
-                                <span>Personalize your profile to provide your colleagues with a deeper understanding of
-                                    who you are. Remember to include a photo as well!</span>
+                                <span><%=L('prof11', language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well') %>!</span>
                             </div>
                         </div>
 
                         <div class="password-body">
                             <div class="newpass-confirmpass">
                                 <div class="new-password mb-3 mt-5">
-                                    <label class="mb-2">New password</label>
+                                    <label class="mb-2"><%=L('prof12', language, 'New password') %></label>
                                     <input type="password" class="form-control" id="new_password" placeholder="1234567"
                                         oninput="updateStrengthIndicator()">
                                     <div id="password-validation" class="invalid-feedback"></div>
                                 </div>
                                 <div class="confirm-password mb-3 mt-5">
-                                    <label class="mb-2">Confirm new password</label>
+                                    <label class="mb-2"><%=L('prof13', language, 'Confirm new password') %></label>
                                     <input type="password" class="form-control" id="confirm_password"
                                         placeholder="1234567">
-                                    <div class="valid-feedback">Passwords match.</div>
-                                    <div class="invalid-feedback">Please confirm your password.</div>
+                                    <div class="valid-feedback"><%=L('prof14', language, 'Passwords match') %>.</div>
+                                    <div class="invalid-feedback"><%=L('prof15', language, 'Please confirm your password') %>.</div>
                                 </div>
                             </div>
 
 
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="showPasswordCheckbox">
-                                <label class="form-check-label show-pass" for="showPasswordCheckbox">Show
-                                    password</label>
+                                <label class="form-check-label show-pass" for="showPasswordCheckbox"><%=L('prof16', language, 'Show password') %></label>
                             </div>
                         </div>
 
                         <div class="password-footer">
                             <div class="save-btn">
                                 <button type="button" class="btn btn-outline-primary" id="change_password_btn"
-                                    onclick="changePassword()"> Save
-                                    changes</button>
+                                    onclick="changePassword()"> <%=L('prof17', language, 'Save changes') %></button>
                             </div>
                         </div>
                     </div>
@@ -257,7 +252,7 @@
                 if (!first_name) $('#first_name').focus();
                 if (!last_name) $('#last_name').focus();
                 $.ambiance({
-                    message: "Fill in required fields",
+                    message: "<%=L('prof18', language, 'Fill in required fields') %>",
                     type: "error",
                     fade: true,
                     width: 400
@@ -269,7 +264,7 @@
                 if (first_name.length > 20) $('#first_name').focus();
                 if (last_name.length > 20) $('#last_name').focus();
                 $.ambiance({
-                    message: "The length of the first and last name should be no more than 20",
+                    message: "<%=L('prof19', language, 'The length of the first and last name should be no more than 20') %>",
                     type: "error",
                     fade: true,
                     width: 400
@@ -302,7 +297,7 @@
                     var res = JSON.parse(r);
                     if (res.r) {
                         $.ambiance({
-                            message: "Your profile updated",
+                            message: "<%=L('prof20', language, 'Your profile updated') %>",
                             type: "success",
                             fade: true,
                             width: 400
@@ -312,7 +307,7 @@
                 }, error: function (err) {
                     console.log(err);
                     $.ambiance({
-                        message: "Something went wrong. Try again later",
+                        message: "<%=L('prof21', language, 'Something went wrong. Try again later') %>",
                         type: "success",
                         fade: true,
                         width: 400
@@ -330,12 +325,12 @@
             const confirm_password = $('#confirm_password').val().trim();
 
             if (!new_password || !confirm_password) {
-                showError('Please enter both new and confirm passwords');
+                showError("<%=L('prof22', language, 'Please enter both new and confirm passwords') %>");
                 return;
             }
 
             if (new_password !== confirm_password) {
-                showError('Passwords do not match!');
+                showError("<%=L('prof23', language, 'Passwords do not match') %>!");
                 return;
             }
 
@@ -350,14 +345,14 @@
                 success: function (r) {
                     const res = JSON.parse(r);
                     if (res.r) {
-                        showSuccess('Password changed successfully!');
+                        showSuccess("<%=L('prof23', language, 'Password changed successfully') %>!");
                         $('#new_password, #confirm_password').val('');
                         resetStrengthIndicator();
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    showError('Failed to change password. Please try again later.');
+                    showError("<%=L('prof24', language, 'Failed to change password. Please try again later') %>.");
                 }
             });
         }
@@ -369,17 +364,17 @@
             const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
             if (password.length < 6) {
-                showError('Password should be at least 6 characters long');
+                showError("<%=L('prof25', language, 'Password should be at least 6 characters long') %>");
                 return false;
             }
 
             if (!hasUppercase) {
-                showError('Password should contain at least one uppercase letter');
+                showError("<%=L('prof26', language, 'Password should contain at least one uppercase letter') %>");
                 return false;
             }
 
             if (!hasSpecialChar) {
-                showError('Password should contain at least one special character');
+                showError("<%=L('prof27', language, 'Password should contain at least one special character') %>");
                 return false;
             }
 
@@ -444,18 +439,18 @@
             const validationMessage = $('#password-validation');
 
             if (newPassword.length < 6) {
-                validationMessage.text('Password should be at least 6 characters long.').removeClass('text-success').addClass('text-danger');
+                validationMessage.text("<%=L('prof28', language, 'Password should be at least 6 characters long') %>.").removeClass('text-success').addClass('text-danger');
                 return false;
             }
 
             const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
 
             if (!hasSpecialChar) {
-                validationMessage.text('Password should contain at least one special character.').removeClass('text-success').addClass('text-danger');
+                validationMessage.text("<%=L('prof27', language, 'Password should contain at least one special character') %>.").removeClass('text-success').addClass('text-danger');
                 return false;
             }
 
-            validationMessage.text('Password is valid.').removeClass('text-danger').addClass('text-success');
+            validationMessage.text("<%=L('prof29', language, 'Password is valid') %>.").removeClass('text-danger').addClass('text-success');
             return true;
         }
 
