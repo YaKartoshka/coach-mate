@@ -7,7 +7,7 @@
     <title>Members</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
- 
+
 </head>
 
 <body>
@@ -322,7 +322,7 @@
                         i++;
                         // Append the memberHTML to the "members" div
                         $('.members').append(memberHTML);
-                        
+
                     });
                     loading(0);
 
@@ -435,7 +435,7 @@
             let pass_id = $('#pass_id').val();
             let pass_section = $('#pass_id option:selected').text();
             let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
-            passed_data = passes_data ? passes_data : '';
+            let passed_data = passes_data ? passes_data : '';
             if ((!email || !role || !first_name || !last_name)) {
                 $.ambiance({
                     message: "Please provide an email, full name and role for the member.",
@@ -449,11 +449,11 @@
             $.ajax({
                 url: "/users/create",
                 method: 'post',
-                data: { user_id: globalMemberId, email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase(), pass: passed_data},
+                data: { user_id: globalMemberId, email: email, first_name: first_name, last_name: last_name, role: role.toLowerCase(), pass: passed_data },
                 success: function (r) {
                     let data = JSON.parse(r);
 
-                    
+
                     if (data.r == 1) {
                         $('#create_member-modal').modal('hide');
                         loading(20, el = '#add_member_btn');
@@ -504,11 +504,24 @@
             $('#new_phone_number').val(member_data.phone_number);
             $('#new_role').val(member_data.role)
 
+            // if (member_data.role == 'student') {
+            //     $('#new_pass_id').val(JSON.parse(member_data.pass).pass_id)
+            // }
+
             if (member_data.role == 'student') {
-                $('#new_pass_id').val(JSON.parse(member_data.pass).pass_id)
+                if (member_data.pass) {
+                    try {
+                        let parsedPass = JSON.parse(member_data.pass);
+                        if (parsedPass && parsedPass.pass_id) {
+                            $('#new_pass_id').val(parsedPass.pass_id);
+                        }
+                    } catch (e) {
+                        console.error("Error parsing member_data.pass:", e);
+                    }
+                }
             }
 
-            if (member_data.role.toLowerCase() == 'student') { 
+            if (member_data.role.toLowerCase() == 'student') {
                 $('#new_pass').show();
             } else {
                 $('#new_pass').hide();
@@ -525,7 +538,7 @@
             let pass_section = $('#new_pass_id option:selected').val();
             let phone_number = $('#new_phone_number').val();
             let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
-
+            let passed_data = passes_data ? passes_data : '';
 
             if ((!role || !first_name || !last_name)) {
                 $.ambiance({
@@ -540,7 +553,7 @@
             $.ajax({
                 url: "/users/edit",
                 method: 'post',
-                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passes_data },
+                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passed_data },
                 success: function (r) {
                     let data = JSON.parse(r);
                     if (data.r == 1) {
@@ -586,13 +599,16 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.r == 1) {
-                        $('#edit_member-modal').modal('hide');
+                        $('#delete_member-modal').modal('hide');
                         loading(20, el = '#delete_member_btn');
                         $.ambiance({
                             message: `Deleted successfully`,
                             type: "success",
                             fade: true
                         });
+                        loading(1);
+                        showMembers();
+                        loading(0);
                         $(`#${globalMemberIndex}`).remove();
                     } else {
                         $.ambiance({
@@ -613,7 +629,7 @@
 
 
         function searchByName(ths) {
-            
+
             let i = 0;
             let membersHTML = ''
             globalMembers.forEach((member) => {

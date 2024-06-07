@@ -50,9 +50,13 @@ router.post('/create', async (req, res) => {
             phone_number: '',
         }
         if (role == 'student') {
+            if(req.body.pass && req.body.pass.trim() != '') {
                 data.pass = req.body.pass,
                 data.pass_start_date = formattedDate,
                 data.pass_status = 1
+            } else {
+                data.pass = ''
+            }
         }
         await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(userRecord.uid).set(data).then(() => {
             r['r'] = 1;
@@ -158,13 +162,18 @@ router.post('/edit', async (req, res) => {
     const role = req.body.role;
     const pass = req.body.pass;
 
-    await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update({
+    let updateData = {
         first_name: first_name,
         last_name: last_name,
         phone_number: phone_number,
         role: role,
-        pass: pass
-    }).then(() => {
+    }
+
+    if(role.toLowerCase() == 'student') {
+        updateData.pass = pass
+    }
+    
+    await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update(updateData).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
     }).catch((e) => {
