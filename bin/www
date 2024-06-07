@@ -5,7 +5,7 @@ run_mode = args[0];
 require("../config/" + run_mode); //global config -> conf
 
 const firebase = require('../libs/firebase_db');
-require('../libs/telegram')
+// require('../libs/telegram')
 require("../libs/translate")
 const fdb = firebase.fdb;
 const fauth = firebase.fauth;
@@ -20,29 +20,64 @@ server.on("error", onError);
 console.log(`App is listening at host http://localhost:${conf.port}`);
 
 
-var inter = setInterval(async(req, res)=>{
-  var today = new Date();
-  var day = String(today.getDate()).padStart(2, '0');
-  var month = String(today.getMonth() + 1).padStart(2, '0'); 
-  var year = today.getFullYear();
-  var formattedDate = `${year}-${month}-${day}`;
-  var days = formattedDate.split('-')[0];
-  // check status == 1 & days < 5 days ->
-    // status = 0
-    // const data = [];
-    // console.log(req.session.panel_id);
-    // await fdb.collection('panels').doc(req.session.panel_id).collection('users').get().then((users)=>{
+const checkPassStatuses = async (req, res) => {
+  try {
+    var today = new Date();
+    const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Remove time part
+    console.log(formattedToday);
 
-    //     })
-    //   })
-    // })
+    // check status == 1 & days < 5 days ? days > 4 -> status = 2
+    // if days <= 0 && status==2 -> status = 0
 
-    
-  
+    //status = 0 не оплачено
+    //status = 1 оплачено
+    //status = 2 ожидает оплаты в течении 5 дней
 
-    //  if days < 0 && status==2 -> status = 1
+    const panels = await fdb.collection('panels').get();
 
-},3000)
+    panels.forEach(async (panelDoc) => {
+      const users = await fdb.collection('panels').doc(panelDoc.id).collection('users').where('role', '==', 'student').get();
+
+      users.forEach(async (userDoc) => {
+        const userData = userDoc.data();
+        const passStartDate = new Date(userData.pass_start_date);
+        const diffTime = formattedToday - passStartDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        console.log(`User ID: ${userDoc.id}`);
+        console.log(`Pass Start Date: ${passStartDate}`);
+        console.log(`Today's Date: ${formattedToday}`);
+        console.log(`Difference in Days: ${diffDays}`);
+        console.log(`Current Pass Status: ${userData.pass_status}`);
+
+        let newPassStatus;
+        if (userData.pass_status == 1 && diffDays <= 5 && diffDays > 0) {
+          newPassStatus = 2; // Waiting for payment within 5 days
+        } else if (diffDays <= 0 && userData.pass_status == 2) {
+          newPassStatus = 0; // Pass expired, not paid
+        } else {
+          // No change in pass_status
+          newPassStatus = userData.pass_status;
+        }
+
+        // Update pass_status in Firestore
+        // Only update if newPassStatus is defined and different from current status
+        if (newPassStatus !== undefined && newPassStatus !== userData.pass_status) {
+          await fdb.collection('panels').doc(panelDoc.id).collection('users').doc(userDoc.id).update({
+            pass_status: newPassStatus
+          });
+          console.log(`Updated pass status for user ${userDoc.data().first_name} in panel ${panelDoc.id} to ${newPassStatus}`);
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Error while checking pass statuses:', error);
+  }
+};
+
+setInterval(checkPassStatuses, 24 * 60 * 60 * 1000) //do not forget to change on 86400000ms (every day)
+
+checkPassStatuses();
 
 // in Admin set status always 2 -Ю users.js
 
