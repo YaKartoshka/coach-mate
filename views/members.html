@@ -270,7 +270,7 @@
 
         async function showPasses() {
             var passes_data = globalPasses;
-            var passHTML = '<option value="none" disabled selected="true">None</option>'
+            var passHTML = '<option value="none" selected="true">None</option>'
             passes_data.forEach((pass) => {
                 passHTML += `<option value="${pass.pass_id}">${pass.pass_section}</option>`;
             });
