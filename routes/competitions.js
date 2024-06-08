@@ -44,7 +44,7 @@ function isAuthenticated(req, res, next) {
 };
 
 router.get('/create', isAuthenticated, (req, res) => {
-    res.render('competition_create', { role: req.session.role });
+    res.render('competition_create', { role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en' });
 });
 
 router.post('/create', isAuthenticated, upload.single('event_img'), async (req, res) => {

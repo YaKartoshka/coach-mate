@@ -24,7 +24,7 @@
         <%- include('./components/nav_bar.ejs.html') %>
             <div class="passes-content">
                 <div class="passes-content-head">
-                    <h1>Competitions</h1>
+                    <h1><%=L('comps1', language, 'Competitions') %></h1>
                     <% if (role=='admin' ) { %>
                         <button data-bs-toggle="modal" onclick="showAddPassModal()" data-bs-target="#create_news-modal"
                             class="btn btn-primary d-flex pe-4 ps-4"><span class="material-symbols-outlined"

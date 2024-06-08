@@ -85,11 +85,11 @@
                             <input type="text" id="new_pass_section" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes5', language, '') %>Price</label>
+                            <label class="mb-2"><%=L('passes5', language, 'Price') %></label>
                             <input type="text" id="new_pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes6', language, '') %>Visits number</label>
+                            <label class="mb-2"><%=L('passes6', language, 'Visits number') %></label>
                             <input type="text" id="new_pass_visits_number" class="form-control" />
                         </div>
                     </form>
@@ -111,7 +111,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <%=L('passes12', language, "You won't be able to revert this. Are you sure") %> ?
+                    <%=L('passes12', language, "You won't be able to revert this. Are you sure") %>?
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_pass_btn" class="btn btn-danger px-md-4"
@@ -189,7 +189,7 @@
                         <p>${pass.pass_price}₸</p>
                     </div>
                     <div class="pass-visits-number">
-                        <p>Amount of visits: ${pass.pass_visits_number}</p>
+                        <p><%=L('passes21', language, 'Amount of visits') %>: ${pass.pass_visits_number}</p>
                     </div>
                     <% if (role=='admin' ) { %>
                         <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" aria-expanded="false">
@@ -200,8 +200,8 @@
                             </div>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" onclick="showEditPassModal('p-${i}')">Edit</a>
-                            <a class="dropdown-item" href="#" onclick="showDeletePassModal('p-${i}')">Delete</a>
+                            <a class="dropdown-item" href="#" onclick="showEditPassModal('p-${i}')"><%=L('passes10', language, 'Edit') %></a>
+                            <a class="dropdown-item" href="#" onclick="showDeletePassModal('p-${i}')"><%=L('passes11', language, 'Delete') %></a>
                         </div>
                     <% } %>
                 </div>`;
