@@ -129,7 +129,8 @@ router.get('/get', async (req, res) => {
                 profile_img: user.data().profile_img,
                 role: user.data().role,
                 description: user.data().description,
-                phone_number: user.data().phone_number
+                phone_number: user.data().phone_number,
+                telegram_token: encode(user.id, 3)
             }
 
             if (user.data().role == 'student') {

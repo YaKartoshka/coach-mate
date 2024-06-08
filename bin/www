@@ -153,3 +153,19 @@ getAdminInfo = async function (panel_id, user_id, callback) {
     'r': 1,
   });
 }
+
+encode = function(str, shift) {
+  return str.split('').map(char => {
+    if (char.match(/[a-z]/i)) {
+      const code = char.charCodeAt(0);
+      const isUpperCase = code >= 65 && code <= 90;
+      const base = isUpperCase ? 65 : 97;
+      return String.fromCharCode(((code - base + shift) % 26) + base);
+    }
+    return char;
+  }).join('');
+}
+
+decode = function (str, shift){
+  return encode(str, 26 - shift);
+}

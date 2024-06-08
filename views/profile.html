@@ -88,6 +88,12 @@
                                     <label class="mb-2"><%=L('prof9', language, 'About me') %></label>
                                     <textarea id="description" cols="30" rows="7" class="form-control"></textarea>
                                 </div>
+                                <div class="phone-number mb-3 mt-3">
+                                    <label class="mb-2">Telegram Token</label>
+                                    <input type="text" class="form-control" id="telegram_token" placeholder="" disabled>
+                                </div>
+
+                                
                             </form>
                         </div>
 
@@ -102,7 +108,9 @@
                                 <img src="../public/images/box Important.svg" alt="">
                                 <span><%=L('prof11', language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well') %>!</span>
                             </div>
+                            
                         </div>
+                        
                     </div>
                     <div class="password-content">
                         <div class="password-header">
@@ -213,12 +221,13 @@
             $.ajax({
                 url: '/users/get', method: 'get', success: function (data) {
                     var user = JSON.parse(data);
+                    console.log(user)
                     $("#first_name").val(user.first_name);
                     $("#last_name").val(user.last_name);
                     $("#email").val(user.email);
                     $("#description").val(user.description);
                     $("#phone_number").val(user.phone_number);
-
+                    $('#telegram_token').val(user.telegram_token)
                     let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
                     $('#profile_img').attr('src', profile_src)
 
