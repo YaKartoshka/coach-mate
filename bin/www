@@ -10,28 +10,29 @@ require("../libs/translate")
 const fdb = firebase.fdb;
 const fauth = firebase.fauth;
 const express = require('express');
+const { format, addMonths, differenceInCalendarDays } = require('date-fns');
 var app = require("../app");
 var http = require("http");
 var server = http.createServer(app);
 let port = conf.port || process.env.PORT;
 
+
 server.listen(conf.port);
 server.on("error", onError);
 console.log(`App is listening at host http://localhost:${conf.port}`);
 
+// check status == 1 & days < 5 days ? days > 4 -> status = 2
+// if days <= 0 && status==2 -> status = 0
+
+//status = 0 не оплачено
+//status = 1 оплачено
+//status = 2 ожидает оплаты в течении 5 дней
+
 
 const checkPassStatuses = async (req, res) => {
   try {
-    var today = new Date();
-    const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Remove time part
-    console.log(formattedToday);
-
-    // check status == 1 & days < 5 days ? days > 4 -> status = 2
-    // if days <= 0 && status==2 -> status = 0
-
-    //status = 0 не оплачено
-    //status = 1 оплачено
-    //status = 2 ожидает оплаты в течении 5 дней
+    const today = new Date();
+    const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Убираем часть времени
 
     const panels = await fdb.collection('panels').get();
 
@@ -41,27 +42,31 @@ const checkPassStatuses = async (req, res) => {
       users.forEach(async (userDoc) => {
         const userData = userDoc.data();
         const passStartDate = new Date(userData.pass_start_date);
-        const diffTime = formattedToday - passStartDate;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // Находим дату окончания абонемента (добавляем 1 месяц к дате начала)
+        const passEndDate = addMonths(passStartDate, 1);
+
+        // Разница между сегодняшним днем и датой окончания абонемента
+        const diffDays = differenceInCalendarDays(passEndDate, formattedToday);
 
         console.log(`User ID: ${userDoc.id}`);
         console.log(`Pass Start Date: ${passStartDate}`);
+        console.log(`Pass End Date: ${passEndDate}`);
         console.log(`Today's Date: ${formattedToday}`);
         console.log(`Difference in Days: ${diffDays}`);
         console.log(`Current Pass Status: ${userData.pass_status}`);
 
         let newPassStatus;
         if (userData.pass_status == 1 && diffDays <= 5 && diffDays > 0) {
-          newPassStatus = 2; // Waiting for payment within 5 days
+          newPassStatus = 2; // Ожидает оплаты в течение 5 дней
         } else if (diffDays <= 0 && userData.pass_status == 2) {
-          newPassStatus = 0; // Pass expired, not paid
+          newPassStatus = 0; // Абонемент истек, не оплачен
         } else {
-          // No change in pass_status
+          // Нет изменений в статусе
           newPassStatus = userData.pass_status;
         }
 
-        // Update pass_status in Firestore
-        // Only update if newPassStatus is defined and different from current status
+        // Обновляем статус абонемента в Firestore
         if (newPassStatus !== undefined && newPassStatus !== userData.pass_status) {
           await fdb.collection('panels').doc(panelDoc.id).collection('users').doc(userDoc.id).update({
             pass_status: newPassStatus
@@ -75,9 +80,10 @@ const checkPassStatuses = async (req, res) => {
   }
 };
 
-setInterval(checkPassStatuses, 24 * 60 * 60 * 1000) //do not forget to change on 86400000ms (every day)
+setInterval(checkPassStatuses, 24 * 60 * 60 * 1000); // Проверка каждый день (86400000ms)
 
 checkPassStatuses();
+
 
 // in Admin set status always 2 -Ю users.js
 
@@ -154,7 +160,7 @@ getAdminInfo = async function (panel_id, user_id, callback) {
   });
 }
 
-encode = function(str, shift) {
+encode = function (str, shift) {
   return str.split('').map(char => {
     if (char.match(/[a-z]/i)) {
       const code = char.charCodeAt(0);
@@ -166,6 +172,6 @@ encode = function(str, shift) {
   }).join('');
 }
 
-decode = function (str, shift){
+decode = function (str, shift) {
   return encode(str, 26 - shift);
 }
