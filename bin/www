@@ -52,6 +52,7 @@ const checkPassStatuses = async (req, res) => {
         let newPassStatus;
         if (userData.pass_status == 1 && diffDays <= 5 && diffDays > 0) {
           newPassStatus = 2; // Ожидает оплаты в течение 5 дней
+          if(userData.telegram_chat_id) sendTelegramNotification(userData.telegram_chat_id, 'Срок вашего абонемента истечет в течении 5дней.', 'Уведомление об оплате')
         } else if (diffDays <= 0 && userData.pass_status == 2) {
           newPassStatus = 0; // Абонемент истек, не оплачен
         } else {
