@@ -216,6 +216,14 @@
             getPasses();
             showRequests();
 
+            $('#new_pass_id').on('change', function () {
+                if ($(this).val() == '') {
+                    $('#new_pass_status_block').hide();
+                } else {
+                    $('#new_pass_status_block').show();
+                }
+            });
+
             function togglePassSelect() {
                 const addRoleSelect = $('#role');
                 const editRoleSelect = $('#new_role');
@@ -281,7 +289,7 @@
 
         async function showPasses() {
             var passes_data = globalPasses;
-            var passHTML = '<option value="none" selected="true">None</option>'
+            var passHTML = '<option value="" selected="true">None</option>'
             passes_data.forEach((pass) => {
                 passHTML += `<option value="${pass.pass_id}">${pass.pass_section}</option>`;
             });
@@ -318,8 +326,8 @@
                                     <h3>${member.first_name} ${member.last_name == null ? '' : member.last_name}</h3>
                                     <div class="d-flex gap-2 align-items-center">
                                         <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
-                                      ${member.role=='student' ? `<span class="badge  ${member.pass_status == '1' ? 'bg-success' : (member.pass_status=='0' ? 'bg-danger' : 'bg-warning')}">
-                                            ${member.pass_status == '1' ? 'Paid' : (member.pass_status=='0' ? 'Expired' : 'Pending')}
+                                      ${member.role == 'student' ? `<span class="badge  ${member.pass_status == '1' ? 'bg-success' : (member.pass_status == '0' ? 'bg-danger' : (member.pass_status == '2' ? 'bg-warning' : 'bg-primary'))}">
+                                            ${member.pass_status == '1' ? 'Paid' : (member.pass_status == '0' ? 'Expired' : (member.pass_status == '2' ? 'Pending' : 'No pass yet'))}
                                         </span>` : ''}  
                                     </div>
                                   
@@ -515,7 +523,6 @@
             globalMemberId = member_data.id;
             globalMemberIndex = member_index
             showPasses()
-            console.log(member_data);
             $('#new_first_name').val(member_data.first_name);
             $('#new_last_name').val(member_data.last_name);
             $('#new_pass_id').val(member_data.pass_id)
@@ -531,16 +538,18 @@
 
             if (member_data.role == 'student') {
                 if (member_data.pass) {
-                    try {
-                        let parsedPass = JSON.parse(member_data.pass);
-                        if (parsedPass && parsedPass.pass_id) {
-                            $('#new_pass_id').val(parsedPass.pass_id);
-                        }
-                        $('#new_pass_status').val(member_data.pass_status)
-                    } catch (e) {
-                        console.error("Error parsing member_data.pass:", e);
+                    let parsedPass = JSON.parse(member_data.pass);
+                    if (parsedPass && parsedPass.pass_id) {
+                        $('#new_pass_id').val(parsedPass.pass_id);
                     }
+                    $('#new_pass_status').val(member_data.pass_status)
                 }
+            }
+
+            if (member_data.pass == '') {
+                $('#new_pass_status_block').hide();
+            } else {
+                $('#new_pass_status_block').show();
             }
 
             if (member_data.role.toLowerCase() == 'student') {

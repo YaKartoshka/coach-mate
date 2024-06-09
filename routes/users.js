@@ -49,10 +49,10 @@ router.post('/create', async (req, res) => {
             phone_number: '',
         }
         if (role == 'student') {
-            if(req.body.pass && req.body.pass.trim() != '') {
+            if (req.body.pass && req.body.pass.trim() != '') {
                 data.pass = req.body.pass,
-                data.pass_start_date = formattedDate,
-                data.pass_status = 1
+                    data.pass_start_date = formattedDate,
+                    data.pass_status = 1
             } else {
                 data.pass = ''
             }
@@ -164,7 +164,13 @@ router.post('/edit', async (req, res) => {
     const phone_number = req.body.phone_number;
     const role = req.body.role;
     const pass = req.body.pass;
-    const pass_status = req.body.pass_status; 
+    const pass_status = req.body.pass_status;
+
+    var today = new Date();
+    var day = String(today.getDate()).padStart(2, '0');
+    var month = String(today.getMonth() + 1).padStart(2, '0');
+    var year = today.getFullYear();
+    var formattedDate = `${year}-${month}-${day}`;
 
     let updateData = {
         first_name: first_name,
@@ -173,18 +179,23 @@ router.post('/edit', async (req, res) => {
         role: role,
     }
 
-    if(role== 'student') {
-        updateData.pass = pass;
-        updateData.pass_status = pass_status;
-    } else {
-        updateData.pass = pass;
-        updateData.pass_status = pass_status;
-        updateData.pass_start_date = '';
+    if (role.toLowerCase() === 'student') {
+        if (pass != '') {
+            updateData.pass = pass;
+            updateData.pass_start_date = formattedDate;
+            if (pass_status != '') {
+                updateData.pass_status = parseInt(pass_status);
+            } else {
+                updateData.pass_status = 1;
+            }
+        } else {
+            updateData.pass = '';
+            updateData.pass_start_date = '';
+            updateData.pass_status = '';
+        }
     }
 
 
-
-    
     await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update(updateData).then(() => {
         r['r'] = 1;
         res.send(JSON.stringify(r));
