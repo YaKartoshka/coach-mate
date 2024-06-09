@@ -116,7 +116,7 @@ router.get('/:id', async (req, res) => {
             return res.render('error');
         }
         console.log(comp.data());
-        res.render('competition', { comp_data: { ...comp.data(), comp_id: comp.id }, role: req.session.role, user_id: req.session.user_id })
+        res.render('competition', { comp_data: { ...comp.data(), comp_id: comp.id }, role: req.session.role, user_id: req.session.user_id,  L:L, language: req.cookies.language ? req.cookies.language : 'en' })
     });
 });
 
