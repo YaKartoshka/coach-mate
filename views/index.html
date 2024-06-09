@@ -7,11 +7,53 @@
     <title><%=L('index1', language, 'News') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+    <style>
+        @media (max-width: 1280px) {
+            main{
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            main .content{
+                flex: 1;
+            }
+
+            .ad-content{
+                width: 100%;
+                flex: none;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .news{
+                flex-direction: column;
+            }
+            .news button{
+                position: absolute;
+                right: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar{
+                position: absolute;
+                display: none;
+            }
+            header .burger-menu{
+                display: block !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <header>
-        <div class="logo">
+     
+        <div class="logo d-flex align-items-center">
+                <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;" onclick="toggleMenu()">
+                    menu
+                </span>
+             
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
         <%- include('./components/profile_bar.ejs.html') %>
