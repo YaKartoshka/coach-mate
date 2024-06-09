@@ -144,6 +144,14 @@
                             <label class="mb-2">Pass</label>
                             <select name="pass_id" id="new_pass_id" class="form-control"></select>
                         </div>
+                        <div class="mb-3 mt-3" id="new_pass_status_block" style="display: none;">
+                            <label class="mb-2">Pass status</label>
+                            <select name="pass_status" id="new_pass_status" class="form-control">
+                                <option value="1">Active</option>
+                                <option value="0">Expired</option>
+                                <option value="2">Pending</option>
+                            </select>
+                        </div>
                         <div class="mb-3 mt-3">
                             <label class="mb-2">Role</label>
                             <select name="role" class="form-select" id="new_role">
@@ -213,6 +221,7 @@
                 const editRoleSelect = $('#new_role');
                 const passFieldAdd = $('#pass');
                 const passFieldEdit = $('#new_pass');
+                const passStatusFieldEdit = $('#new_pass_status_block');
 
                 if (addRoleSelect.val().toLowerCase() == 'student') {
                     passFieldAdd.show();
@@ -222,8 +231,10 @@
 
                 if (editRoleSelect.val().toLowerCase() == 'student') {
                     passFieldEdit.show();
+                    passStatusFieldEdit.show();
                 } else {
                     passFieldEdit.hide();
+                    passStatusFieldEdit.hide();
                 }
             }
 
@@ -305,7 +316,13 @@
                                 </div>
                                 <div class="member-info">
                                     <h3>${member.first_name} ${member.last_name == null ? '' : member.last_name}</h3>
-                                    <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
+                                      ${member.role=='student' ? `<span class="badge  ${member.pass_status == '1' ? 'bg-success' : (member.pass_status=='0' ? 'bg-danger' : 'bg-warning')}">
+                                            ${member.pass_status == '1' ? 'Paid' : (member.pass_status=='0' ? 'Expired' : 'Pending')}
+                                        </span>` : ''}  
+                                    </div>
+                                  
                                 </div>
                                 <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
                                     <div class="more_icon d-flex">
@@ -498,15 +515,19 @@
             globalMemberId = member_data.id;
             globalMemberIndex = member_index
             showPasses()
+            console.log(member_data);
             $('#new_first_name').val(member_data.first_name);
             $('#new_last_name').val(member_data.last_name);
             $('#new_pass_id').val(member_data.pass_id)
             $('#new_phone_number').val(member_data.phone_number);
             $('#new_role').val(member_data.role)
 
-            // if (member_data.role == 'student') {
-            //     $('#new_pass_id').val(JSON.parse(member_data.pass).pass_id)
-            // }
+            if (member_data.role != 'student') {
+                $('#new_pass_status_block').hide()
+            } else {
+                $('#new_pass_status_block').show()
+            }
+
 
             if (member_data.role == 'student') {
                 if (member_data.pass) {
@@ -515,6 +536,7 @@
                         if (parsedPass && parsedPass.pass_id) {
                             $('#new_pass_id').val(parsedPass.pass_id);
                         }
+                        $('#new_pass_status').val(member_data.pass_status)
                     } catch (e) {
                         console.error("Error parsing member_data.pass:", e);
                     }
@@ -539,8 +561,8 @@
             let phone_number = $('#new_phone_number').val();
             let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
             let passed_data = passes_data ? passes_data : '';
-            let pass_start_date;
-            let pass_status;
+            let pass_status = $("#new_pass_status").val();
+
 
             if ((!role || !first_name || !last_name)) {
                 $.ambiance({
@@ -554,7 +576,6 @@
 
             if (role.toLowerCase() == 'student' && passed_data == '') {
                 passed_data = '';
-                pass_start_date = '';
                 pass_status = '';
             }
 
@@ -562,7 +583,7 @@
             $.ajax({
                 url: "/users/edit",
                 method: 'post',
-                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passed_data, pass_start_date: pass_start_date, pass_status: pass_status },
+                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passed_data, pass_status: pass_status },
                 success: function (r) {
                     let data = JSON.parse(r);
                     if (data.r == 1) {

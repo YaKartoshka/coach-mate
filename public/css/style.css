@@ -746,19 +746,6 @@ body {
     color: #F44336;
 }
 
-.pass-info .pass.green {
-    box-shadow: 0 4px 8px 0 rgba(76, 175, 80, 0.4), 0 6px 20px 0 rgba(76, 175, 80, 0.3);
-}
-
-.pass-info .pass.orange {
-    box-shadow: 0 4px 8px 0 rgba(255, 152, 0, 0.4), 0 6px 20px 0 rgba(255, 152, 0, 0.3);
-}
-
-.pass-info .pass.red {
-    box-shadow: 0 4px 8px 0 rgba(244, 67, 54, 0.4), 0 6px 20px 0 rgba(244, 67, 54, 0.3);
-}
-
-
 .personal-info textarea {
     border: 1px solid black;
 }
@@ -1113,6 +1100,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.member-info .badge{
+    font-size: 12px !important;
 }
 
 .member-more {

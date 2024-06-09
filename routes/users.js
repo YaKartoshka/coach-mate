@@ -88,7 +88,8 @@ router.get('/get-all', async (req, res) => {
                         role: u_doc.data().role,
                         profile_img: u_doc.data().profile_img,
                         phone_number: u_doc.data().phone_number,
-                        pass: u_doc.data().pass
+                        pass: u_doc.data().pass,
+                        pass_status: u_doc.data().pass_status
                     });
                 });
                 res.send(JSON.stringify(data));
@@ -163,14 +164,7 @@ router.post('/edit', async (req, res) => {
     const phone_number = req.body.phone_number;
     const role = req.body.role;
     const pass = req.body.pass;
-    const pass_start_date = req.body.pass_start_date; 
     const pass_status = req.body.pass_status; 
-
-    var today = new Date();
-    var day = String(today.getDate()).padStart(2, '0');
-    var month = String(today.getMonth() + 1).padStart(2, '0');
-    var year = today.getFullYear();
-    var formattedDate = `${year}-${month}-${day}`;
 
     let updateData = {
         first_name: first_name,
@@ -179,19 +173,17 @@ router.post('/edit', async (req, res) => {
         role: role,
     }
 
-    if(role.toLowerCase() == 'student') {
+    if(role== 'student') {
         updateData.pass = pass;
-        updateData.pass_start_date = pass_start_date;
         updateData.pass_status = pass_status;
+    } else {
+        updateData.pass = pass;
+        updateData.pass_status = pass_status;
+        updateData.pass_start_date = '';
     }
 
-    if (role == 'student') {
-        if(req.body.pass && req.body.pass.trim() != '') {
-            updateData.pass = req.body.pass,
-            updateData.pass_start_date = formattedDate,
-            updateData.pass_status = 1
-        }
-    }
+
+
     
     await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update(updateData).then(() => {
         r['r'] = 1;

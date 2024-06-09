@@ -5,7 +5,7 @@ run_mode = args[0];
 require("../config/" + run_mode); //global config -> conf
 
 const firebase = require('../libs/firebase_db');
-require('../libs/telegram')
+// require('../libs/telegram')
 require("../libs/translate")
 const fdb = firebase.fdb;
 const fauth = firebase.fauth;
@@ -50,7 +50,7 @@ const checkPassStatuses = async (req, res) => {
         const diffDays = differenceInCalendarDays(passEndDate, formattedToday);
 
         let newPassStatus;
-        if (userData.pass_status == 1 && diffDays <= 5 && diffDays > 0) {
+        if (userData.pass_status == 1 && diffDays <= 5 && diffDays > 4) {
           newPassStatus = 2; // Ожидает оплаты в течение 5 дней
           if(userData.telegram_chat_id) sendTelegramNotification(userData.telegram_chat_id, 'Срок вашего абонемента истечет в течении 5дней.', 'Уведомление об оплате')
         } else if (diffDays <= 0 && userData.pass_status == 2) {
