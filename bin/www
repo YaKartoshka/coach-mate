@@ -49,13 +49,6 @@ const checkPassStatuses = async (req, res) => {
         // Разница между сегодняшним днем и датой окончания абонемента
         const diffDays = differenceInCalendarDays(passEndDate, formattedToday);
 
-        console.log(`User ID: ${userDoc.id}`);
-        console.log(`Pass Start Date: ${passStartDate}`);
-        console.log(`Pass End Date: ${passEndDate}`);
-        console.log(`Today's Date: ${formattedToday}`);
-        console.log(`Difference in Days: ${diffDays}`);
-        console.log(`Current Pass Status: ${userData.pass_status}`);
-
         let newPassStatus;
         if (userData.pass_status == 1 && diffDays <= 5 && diffDays > 0) {
           newPassStatus = 2; // Ожидает оплаты в течение 5 дней
