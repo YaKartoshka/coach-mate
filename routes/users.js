@@ -31,7 +31,6 @@ router.post('/create', async (req, res) => {
     var month = String(today.getMonth() + 1).padStart(2, '0');
     var year = today.getFullYear();
     var formattedDate = `${year}-${month}-${day}`;
-    var days = formattedDate.split('-')[0];
 
 
     await admin_fauth.createUser({
@@ -135,7 +134,9 @@ router.get('/get', async (req, res) => {
 
             if (user.data().role == 'student') {
                 data.pass = user.data().pass;
+                data.pass_status = user.data().pass_status;
             }
+            console.log(user.data());
             res.send(JSON.stringify(data));
         });
     } catch (e) {
@@ -162,6 +163,14 @@ router.post('/edit', async (req, res) => {
     const phone_number = req.body.phone_number;
     const role = req.body.role;
     const pass = req.body.pass;
+    const pass_start_date = req.body.pass_start_date; 
+    const pass_status = req.body.pass_status; 
+
+    var today = new Date();
+    var day = String(today.getDate()).padStart(2, '0');
+    var month = String(today.getMonth() + 1).padStart(2, '0');
+    var year = today.getFullYear();
+    var formattedDate = `${year}-${month}-${day}`;
 
     let updateData = {
         first_name: first_name,
@@ -171,7 +180,17 @@ router.post('/edit', async (req, res) => {
     }
 
     if(role.toLowerCase() == 'student') {
-        updateData.pass = pass
+        updateData.pass = pass;
+        updateData.pass_start_date = pass_start_date;
+        updateData.pass_status = pass_status;
+    }
+
+    if (role == 'student') {
+        if(req.body.pass && req.body.pass.trim() != '') {
+            updateData.pass = req.body.pass,
+            updateData.pass_start_date = formattedDate,
+            updateData.pass_status = 1
+        }
     }
     
     await fdb.collection('panels').doc(req.session.panel_id).collection('users').doc(user_id).update(updateData).then(() => {

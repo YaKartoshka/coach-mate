@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=L('prof', language, 'Profile') %></title>
+    <title>
+        <%=L('prof', language, 'Profile' ) %>
+    </title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
 </head>
@@ -21,8 +23,12 @@
 
             <div class="settings-content">
                 <div class="tab-switcher">
-                    <div class="profile-tab active"><%=L('prof2', language, 'PROFILE') %></div>
-                    <div class="password-tab"><%=L('prof3', language, 'PASSWORD') %></div>
+                    <div class="profile-tab active">
+                        <%=L('prof2', language, 'PROFILE' ) %>
+                    </div>
+                    <div class="password-tab">
+                        <%=L('prof3', language, 'PASSWORD' ) %>
+                    </div>
                 </div>
 
 
@@ -55,37 +61,49 @@
                         <div class="personal-info">
                             <form autocomplete="off">
                                 <div class="mb-3 mt-5">
-                                    <p><%=L('prof4', language, 'Personal info') %></p>
+                                    <p>
+                                        <%=L('prof4', language, 'Personal info' ) %>
+                                    </p>
                                 </div>
 
                                 <div class="main-info">
                                     <div class="fname-lname">
                                         <div class="fname mb-3 mt-3">
-                                            <label class="mb-2"><%=L('prof5', language, 'First name') %></label>
+                                            <label class="mb-2">
+                                                <%=L('prof5', language, 'First name' ) %>
+                                            </label>
                                             <input type="text" class="form-control" id="first_name" placeholder="Toji"
                                                 required>
                                         </div>
                                         <div class="lname mb-3 mt-3">
-                                            <label class="mb-2"><%=L('prof6', language, 'Last name') %></label>
+                                            <label class="mb-2">
+                                                <%=L('prof6', language, 'Last name' ) %>
+                                            </label>
                                             <input type="text" class="form-control" id="last_name"
                                                 placeholder="Fushiguro" required>
                                         </div>
                                     </div>
                                     <div class="email-phone">
                                         <div class="email mb-3 mt-3">
-                                            <label class="mb-2"><%=L('prof7', language, 'Email') %></label>
+                                            <label class="mb-2">
+                                                <%=L('prof7', language, 'Email' ) %>
+                                            </label>
                                             <input type="text" class="form-control" id="email"
                                                 placeholder="example@gmail.com" disabled>
                                         </div>
                                         <div class="phone-number mb-3 mt-3">
-                                            <label class="mb-2"><%=L('prof8', language, 'Phone number') %></label>
+                                            <label class="mb-2">
+                                                <%=L('prof8', language, 'Phone number' ) %>
+                                            </label>
                                             <input type="text" class="form-control" id="phone_number" placeholder="+7">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="about mb-3 mt-4">
-                                    <label class="mb-2"><%=L('prof9', language, 'About me') %></label>
+                                    <label class="mb-2">
+                                        <%=L('prof9', language, 'About me' ) %>
+                                    </label>
                                     <textarea id="description" cols="30" rows="7" class="form-control"></textarea>
                                 </div>
                                 <div class="phone-number mb-3 mt-3">
@@ -93,7 +111,7 @@
                                     <input type="text" class="form-control" id="telegram_token" placeholder="" disabled>
                                 </div>
 
-                                
+
                             </form>
                         </div>
 
@@ -101,53 +119,75 @@
                         <div class="profile-footer">
                             <div class="save-btn">
                                 <button type="button" id="change_profile_btn" class="btn btn-outline-primary"
-                                    onclick="changeProfile()"> <%=L('prof10', language, 'Save changes') %></button>
+                                    onclick="changeProfile()">
+                                    <%=L('prof10', language, 'Save changes' ) %>
+                                </button>
                             </div>
 
                             <div class="box-important">
                                 <img src="../public/images/box Important.svg" alt="">
-                                <span><%=L('prof11', language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well') %>!</span>
+                                <span>
+                                    <%=L('prof11',
+                                        language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well'
+                                        ) %>!
+                                </span>
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                     <div class="password-content">
                         <div class="password-header">
                             <div class="box-important">
                                 <img src="../public/images/password.svg" alt="">
-                                <span><%=L('prof11', language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well') %>!</span>
+                                <span>
+                                    <%=L('prof11',
+                                        language, 'Personalize your profile to provide your colleagues with a deeper understanding of who you are. Remember to include a photo as well'
+                                        ) %>!
+                                </span>
                             </div>
                         </div>
 
                         <div class="password-body">
                             <div class="newpass-confirmpass">
                                 <div class="new-password mb-3 mt-5">
-                                    <label class="mb-2"><%=L('prof12', language, 'New password') %></label>
+                                    <label class="mb-2">
+                                        <%=L('prof12', language, 'New password' ) %>
+                                    </label>
                                     <input type="password" class="form-control" id="new_password" placeholder="1234567"
                                         oninput="updateStrengthIndicator()">
                                     <div id="password-validation" class="invalid-feedback"></div>
                                 </div>
                                 <div class="confirm-password mb-3 mt-5">
-                                    <label class="mb-2"><%=L('prof13', language, 'Confirm new password') %></label>
+                                    <label class="mb-2">
+                                        <%=L('prof13', language, 'Confirm new password' ) %>
+                                    </label>
                                     <input type="password" class="form-control" id="confirm_password"
                                         placeholder="1234567">
-                                    <div class="valid-feedback"><%=L('prof14', language, 'Passwords match') %>.</div>
-                                    <div class="invalid-feedback"><%=L('prof15', language, 'Please confirm your password') %>.</div>
+                                    <div class="valid-feedback">
+                                        <%=L('prof14', language, 'Passwords match' ) %>.
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        <%=L('prof15', language, 'Please confirm your password' ) %>.
+                                    </div>
                                 </div>
                             </div>
 
 
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="showPasswordCheckbox">
-                                <label class="form-check-label show-pass" for="showPasswordCheckbox"><%=L('prof16', language, 'Show password') %></label>
+                                <label class="form-check-label show-pass" for="showPasswordCheckbox">
+                                    <%=L('prof16', language, 'Show password' ) %>
+                                </label>
                             </div>
                         </div>
 
                         <div class="password-footer">
                             <div class="save-btn">
                                 <button type="button" class="btn btn-outline-primary" id="change_password_btn"
-                                    onclick="changePassword()"> <%=L('prof17', language, 'Save changes') %></button>
+                                    onclick="changePassword()">
+                                    <%=L('prof17', language, 'Save changes' ) %>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -232,14 +272,28 @@
                     $('#profile_img').attr('src', profile_src)
 
                     var pass = JSON.parse(user.pass);
+                    var statusClass;
+                    var statusText;
+
+                    if (user.pass_status == 1) {
+                        statusClass = 'green';
+                        statusText = 'Paid';
+                    } else if (user.pass_status == 2) {
+                        statusClass = 'orange';
+                        statusText = 'Waiting for payment';
+                    } else {
+                        statusClass = 'red';
+                        statusText = 'Not paid';
+                    }
 
                     var passDiv = `
-                    <div class="pass">
-                        <p class="pass-section">Pass section: ${pass.pass_section}</p>
-                        <p class="pass-price">Pass price: ${pass.pass_price}₸</p>
-                        <p class="pass-visits-number">Amount of visits: ${pass.pass_visits_number}</p>
-                    </div>
-                    `
+                <div class="pass ${statusClass}">
+                    <p class="pass-section">Pass section: ${pass.pass_section}</p>
+                    <p class="pass-price">Pass price: ${pass.pass_price}₸</p>
+                    <p class="pass-visits-number">Amount of visits: ${pass.pass_visits_number}</p>
+                    <p class="pass-status">Status: <span class="pass-status ${statusClass}">${statusText}</span></p> 
+                </div>
+            `;
                     $('.pass-info').html(passDiv);
 
                 }, error: function (err) {

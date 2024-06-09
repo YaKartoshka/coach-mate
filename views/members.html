@@ -539,6 +539,8 @@
             let phone_number = $('#new_phone_number').val();
             let passes_data = JSON.stringify(globalPasses.find((p) => p.pass_id == pass_id))
             let passed_data = passes_data ? passes_data : '';
+            let pass_start_date;
+            let pass_status;
 
             if ((!role || !first_name || !last_name)) {
                 $.ambiance({
@@ -549,11 +551,18 @@
                 });
                 return;
             }
+
+            if (role.toLowerCase() == 'student' && passed_data == '') {
+                passed_data = '';
+                pass_start_date = '';
+                pass_status = '';
+            }
+
             loading(2, el = '#edit_member_btn');
             $.ajax({
                 url: "/users/edit",
                 method: 'post',
-                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passed_data },
+                data: { user_id: globalMemberId, first_name: first_name, last_name: last_name, role: role.toLowerCase(), phone_number: phone_number, pass: passed_data, pass_start_date: pass_start_date, pass_status: pass_status },
                 success: function (r) {
                     let data = JSON.parse(r);
                     if (data.r == 1) {

@@ -688,29 +688,22 @@ body {
     align-items: center;
     position: relative;
     justify-content: center;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     background-color: white;
     border-radius: 5px;
     padding: 20px 70px 12px;
     width: 100%;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
-.pass-info .pass p {
-    font-size: 1vw;
-    color: #000;
-}
-
-.pass-info .pass .pass-section {
+.pass-info .pass p,
+.pass-info .pass .pass-section,
+.pass-info .pass .pass-price,
+.pass-info .pass .pass-visits-number {
     font-size: 16px;
 }
 
 .pass-info .pass .pass-price {
-    font-size: 16px;
     color: #0066FF;
-}
-
-.pass-info .pass .pass-visits-number {
-    font-size: 16px;
 }
 
 .pass-info .pass::before {
@@ -725,6 +718,45 @@ body {
     left: 0;
 }
 
+.pass-info .pass-status {
+    transition: color 0.3s ease-in-out;
+}
+
+.pass-info .pass.green::before {
+    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
+}
+
+.pass-info .pass.orange::before {
+    background: linear-gradient(to bottom left, #FFA500, #FFD700);
+}
+
+.pass-info .pass.red::before {
+    background: linear-gradient(to bottom left, #FF5733, #FF774D)
+}
+
+.pass-info .pass .pass-status.green {
+    color: #4CAF50;
+}
+
+.pass-info .pass .pass-status.orange {
+    color: #FF9800;
+}
+
+.pass-info .pass .pass-status.red {
+    color: #F44336;
+}
+
+.pass-info .pass.green {
+    box-shadow: 0 4px 8px 0 rgba(76, 175, 80, 0.4), 0 6px 20px 0 rgba(76, 175, 80, 0.3);
+}
+
+.pass-info .pass.orange {
+    box-shadow: 0 4px 8px 0 rgba(255, 152, 0, 0.4), 0 6px 20px 0 rgba(255, 152, 0, 0.3);
+}
+
+.pass-info .pass.red {
+    box-shadow: 0 4px 8px 0 rgba(244, 67, 54, 0.4), 0 6px 20px 0 rgba(244, 67, 54, 0.3);
+}
 
 
 .personal-info textarea {
