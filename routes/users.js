@@ -2,6 +2,8 @@ const express = require('express');
 const validator = require('validator');
 const router = express.Router();
 const { fdb, admin_fauth } = require("../libs/firebase_db");
+var Json2csvParser = require('json2csv').Parser;
+const fs = require('fs');
 
 router.post('/create', async (req, res) => {
     var r = { r: 0 };
@@ -218,5 +220,28 @@ router.post('/delete', async (req, res) => {
     });
 });
 
+
+router.get('/get-csv', async (req, res) => {
+    var users = [];
+    var panel_id = req.session.panel_id;
+    await fdb.collection('panels').doc(panel_id).collection('users').where('role', '==', 'student').get().then((usersQs) => {
+        usersQs.docs.forEach((user) => {
+            var data ={
+                email: user.data().email, 
+                first_name: user.data().first_name,
+                last_name: user.data().last_name,
+                phone_number: user.data().phone_number,
+            }
+            if(user.data().pass) data.pass_section = JSON.parse(user.data().pass).pass_section
+            users.push(data)
+        })
+    });
+
+    const json2csvParser = new Json2csvParser({});
+    const csv = json2csvParser.parse(users);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attachment; filename=spreadsheet.csv");
+    res.end(csv);
+});
 
 module.exports = router;

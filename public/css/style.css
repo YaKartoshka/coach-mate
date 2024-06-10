@@ -1952,6 +1952,16 @@ body {
 
 /* End Of Create Competition Page */
 
+/* Statistics Page */
+
+.statistics-content{
+    padding: 50px;
+    flex: 0.8;
+}
+
+
+/* End of Statistics Page */
+
 /* media queries */
 
 @media screen and (max-width: 1000px) {

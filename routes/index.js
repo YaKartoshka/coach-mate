@@ -64,6 +64,10 @@ router.get('/competitions', (req, res) => {
     res.render('competitions', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en'});
 });
 
+router.get('/statistics', (req, res) => {
+    res.render('statistics', {role: req.session.role, L:L, language: req.cookies.language ? req.cookies.language : 'en'});
+});
+
 router.post('/', (req,res)=>{
     var r = {r:0};
     var action = req.body.action;
