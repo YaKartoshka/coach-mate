@@ -9,16 +9,18 @@
     </title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+  
 </head>
 
 <body>
     <header>
-     
+
         <div class="logo d-flex align-items-center">
-                <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;" onclick="toggleMenu()">
-                    menu
-                </span>
-             
+            <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;"
+                onclick="toggleMenu()">
+                menu
+            </span>
+
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
         <%- include('./components/profile_bar.ejs.html') %>
@@ -210,10 +212,7 @@
             loading(0);
         });
 
-        $('#profile-data').on('click', () => {
-            $('.dropdown-content').slideToggle(300);
-        });
-
+   
         $(document).ready(function () {
             var currentUrl = window.location.pathname;
             $(".nav-bar ul li").each(function () {

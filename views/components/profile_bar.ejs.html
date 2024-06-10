@@ -35,7 +35,7 @@
             $('.dropdown-content').slideToggle(300);
     });
 
-    function showProfile() {
+    function showProfileBar() {
             if(sessionStorage.getItem('profile_src'))  $('#dropdown_profile .profile-img').attr('src', sessionStorage.getItem('profile_src'));
             $.ajax({
                 url: '/users/get', method: 'get', success: function (data) {
@@ -50,5 +50,5 @@
                 }
             });
         }
-        showProfile()
+        showProfileBar()
 </script>

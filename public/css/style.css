@@ -85,7 +85,7 @@ body {
 .nav-bar {
     font-family: InterReg;
     background-color: white;
-
+    z-index: 100;
     width: 200px !important;
     min-height: 90vh;
     display: flex;
@@ -252,37 +252,39 @@ body {
 }
 
 @media (max-width: 1280px) {
-    main{
+    main {
         width: 100%;
         flex-wrap: wrap;
     }
 
-    main .content{
+    main .content {
         flex: 1;
     }
 
-    .ad-content{
+    .ad-content {
         width: 100%;
         flex: none;
     }
 }
 
 @media (max-width: 1000px) {
-    .news{
+    .news {
         flex-direction: column;
     }
-    .news button{
+
+    .news button {
         position: absolute;
         right: 50px;
     }
 }
 
 @media (max-width: 768px) {
-    .nav-bar{
+    .nav-bar {
         position: absolute;
         display: none;
     }
-    header .burger-menu{
+
+    header .burger-menu {
         display: block !important;
     }
 }
@@ -818,7 +820,7 @@ body {
 
 .personal-info p {
     color: #3793FF;
-    font-size: 1.3vw;
+
 }
 
 .profile-content label {
@@ -1134,7 +1136,7 @@ body {
     justify-content: center;
 }
 
-.member-info .badge{
+.member-info .badge {
     font-size: 12px !important;
 }
 
@@ -1318,7 +1320,7 @@ body {
 
 .calendar-content .container {
     position: relative;
-    width: 1200px;
+    width: 100%;
     min-height: 850px;
     margin: 0 auto;
     padding: 5px;
@@ -1781,6 +1783,8 @@ body {
 .passes-content-body {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .pass-card {
@@ -1790,7 +1794,6 @@ body {
     position: relative;
     background-color: white;
     border-radius: 5px;
-    flex: 0.33;
     padding: 25px 20px 10px;
 }
 
@@ -1830,6 +1833,11 @@ body {
 
 /* Competitions Page */
 
+.competitions-content {
+    padding: 30px;
+    flex: 0.80;
+    font-family: InterReg;
+}
 
 #competitions {
     display: flex;
@@ -2091,6 +2099,266 @@ body {
 
 
 /*---- MEDIA QUERIES ---- */
+@media (max-width: 1280px) {
+
+    .competition-content,
+    .competitions-content,
+    .passes-content,
+    .settings-content {
+        flex: 1;
+    }
+
+    #brackets {
+        max-width: 1280px;
+        overflow-x: scroll;
+    }
+
+    main {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    main .content {
+        flex: 1;
+    }
+
+    .ad-content {
+        width: 100%;
+        flex: none;
+    }
+
+   
+}
+
+@media (max-width: 1000px) {
+    .competition_info {
+        flex-direction: column;
+        gap: 0 !important;
+    }
+
+    .competition_info>div {
+        width: 100% !important;
+    }
+
+    .competition_info>div:nth-child(2) {
+        margin-top: 1rem;
+    }
+
+    .news {
+        flex-direction: column;
+    }
+
+    .news button {
+        position: absolute;
+        right: 50px;
+    }
+
+    .event .members_btn {
+        margin: 0 !important;
+    }
+
+    .members-page {
+        flex-direction: column;
+    }
+
+    .search-join-content {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .join-content {
+        margin-top: 0;
+    }
+
+    .search-content {
+        margin-top: 50px;
+    }
+
+    .members-content {
+        padding: 0 35px 35px 35px;
+    }
+
+    .calendar-content .container {
+        flex-direction: column-reverse;
+    }
+
+    .calendar-content .container .left,
+    .calendar-content .container .right {
+        width: 100%;
+    }
+
+    .calendar-content .container .right .events {
+        padding-bottom: 20px;
+    }
+
+    .calendar-content .container .right .today-date {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .competition-content-body .container,
+    #participants_info .container {
+        max-width: none !important;
+    }
+
+    .competition-content-body .container:first-child {
+        flex-direction: column;
+        align-items: start !important;
+    }
+
+    .competition-content-body .container:first-child img {
+        width: 100% !important;
+    }
+
+    /* Conflict: Different padding-bottom values */
+    .competitions-content,
+    .passes-content {
+        padding-bottom: 380px;
+    }
+
+    #participants .participant {
+        flex-direction: column;
+        align-items: start !important;
+        gap: 10px !important;
+    }
+
+    .event {
+        flex-wrap: wrap;
+    }
+
+    .nav-bar {
+        position: absolute;
+        display: none;
+    }
+
+    header .burger-menu {
+        display: block !important;
+    }
+
+    .tab-switcher {
+        font-size: 2.3vw;
+    }
+
+    #join_link {
+        width: 100% !important;
+    }
+
+    .billing-history {
+        width: 100%;
+        overflow-x: scroll;
+        font-size: 2.7vw;
+    }
+
+    .calendar-content .container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .competitions-content-head,
+    .passes-content-head,
+    .content-head {
+        flex-wrap: wrap;
+    }
+
+    .competitions-content-body {
+        margin: 10px 0 !important;
+    }
+
+    .competitions-content {
+        padding-bottom: 100px;
+    }
+
+    .competition{
+        width: 80%;
+       
+    }
+
+    #location_map {
+        width: 80%;
+    }
+
+    #brackets {
+        max-width: 87vw;
+        overflow-x: scroll;
+    }
+
+    .pass-card {
+        margin: 0 !important;
+    }
+
+    .event {
+        flex-direction: column;
+        align-items: start !important;
+    }
+
+    .event .dropdown-toggle {
+        position: absolute;
+        right: 30px;
+    }
+
+    main .content {
+        padding: 30px 0;
+    }
+
+    main .content .content-body {
+        padding: 10px;
+    }
+
+    .news button {
+        position: relative;
+        right: 0;
+    }
+
+    .news img {
+        width: 80%;
+    }
+
+    .search-join-content {
+        padding: 20px;
+    }
+
+    .members-page {
+        width: 100%;
+    }
+
+    .members-page .member {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .members-page .member .member-info {
+        gap: 10px;
+    }
+
+    .members-page .member button {
+        margin-top: 20px;
+    }
+
+    .tab-switcher {
+        font-size: 3.5vw;
+    }
+
+    .settings-content {
+        margin: 10px;
+    }
+
+    .calendar-content .container {
+        justify-content: flex-end;
+    }
+
+    .calendar-content .container .events {
+        overflow-x: clip;
+        overflow-y: visible;
+    }
+
+    .calendar-content .container .month {
+        padding: 0;
+    }
+}
 
 @media (max-width: 991px) {
     .welcome_screen {
@@ -2113,5 +2381,3 @@ body {
         display: flex;
     }
 }
-
-

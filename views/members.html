@@ -7,72 +7,75 @@
     <title>Members</title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-
+       
 </head>
 
 <body>
     <header>
-     
+
         <div class="logo d-flex align-items-center">
-                <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;" onclick="toggleMenu()">
-                    menu
-                </span>
-             
+            <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;"
+                onclick="toggleMenu()">
+                menu
+            </span>
+
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
         <%- include('./components/profile_bar.ejs.html') %>
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="search-join-content">
-                <div class="search-content">
-                    <div class="content-head">
-                        <h1>Members</h1>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="search-content-body mt-4">
-                        <div class="search-search">
-                            <label for="" class="form-label">Name</label>
-                            <input type="text" onkeyup="searchByName(this)" class="form-control"
-                                placeholder="Search by name">
-                            <br>
-                            <label for="" class="form-label">Role</label>
-                            <select class="form-select mt-1" onchange="showMembers()" id="roles">
-                                <option value="all">All</option>
-                                <option value="student">Student</option>
-                                <option value="admin">Admin</option>
-                                <option value="coach">Coach</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <% if (role=='admin' ) { %>
-                    <div class="join-content">
+            <div class="members-page  d-flex flex-fill">
+                <div class="search-join-content">
+                    <div class="search-content">
                         <div class="content-head">
-                            <h1>Requests</h1>
+                            <h1>Members</h1>
                         </div>
                         <div class="divider"></div>
-                        <div class="join-content-body">
-                            <div class="join_requests">
-
+                        <div class="search-content-body mt-4">
+                            <div class="search-search">
+                                <label for="" class="form-label">Name</label>
+                                <input type="text" onkeyup="searchByName(this)" class="form-control"
+                                    placeholder="Search by name">
+                                <br>
+                                <label for="" class="form-label">Role</label>
+                                <select class="form-select mt-1" onchange="showMembers()" id="roles">
+                                    <option value="all">All</option>
+                                    <option value="student">Student</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="coach">Coach</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <% } %>
-            </div>
-            <div class="members-content">
-                <div class="content-head mt-3">
                     <% if (role=='admin' ) { %>
-                        <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);">Export
-                            Data CSV</button>
-                        <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ Add</button>
+                        <div class="join-content">
+                            <div class="content-head">
+                                <h1>Requests</h1>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="join-content-body">
+                                <div class="join_requests">
+    
+                                </div>
+                            </div>
+                        </div>
                         <% } %>
-
                 </div>
-
-                <div class="members-content-body">
-                    <div class="members">
-
+                <div class="members-content">
+                    <div class="content-head mt-3">
+                        <% if (role=='admin' ) { %>
+                            <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);">Export
+                                Data CSV</button>
+                            <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ Add</button>
+                            <% } %>
+    
+                    </div>
+    
+                    <div class="members-content-body">
+                        <div class="members">
+    
+                        </div>
                     </div>
                 </div>
             </div>

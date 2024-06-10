@@ -7,8 +7,7 @@
     <title><%=L('comps1', language, 'Competitions') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-
-
+    
 </head>
 
 <body>
@@ -22,8 +21,8 @@
     </header>
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
-            <div class="passes-content">
-                <div class="passes-content-head">
+            <div class="competitions-content">
+                <div class="competitions-content-head">
                     <h1><%=L('comps1', language, 'Competitions') %></h1>
                     <% if (role=='admin' ) { %>
                         <button data-bs-toggle="modal" onclick="showAddPassModal()" data-bs-target="#create_news-modal"

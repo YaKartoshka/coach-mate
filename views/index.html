@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
     <style>
-        @media (max-width: 1280px) {
+        /* @media (max-width: 1280px) {
             main{
                 width: 100%;
                 flex-wrap: wrap;
@@ -43,6 +43,22 @@
                 display: block !important;
             }
         }
+
+        @media (max-width: 500px) {
+            main .content{
+                padding: 30px 0;
+            }
+            main .content .content-body{
+                padding: 10px;
+            }
+            .news button{
+                position: relative;
+                right: 0;
+            }
+            .news img{
+                width: 80%;
+            }
+        } */
     </style>
 </head>
 
@@ -61,7 +77,7 @@
     <main>
         <%- include('./components/nav_bar.ejs.html') %>
             <div class="content">
-                <div class="content-head">
+                <div class="content-head p-2">
                     <h1><%=L('index1', language, 'News') %></h1>
                     <% if (role=='admin' ) { %>
                         <button data-bs-toggle="modal" data-bs-target="#create_news-modal" class="btn btn-primary d-flex"><span

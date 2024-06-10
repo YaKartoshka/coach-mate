@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=L('sch1', language, 'Schedule') %></title>
+    <title>
+        <%=L('sch1', language, 'Schedule' ) %>
+    </title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.2.0/main.min.css'>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.3.0/main.min.css'>
@@ -22,17 +24,26 @@
                 color: black;
 
             }
+
+            @media (max-width: 1280px) {
+                main {
+                    flex-wrap: nowrap !important;
+                }
+            }
+
+           
         </style>
 </head>
 
 <body>
     <header>
-     
+
         <div class="logo d-flex align-items-center">
-                <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;" onclick="toggleMenu()">
-                    menu
-                </span>
-             
+            <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;"
+                onclick="toggleMenu()">
+                menu
+            </span>
+
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
         <%- include('./components/profile_bar.ejs.html') %>
@@ -53,13 +64,27 @@
                                         arrow_forward_ios</div>
                                 </div>
                                 <div class="weekdays">
-                                    <div><%=L('sch2', language, 'Sun') %></div>
-                                    <div><%=L('sch3', language, 'Mon') %></div>
-                                    <div><%=L('sch4', language, 'Tue') %></div>
-                                    <div><%=L('sch5', language, 'Wed') %></div>
-                                    <div><%=L('sch6', language, 'Thu') %></div>
-                                    <div><%=L('sch7', language, 'Fri') %></div>
-                                    <div><%=L('sch8', language, 'Sat') %></div>
+                                    <div>
+                                        <%=L('sch2', language, 'Sun' ) %>
+                                    </div>
+                                    <div>
+                                        <%=L('sch3', language, 'Mon' ) %>
+                                    </div>
+                                    <div>
+                                        <%=L('sch4', language, 'Tue' ) %>
+                                    </div>
+                                    <div>
+                                        <%=L('sch5', language, 'Wed' ) %>
+                                    </div>
+                                    <div>
+                                        <%=L('sch6', language, 'Thu' ) %>
+                                    </div>
+                                    <div>
+                                        <%=L('sch7', language, 'Fri' ) %>
+                                    </div>
+                                    <div>
+                                        <%=L('sch8', language, 'Sat' ) %>
+                                    </div>
                                 </div>
                                 <div class="days"></div>
                             </div>
@@ -67,14 +92,12 @@
                         <div class="right">
                             <div class="today-date">
                                 <div class="event-day">wed</div>
-                                <div class="event-date">12th december 2022</div>
+                                <div class="event-date"></div>
                             </div>
                             <div class="events">
 
                             </div>
-                            <div class="actions">
-                                <button class="btn btn-primary" onclick="showAddEventModal()"><%=L('sch9', language, 'Add Event') %></button>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -90,42 +113,54 @@
         <div class="modal-dialog modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delete-modal-title"><%=L('sch10', language, 'Cancel Event') %></h5>
+                    <h5 class="modal-title" id="delete-modal-title">
+                        <%=L('sch10', language, 'Cancel Event' ) %>
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 mt-3">
                         <label for="cancel_reason">
-                            <%=L('sch11', language, 'Reason (Optional)') %>:
+                            <%=L('sch11', language, 'Reason (Optional)' ) %>:
                         </label>
                         <textarea name="" class="form-control" id="cancel_reason" cols="30" rows="4"></textarea>
                     </div>
                 </div>
-               
+
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-danger rounded-sm" data-dismiss="modal"
-                        id="cancel_event_btn" onclick="cancelEvent()"> <%=L('sch10', language, 'Cancel Event') %></button>
-                    <button type="button" class="btn btn-secondaryrounded-lg" data-bs-dismiss="modal"><%=L('sch12', language, 'Back') %></button>
+                    <button type="button" class="btn btn-danger rounded-sm" data-dismiss="modal" id="cancel_event_btn"
+                        onclick="cancelEvent()">
+                        <%=L('sch10', language, 'Cancel Event' ) %>
+                    </button>
+                    <button type="button" class="btn btn-secondaryrounded-lg" data-bs-dismiss="modal">
+                        <%=L('sch12', language, 'Back' ) %>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
+
 
     <div class="modal fade" id="conduct_event-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('sch13', language, 'Conduct Event') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('sch13', language, 'Conduct Event' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label"><%=L('sch14', language, 'Description') %></label>
+                        <label class="form-label">
+                            <%=L('sch14', language, 'Description' ) %>
+                        </label>
                         <textarea name="" class="form-control" id="event_description" cols="30" rows="4"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><%=L('sch15', language, 'Members') %></label>
+                        <label class="form-label">
+                            <%=L('sch15', language, 'Members' ) %>
+                        </label>
                         <div class="d-flex flex-column gap-3">
                             <!-- <div class="d-flex justify-content-between flex-fill" id="new_member-0">
                                 <p>Student Name</p>
@@ -138,9 +173,15 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col"><%=L('sch16', language, 'Name') %></th>
-                                        <th scope="col" class="text-center"><%=L('sch17', language, 'Present') %></th>
-                                        <th scope="col" class="text-center"><%=L('sch18', language, 'Absent') %></th>
+                                        <th scope="col">
+                                            <%=L('sch16', language, 'Name' ) %>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <%=L('sch17', language, 'Present' ) %>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <%=L('sch18', language, 'Absent' ) %>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="event_members">
@@ -154,8 +195,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="conduct_event_btn" class="btn btn-primary px-md-4"
-                        onclick="conductEvent()"> <%=L('sch19', language, 'Save') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('sch20', language, 'Close') %></button>
+                        onclick="conductEvent()">
+                        <%=L('sch19', language, 'Save' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('sch20', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -165,25 +210,37 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('sch21', language, 'Edit Event') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('sch21', language, 'Edit Event' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label"><%=L('sch14', language, 'Description') %></label>
+                        <label class="form-label">
+                            <%=L('sch14', language, 'Description' ) %>
+                        </label>
                         <textarea name="" class="form-control" id="new_event_description" cols="30" rows="4"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><%=L('sch15', language, 'Members') %></label>
+                        <label class="form-label">
+                            <%=L('sch15', language, 'Members' ) %>
+                        </label>
                         <div class="d-flex flex-column gap-3">
-                    
+
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col"><%=L('sch16', language, 'Name') %></th>
-                                        <th scope="col" class="text-center"><%=L('sch17', language, 'Present') %></th>
-                                        <th scope="col" class="text-center"><%=L('sch18', language, 'Absent') %></th>
+                                        <th scope="col">
+                                            <%=L('sch16', language, 'Name' ) %>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <%=L('sch17', language, 'Present' ) %>
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <%=L('sch18', language, 'Absent' ) %>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="new_event_members">
@@ -196,9 +253,12 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="edit_event_btn" class="btn btn-primary px-md-4"
-                        onclick="editEvent()"> <%=L('sch22', language, 'Edit') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('sch20', language, 'Close') %></button>
+                    <button type="button" id="edit_event_btn" class="btn btn-primary px-md-4" onclick="editEvent()">
+                        <%=L('sch22', language, 'Edit' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('sch20', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -208,27 +268,37 @@
         <div class="modal-dialog modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><%=L('sch23', language, 'Reschedule Event') %></h5>
+                    <h5 class="modal-title">
+                        <%=L('sch23', language, 'Reschedule Event' ) %>
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 mt-3">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('sch24', language, 'Event date') %></label>
+                            <label class="mb-2">
+                                <%=L('sch24', language, 'Event date' ) %>
+                            </label>
                             <input type="date" class="form-control" id="reschedule_event_date">
                         </div>
-                      
+
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('sch25', language, 'Time') %></label>
+                            <label class="mb-2">
+                                <%=L('sch25', language, 'Time' ) %>
+                            </label>
                             <input type="time" id="reschedule_time" class="form-control" />
                         </div>
                     </div>
                 </div>
-               
+
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-danger rounded-sm" data-dismiss="modal"
-                        id="reschedule_event_btn" onclick="rescheduleEvent()"> <%=L('sch25', language, 'Reschedule') %></button>
-                    <button type="button" class="btn btn-secondaryrounded-lg" data-bs-dismiss="modal"><%=L('sch26', language, 'Back') %></button>
+                        id="reschedule_event_btn" onclick="rescheduleEvent()">
+                        <%=L('sch25', language, 'Reschedule' ) %>
+                    </button>
+                    <button type="button" class="btn btn-secondaryrounded-lg" data-bs-dismiss="modal">
+                        <%=L('sch26', language, 'Back' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -248,7 +318,7 @@
         var globalSchedules;
         var globalScheduleId;
         const userRole = '<%= role %>';
-    
+
         $(document).ready(async function () {
             var currentUrl = window.location.pathname;
 
@@ -266,7 +336,7 @@
 
             $("#repetition").on('change', (() => {
                 let repetition = $('#repetition').val();
-            
+
                 if (repetition == 'single') {
                     $('#event_date-block').show();
                     $('#week_day-block').hide();
@@ -386,7 +456,7 @@
                 success: function (data) {
                     globalSchedules = data;
                     getEvents();
-                  
+
                 },
                 error: function (e) {
                     console.log(e)
@@ -401,7 +471,7 @@
                 data: { roles: 'coach' },
                 dataType: 'json',
                 success: function (coaches_data) {
-                   
+
                     if (!coaches_data.length) {
                         let no_members = `
                         <div class="no_members"><%=L('sch31', language, 'No members') %></div>
@@ -439,7 +509,7 @@
             globalEventId = globalEvents[event_index.split('-')[1]].event_id;
 
             showMembers();
-          
+
             $('#conduct_event-modal').modal('show');
         }
 
@@ -474,16 +544,16 @@
 
             members_data.forEach((m) => {
                 var member_status = Number($('#event_members input[name="member-' + i + '-status"]:checked').val());
-                
-                if (!member_status && member_status !=0) {
+
+                if (!member_status && member_status != 0) {
                     return
                 }
                 m.status = member_status;
                 i++;
             });
-     
-            if (i != members_data.length ) {
-                loading(20, el="#conduct_event_btn");
+
+            if (i != members_data.length) {
+                loading(20, el = "#conduct_event_btn");
                 return $.ambiance({
                     message: "<%=L('sch30', language, 'Please fill in all fields') %>!",
                     type: 'error',
@@ -510,8 +580,8 @@
                     schedule_id: eventData.schedule_id
                 },
                 dataType: 'json',
-                success: function(res){
-                    if(res.r){
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
                             message: "<%=L('sch32', language, 'Event conducted') %>!",
                             type: "success",
@@ -519,12 +589,12 @@
                             width: 400
                         });
                     }
-                    loading(20, el="#conduct_event_btn");
+                    loading(20, el = "#conduct_event_btn");
                     getSchedules();
                     initCalendar()
-                  
-                    
-                    return  $('#conduct_event-modal').modal('hide');
+
+
+                    return $('#conduct_event-modal').modal('hide');
                 }
             })
 
@@ -542,7 +612,7 @@
             $('#cancel_event-modal').modal('show');
         }
 
-        function cancelEvent(){
+        function cancelEvent() {
             loading(2, el = "#cancel_event_btn")
             var description = $("#cancel_reason").val().trim();
             var members_data = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
@@ -552,10 +622,10 @@
                 m.status = 2;
                 i++;
             });
-     
+
             globalEvents[globalEventIndex.split('-')[1]].members = JSON.stringify(members_data);
             var eventData = globalEvents[globalEventIndex.split('-')[1]];
-        
+
 
             $.ajax({
                 url: '/schedule/cancel',
@@ -574,8 +644,8 @@
                     schedule_id: eventData.schedule_id
                 },
                 dataType: 'json',
-                success: function(res){
-                    if(res.r){
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
                             message: "<%=L('sch33', language, 'Event canceled') %>!",
                             type: "success",
@@ -583,17 +653,17 @@
                             width: 400
                         });
                     }
-                    loading(20, el="#cancel_event_btn");
+                    loading(20, el = "#cancel_event_btn");
                     loading(1);
                     getSchedules();
                     initCalendar();
-                    return  $('#cancel_event-modal').modal('hide');
+                    return $('#cancel_event-modal').modal('hide');
                 }
             })
         }
 
-        function reopenEvent(event_index){
-            loading(2, el="#reopen_event_btn");
+        function reopenEvent(event_index) {
+            loading(2, el = "#reopen_event_btn");
             globalEventIndex = event_index;
             globalScheduleId = globalEvents[event_index.split('-')[1]].schedule_id;
             console.log(globalScheduleId)
@@ -604,8 +674,8 @@
                     schedule_id: globalScheduleId
                 },
                 dataType: 'json',
-                success: function(res){
-                    if(res.r){
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
                             message: "<%=L('sch34', language, 'Event reopened') %>!",
                             type: "success",
@@ -613,21 +683,21 @@
                             width: 400
                         });
                     }
-                    loading(20, el="#reopen_event_btn");
+                    loading(20, el = "#reopen_event_btn");
                     loading(1);
                     getSchedules();
                     initCalendar();
-                    return  $('#conduct_event-modal').modal('hide');
+                    return $('#conduct_event-modal').modal('hide');
                 }
             })
         }
 
-        
-        function showEditEventModal(event_index){
+
+        function showEditEventModal(event_index) {
             globalEventIndex = event_index;
             globalEventId = globalEvents[event_index.split('-')[1]].event_id;
             var description = globalEvents[event_index.split('-')[1]].description;
-            
+
             showCurrentMembers();
             $('#new_event_description').html(description)
             $('#edit_event-modal').modal('show');
@@ -636,7 +706,7 @@
 
         function showCurrentMembers() {
             var members = JSON.parse(globalEvents[globalEventIndex.split('-')[1]].members);
-           
+
             var membersHTML = '';
             var i = 0;
             members.forEach((m) => {
@@ -656,7 +726,7 @@
             if (!members.length) membersHTML = "<div class='alert alert-light'><%=L('sch31', language, 'No members') %>.</div>"
             $('#new_event_members').html(membersHTML);
         }
-        
+
 
 
         function editEvent() {
@@ -668,16 +738,16 @@
 
             members_data.forEach((m) => {
                 var member_status = Number($('#new_event_members input[name="member-' + i + '-status"]:checked').val());
-                
-                if (!member_status && member_status !=0) {
+
+                if (!member_status && member_status != 0) {
                     return
                 }
                 m.status = member_status;
                 i++;
             });
-     
-            if (i != members_data.length ) {
-                loading(20, el="#edit_event_btn");
+
+            if (i != members_data.length) {
+                loading(20, el = "#edit_event_btn");
                 return $.ambiance({
                     message: "<%=L('sch30', language, 'Please fill in all fields') %>!",
                     type: 'error',
@@ -696,8 +766,8 @@
                     members: JSON.stringify(members_data),
                 },
                 dataType: 'json',
-                success: function(res){
-                    if(res.r){
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
                             message: "<%=L('sch35', language, 'Event updated') %>!",
                             type: "success",
@@ -705,19 +775,19 @@
                             width: 400
                         });
                     }
-                    loading(20, el="#edit_event_btn");
-                  
-                    return  $('#edit_event-modal').modal('hide');
+                    loading(20, el = "#edit_event_btn");
+
+                    return $('#edit_event-modal').modal('hide');
                 }
             })
 
         }
 
-        function rescheduleEvent(){
+        function rescheduleEvent() {
             loading(2, el = "#reschedule_event_btn")
             var event_date = $("#reschedule_event_date").val();
             var event_time = $("#reschedule_time").val();
-        
+
             var eventData = globalEvents[globalEventIndex.split('-')[1]];
 
             $.ajax({
@@ -735,8 +805,8 @@
                     event_id: eventData.event_id,
                 },
                 dataType: 'json',
-                success: function(res){
-                    if(res.r){
+                success: function (res) {
+                    if (res.r) {
                         $.ambiance({
                             message: "<%=L('sch36', language, 'Event rescheduled') %>!",
                             type: "success",
@@ -744,9 +814,9 @@
                             width: 400
                         });
                     }
-                    loading(20, el="#reschedule_event_btn");
+                    loading(20, el = "#reschedule_event_btn");
                     cancelEvent();
-                    return  $('#cancel_event-modal').modal('hide');
+                    return $('#cancel_event-modal').modal('hide');
                 }
             });
         }

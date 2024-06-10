@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=L('comp1', language, 'Competitions') %></title>
+    <title>
+        <%=L('comp1', language, 'Competitions' ) %>
+    </title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/brackets-viewer@latest/dist/brackets-viewer.min.css" />
     <script type="text/javascript"
@@ -31,7 +33,8 @@
                 }
             }
         </script>
-
+      
+       
 </head>
 
 <body>
@@ -53,14 +56,20 @@
                     <div class="competition-nav mt-3">
                         <ul class="nav nav-tabs" style="border: none;">
                             <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#competition_info"><%=L('comp2', language, 'Information') %></a>
+                                <a class="nav-link active" data-bs-toggle="tab" href="#competition_info">
+                                    <%=L('comp2', language, 'Information' ) %>
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#participants_info"><%=L('comp3', language, 'Participants') %></a>
+                                <a class="nav-link" data-bs-toggle="tab" href="#participants_info">
+                                    <%=L('comp3', language, 'Participants' ) %>
+                                </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#brackets_info"><%=L('comp4', language, 'Brackets') %></a>
+                                <a class="nav-link" data-bs-toggle="tab" href="#brackets_info">
+                                    <%=L('comp4', language, 'Brackets' ) %>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -71,24 +80,32 @@
                             <img src="<%= comp_data.event_img %>" alt="" id="competition_img" class="rounded"
                                 style="width: 60%;">
                             <div class="text-dark flex-fill">
-                                <h3><%=L('comp5', language, 'Normal Registration') %></h3>
+                                <h3>
+                                    <%=L('comp5', language, 'Normal Registration' ) %>
+                                </h3>
                                 <p id="normal_registration"> </p>
-                                <h3><%=L('comp6', language, 'Late Registration') %></h3>
+                                <h3>
+                                    <%=L('comp6', language, 'Late Registration' ) %>
+                                </h3>
                                 <p id="late_registration"> </p>
-                                <h3><%=L('comp7', language, 'Event starts') %></h3>
+                                <h3>
+                                    <%=L('comp7', language, 'Event starts' ) %>
+                                </h3>
                                 <p id="event_starts">
 
                                 </p>
                                 <% if (role=='student' ) { %>
-                                    <button class="btn btn-primary" onclick="showRegisterModal()"
-                                        id="register_btn"><%=L('comp8', language, 'Register') %></button>
-                                    <button class="btn btn-success" id="registered_btn"
-                                        style="display: none;"><%=L('comp9', language, 'Registered') %></button>
+                                    <button class="btn btn-primary" onclick="showRegisterModal()" id="register_btn">
+                                        <%=L('comp8', language, 'Register' ) %>
+                                    </button>
+                                    <button class="btn btn-success" id="registered_btn" style="display: none;">
+                                        <%=L('comp9', language, 'Registered' ) %>
+                                    </button>
                                     <% } %>
                             </div>
                         </div>
 
-                        <div class="d-flex w-100 gap-5 mt-4">
+                        <div class="competition_info d-flex w-100 gap-5 mt-4">
                             <div class="container p-4  bg-white flex-fill rounded" style="width: 60%;">
                                 <h2>
                                     <%= comp_data.event_name %>
@@ -99,7 +116,9 @@
                             </div>
                             <div class="container flex-fill p-0" style="width: 40%;">
                                 <div class="competition_organizer_block bg-white p-4 rounded">
-                                    <h3><%=L('comp10', language, 'Organizer') %></h3>
+                                    <h3>
+                                        <%=L('comp10', language, 'Organizer' ) %>
+                                    </h3>
                                     <img src="https://bjjagb.com/wp-content/uploads/2023/07/cropped-BJJAGB-Logo.png"
                                         width="100" class="mt-3" alt="">
                                     <h4 id="organizer_name" class="mt-3">
@@ -124,17 +143,25 @@
                                 </div>
 
                                 <div class="competition_location_block mt-3 bg-white p-4 rounded">
-                                    <h3><%=L('comp32', language, 'Location') %></h3>
-                                    <p class="mt-3"><%=L('comp11', language, 'City') %>: <b id="city">
-                                            <%= comp_data.city %>
-                                        </b></p>
-                                    <p><%=L('comp33', language, 'Address') %>: <b id="address">
-                                            <%= comp_data.address %>
-                                        </b></p>
+                                    <h3>
+                                        <%=L('comp32', language, 'Location' ) %>
+                                    </h3>
+                                    <p class="mt-3">
+                                        <%=L('comp11', language, 'City' ) %>: <b id="city">
+                                                <%= comp_data.city %>
+                                            </b>
+                                    </p>
+                                    <p>
+                                        <%=L('comp33', language, 'Address' ) %>: <b id="address">
+                                                <%= comp_data.address %>
+                                            </b>
+                                    </p>
                                     <iframe src="" id="location_map" frameborder="0"></iframe>
                                 </div>
                                 <div class="competition_entries_block mt-3 bg-white p-4 rounded">
-                                    <h3><%=L('comp12', language, 'Entries') %></h3>
+                                    <h3>
+                                        <%=L('comp12', language, 'Entries' ) %>
+                                    </h3>
                                     <div class="entries mt-3">
                                         <% if(comp_data.entries.length){ %>
                                             <% comp_data.entries.forEach((entry)=> { %>
@@ -156,7 +183,9 @@
                     </div>
                     <div class="mt-3 tab-pane fade" id="participants_info">
                         <div class="container bg-white p-3 rounded">
-                            <h2><%=L('comp3', language, 'Participants') %></h2>
+                            <h2>
+                                <%=L('comp3', language, 'Participants' ) %>
+                            </h2>
                             <div class="search position-relative w-100 mt-2">
                                 <input class="form-control me-2 w-100 search-input border-secondary ps-5"
                                     onkeyup="searchParticipant(this.value)" type="search" placeholder="Введите"
@@ -174,10 +203,13 @@
 
                     <div class="mt-3 tab-pane fade" id="brackets_info">
                         <div class="p-3 rounded mb-3 container bg-white d-flex gap-5">
-                            <h2><%=L('comp4', language, 'Brackets') %></h2>
+                            <h2>
+                                <%=L('comp4', language, 'Brackets' ) %>
+                            </h2>
                             <% if(role=='admin' ) { %>
                                 <button type="button" id="register_modal_btn" class="btn btn-primary px-md-4 mt-1"
-                                    onclick="showCreateBracketModal()">+ <%=L('comp13', language, 'Create Bracket') %></button>
+                                    onclick="showCreateBracketModal()">+ <%=L('comp13', language, 'Create Bracket' ) %>
+                                        </button>
                                 <% } %>
                         </div>
                         <div class="divider"></div>
@@ -198,25 +230,35 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('comp8', language, 'Register') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('comp8', language, 'Register' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp14', language, 'First Name') %></label>
+                            <label class="mb-2">
+                                <%=L('comp14', language, 'First Name' ) %>
+                            </label>
                             <input type="text" class="form-control" id="first_name" placeholder="First name">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp15', language, 'Last Name') %></label>
+                            <label class="mb-2">
+                                <%=L('comp15', language, 'Last Name' ) %>
+                            </label>
                             <input type="text" class="form-control" id="last_name" placeholder="Last name">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp16', language, 'Year of birth') %></label>
+                            <label class="mb-2">
+                                <%=L('comp16', language, 'Year of birth' ) %>
+                            </label>
                             <input type="number" class="form-control" id="year_of_birth" placeholder="2004">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp17', language, 'Entry') %></label>
+                            <label class="mb-2">
+                                <%=L('comp17', language, 'Entry' ) %>
+                            </label>
                             <select name="" id="entry" class="form-control">
                                 <option value="none" disable selected>None</option>
                                 <% if(comp_data.entries.length){ %>
@@ -231,9 +273,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="register_modal_btn" class="btn btn-primary px-md-4"
-                        onclick="register()"><%=L('comp8', language, 'Register') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('comp18', language, 'Close') %></button>
+                    <button type="button" id="register_modal_btn" class="btn btn-primary px-md-4" onclick="register()">
+                        <%=L('comp8', language, 'Register' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('comp18', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -243,25 +288,35 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('comp19', language, 'Edit Participant') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('comp19', language, 'Edit Participant' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp14', language, 'First Name') %></label>
+                            <label class="mb-2">
+                                <%=L('comp14', language, 'First Name' ) %>
+                            </label>
                             <input type="text" class="form-control" id="new_first_name" placeholder="First name">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp15', language, 'Last Name') %></label>
+                            <label class="mb-2">
+                                <%=L('comp15', language, 'Last Name' ) %>
+                            </label>
                             <input type="text" class="form-control" id="new_last_name" placeholder="Last name">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp16', language, 'Year of birth') %></label>
+                            <label class="mb-2">
+                                <%=L('comp16', language, 'Year of birth' ) %>
+                            </label>
                             <input type="number" class="form-control" id="new_year_of_birth" placeholder="2004">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp17', language, 'Entry') %></label>
+                            <label class="mb-2">
+                                <%=L('comp17', language, 'Entry' ) %>
+                            </label>
                             <select name="" id="new_entry" class="form-control">
                                 <option value="none" disable selected>None</option>
                                 <% if(comp_data.entries.length){ %>
@@ -277,8 +332,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="edit_participant_btn" class="btn btn-primary px-md-4"
-                        onclick="editParticipant()"><%=L('comp20', language, 'Edit') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('comp18', language, 'Close') %></button>
+                        onclick="editParticipant()">
+                        <%=L('comp20', language, 'Edit' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('comp18', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -289,16 +348,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('comp21', language, 'Delete') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('comp21', language, 'Delete' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <%=L('comp22', language, "Are you sure? You won't be able to revert this") %>
+                    <%=L('comp22', language, "Are you sure? You won't be able to revert this" ) %>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_participant_btn" class="btn btn-danger px-md-4"
-                        onclick="deleteParticipant()"><%=L('comp21', language, 'Delete') %></button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%=L('comp18', language, 'Close') %></button>
+                        onclick="deleteParticipant()">
+                        <%=L('comp21', language, 'Delete' ) %>
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <%=L('comp18', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -308,17 +373,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('comp13', language, 'Create Bracket') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('comp13', language, 'Create Bracket' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp24', language, 'Name') %></label>
+                            <label class="mb-2">
+                                <%=L('comp24', language, 'Name' ) %>
+                            </label>
                             <input type="text" class="form-control" id="bracket_name" placeholder="Bracket name">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('comp3', language, 'Participants') %></label>
+                            <label class="mb-2">
+                                <%=L('comp3', language, 'Participants' ) %>
+                            </label>
                             <div class="form-control" id="bracket_participants">
 
                             </div>
@@ -328,8 +399,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="create_bracket_btn" class="btn btn-primary px-md-4"
-                        onclick="createBracket()"><%=L('comp25', language, 'Create') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('comp18', language, 'Close') %></button>
+                        onclick="createBracket()">
+                        <%=L('comp25', language, 'Create' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('comp18', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -339,22 +414,32 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('comp26', language, 'Update Match') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('comp26', language, 'Update Match' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div>
                         <h3></h3>
-                        <label id="opponent1-label" class="form-label" for="opponent1"><%=L('comp27', language, 'Opponent') %> 1: </label>
+                        <label id="opponent1-label" class="form-label" for="opponent1">
+                            <%=L('comp27', language, 'Opponent' ) %> 1:
+                        </label>
                         <input type="number" class="form-control" id="opponent1"><br>
-                        <label id="opponent2-label" class="form-label" for="opponent2"><%=L('comp27', language, 'Opponent') %> 2: </label>
+                        <label id="opponent2-label" class="form-label" for="opponent2">
+                            <%=L('comp27', language, 'Opponent' ) %> 2:
+                        </label>
                         <input type="number" class="form-control" id="opponent2"><br>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="update_match_btn" class="btn btn-primary px-md-4"
-                        onclick="deleteParticipant()"><%=L('comp28', language, 'Save') %></button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%=L('comp18', language, 'Close') %></button>
+                        onclick="deleteParticipant()">
+                        <%=L('comp28', language, 'Save' ) %>
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <%=L('comp18', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -364,16 +449,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('comp21', language, 'Delete') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('comp21', language, 'Delete' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <%=L('comp22', language, "Are you sure? You won't be able to revert this") %> 
+                    <%=L('comp22', language, "Are you sure? You won't be able to revert this" ) %>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_participant_btn" class="btn btn-danger px-md-4"
-                        onclick="deleteBracket()"><%=L('comp21', language, 'Delete') %></button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%=L('comp18', language, 'Close') %></button>
+                        onclick="deleteBracket()">
+                        <%=L('comp21', language, 'Delete' ) %>
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <%=L('comp18', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -450,7 +541,7 @@
                         participantsHTML += `
                             <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
                             <img src="${p.user_img}" alt="" width="40" height="40" class="rounded">
-                            <div class="name h4 w-25">${p.first_name} ${p.last_name}</div>
+                            <div class="name h4 w-25"><strong>${p.first_name} ${p.last_name}</strong></div>
                             <div class="birth">${p.year_of_birth}</div>
                             <div class="academy">${p.panel_name}</div>
                             <div class="entry flex-fill">${p.entry}</div>
@@ -497,7 +588,7 @@
                             participantsHTML += `
                                 <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
                                 <img src="${p.user_img}" alt="" width="40" height="40" class="rounded">
-                                <div class="name h4 w-25">${p.first_name} ${p.last_name}</div>
+                                <div class="name h4 w-25"><strong>${p.first_name} ${p.last_name}</strong></div>
                                 <div class="birth">${p.year_of_birth}</div>
                                 <div class="academy">${p.panel_name}</div>
                                 <div class="entry flex-fill">${p.entry}</div>

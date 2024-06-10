@@ -7,6 +7,20 @@
     <title><%=L('events1', language, 'Events') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
+    <style>
+       
+
+        @media (max-width: 500px) {
+            .content-head{
+                flex-wrap: wrap;
+                padding: 20px;
+            }
+            .divider{
+                margin: 5px 20px;
+            }
+        
+        }
+    </style>
 </head>
 
 <body>
@@ -271,7 +285,7 @@
                                 <div class="date_time"><b>${ed.event_date ? formattedDate : (ed.week_day.charAt(0).toUpperCase() + ed.week_day.slice(1))} ${ed.time}</b></div>
                                 <div class="event_name text-center">${ed.event_name}</div>
                                 <div class="coach_name">Coach: ${ed.coach_name}</div>
-                                <button class="btn btn-primary mx-5 px-5" onclick="showMembersModal('event-${i}')">Members</button>
+                                <button class="btn btn-primary mx-5 px-5 members_btn" onclick="showMembersModal('event-${i}')">Members</button>
                                 <% if (role=='admin' ) { %>
                                     <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown" style="float:right;">
                                         <div class="more_icon d-flex">

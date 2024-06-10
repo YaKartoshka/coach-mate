@@ -7,14 +7,18 @@ header {
     display: flex;
     justify-content: space-between;
     height: 60px;
-    padding-left: 50px;
+    padding-left: 30px;
     align-items: center;
     background-color: #262626;
     font-family: RedHatDisplayMed;
 }
 
 header .logo img {
-    height: 20px;
+    height: 18px;
+}
+
+header .dropdown-content{
+    z-index: 1;
 }
 
 main {
