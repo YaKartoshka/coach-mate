@@ -7,59 +7,7 @@
     <title><%=L('index1', language, 'News') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-    <style>
-        /* @media (max-width: 1280px) {
-            main{
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            main .content{
-                flex: 1;
-            }
-
-            .ad-content{
-                width: 100%;
-                flex: none;
-            }
-        }
-
-        @media (max-width: 1000px) {
-            .news{
-                flex-direction: column;
-            }
-            .news button{
-                position: absolute;
-                right: 50px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-bar{
-                position: absolute;
-                display: none;
-            }
-            header .burger-menu{
-                display: block !important;
-            }
-        }
-
-        @media (max-width: 500px) {
-            main .content{
-                padding: 30px 0;
-            }
-            main .content .content-body{
-                padding: 10px;
-            }
-            .news button{
-                position: relative;
-                right: 0;
-            }
-            .news img{
-                width: 80%;
-            }
-        } */
-    </style>
+    
 </head>
 
 <body>
@@ -231,7 +179,7 @@
                     globalNews = JSON.parse(data)
                     news_data.forEach((news) => {
                         var newsDiv = $("<div>").addClass("news");
-                        var image = $("<img>").attr("src", news.image_url).attr("alt", "");
+                        var image = $("<img>").attr("src", news.image_url ? news.image_url : '/public/images/Favicon.png').attr("alt", "");
                         var newsTitle = $("<div>").addClass("news-title");
                         var title = $("<h3>").text(news.title).addClass("clickable-title");
                         // title.on('click', function () {
