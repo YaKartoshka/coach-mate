@@ -34,7 +34,20 @@
             }
         </script>
       
-       
+       <style>
+        #bracket_participants{
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        @media (max-width:600px) {
+            #bracket_participants{
+            max-height: 270px;
+            overflow-y: auto;
+        }
+
+        }
+       </style>
 </head>
 
 <body>
@@ -321,7 +334,7 @@
                                 <option value="none" disable selected>None</option>
                                 <% if(comp_data.entries.length){ %>
                                     <% comp_data.entries.forEach((entry)=> { %>
-                                        <option value=" <%= JSON.parse(entry).name %>">
+                                        <option value="<%= JSON.parse(entry).name %>">
                                             <%= JSON.parse(entry).name %>
                                         </option>
                                         <% }) %>
@@ -524,10 +537,7 @@
                 $("#register_btn").hide();
                 $("#registered_btn").show();
             }
-
             loading(0);
-
-
         });
 
 
@@ -535,11 +545,12 @@
             var participantsHTML = ''
             if (globalParticipants && globalParticipants.length) {
                 const participants = groupParticipants(globalParticipants);
+                var index = 0;
                 for (const entry in participants) {
                     participantsHTML += `<h3><span class="badge bg-primary mt-3">Entry - ${entry}</span></h3>`
-                    participants[entry].forEach((p, index) => {
+                    participants[entry].forEach((p) => {
                         participantsHTML += `
-                            <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
+                            <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="${p.user_id}">
                             <img src="${p.user_img}" alt="" width="40" height="40" class="rounded">
                             <div class="name h4 w-25"><strong>${p.first_name} ${p.last_name}</strong></div>
                             <div class="birth">${p.year_of_birth}</div>
@@ -553,13 +564,14 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#" onclick="showEditParticipantModal('participant-${index}')">Edit</a>
-                                        <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('participant-${index}')">Delete</a>
+                                        <a class="dropdown-item" href="#" onclick="showEditParticipantModal('${p.user_id}')">Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('${p.user_id}')">Delete</a>
                                     </div>
                                     </div>
                             <% } %> 
                             </div>
                         `;
+                        index++;
                     });
                     $('#participants').html(participantsHTML);
                 }
@@ -573,8 +585,9 @@
 
             if (globalParticipants && globalParticipants.length) {
                 const participants = groupParticipants(globalParticipants);
+                
                 let participantsHTML = '';
-
+                let index = 0;
                 for (const entry in participants) {
                     const containParticipant = participants[entry].some(p =>
                         p.first_name.includes(value) ||
@@ -584,9 +597,9 @@
 
                     if (containParticipant) {
                         participantsHTML += `<h3><span class="badge bg-primary mt-3">Entry - ${entry}</span></h3>`;
-                        participants[entry].forEach((p, index) => {
+                        participants[entry].forEach((p) => {
                             participantsHTML += `
-                                <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="participant-${index}">
+                                <div class="participant bg-white p-3 d-flex justify-content-between gap-5 align-items-center mt-3 rounded" id="${p.user_id}">
                                 <img src="${p.user_img}" alt="" width="40" height="40" class="rounded">
                                 <div class="name h4 w-25"><strong>${p.first_name} ${p.last_name}</strong></div>
                                 <div class="birth">${p.year_of_birth}</div>
@@ -600,13 +613,14 @@
                                             </div>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#" onclick="showEditParticipantModal('participant-${index}')">Edit</a>
-                                            <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('participant-${index}')">Delete</a>
+                                            <a class="dropdown-item" href="#" onclick="showEditParticipantModal('${p.user_id}')">Edit</a>
+                                            <a class="dropdown-item" href="#" onclick="showDeleteParticipantModal('${p.user_id}')">Delete</a>
                                         </div>
                                         </div>
                                 <% } %> 
                                 </div>
                             `;
+                            index++;
                         });
                     }
                 }
@@ -671,13 +685,14 @@
             })
         }
 
-        function showEditParticipantModal(p_index) {
-            var participant = globalParticipants[p_index.split('-')[1]];
-            globalParticipantsIndex = p_index;
-            globalParticipantId = globalParticipants[p_index.split('-')[1]].user_id;
+        function showEditParticipantModal(p_user_id) {
+            const participant = globalParticipants.find(p => p.user_id === p_user_id);
+            
+            globalParticipantId = p_user_id
             $('#new_first_name').val(participant.first_name);
             $('#new_last_name').val(participant.last_name);
             $('#new_year_of_birth').val(participant.year_of_birth);
+            console.log(participant)
             $('#new_entry').val(participant.entry);
             $('#edit_participant-modal').modal('show');
         }
@@ -718,10 +733,8 @@
             })
         }
 
-        function showDeleteParticipantModal(p_index) {
-            globalParticipantId = globalParticipants[p_index.split('-')[1]].user_id;
-            console.log(globalParticipantId)
-            globalParticipantsIndex = p_index;
+        function showDeleteParticipantModal(p_user_id) {
+            globalParticipantId = p_user_id
             $('#delete_participant-modal').modal('show');
 
         }
@@ -745,7 +758,7 @@
                     loading(20, el = '#delete_participant_btn');
 
                     $('#delete_participant-modal').modal('hide');
-                    $(`#${globalParticipantsIndex}`).remove();
+                    $(`#${globalParticipantId}`).remove();
                 }
             })
         }

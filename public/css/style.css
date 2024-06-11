@@ -1890,6 +1890,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 60%;
+    gap: 10px;
 }
 
 .competition_entries_block .entry {
