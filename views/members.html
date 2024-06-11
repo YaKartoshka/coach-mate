@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members</title>
+    <title><%=L('members1', language, 'Members') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
        
@@ -29,21 +29,21 @@
                 <div class="search-join-content">
                     <div class="search-content">
                         <div class="content-head">
-                            <h1>Members</h1>
+                            <h1><%=L('members1', language, 'Members') %></h1>
                         </div>
                         <div class="divider"></div>
                         <div class="search-content-body mt-4">
                             <div class="search-search">
-                                <label for="" class="form-label">Name</label>
+                                <label for="" class="form-label"><%=L('members2', language, 'Name') %></label>
                                 <input type="text" onkeyup="searchByName(this)" class="form-control"
-                                    placeholder="Search by name">
+                                    placeholder="<%=L('members3', language, 'Search by name') %>">
                                 <br>
-                                <label for="" class="form-label">Role</label>
+                                <label for="" class="form-label"><%=L('members4', language, 'Role') %></label>
                                 <select class="form-select mt-1" onchange="showMembers()" id="roles">
-                                    <option value="all">All</option>
-                                    <option value="student">Student</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="coach">Coach</option>
+                                    <option value="all"><%=L('members5', language, 'All') %></option>
+                                    <option value="student"><%=L('members6', language, 'Student') %></option>
+                                    <option value="admin"><%=L('members7', language, 'Admin') %></option>
+                                    <option value="coach"><%=L('members8', language, 'Coach') %></option>
                                 </select>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                     <% if (role=='admin' ) { %>
                         <div class="join-content">
                             <div class="content-head">
-                                <h1>Requests</h1>
+                                <h1><%=L('members9', language, 'Requests') %></h1>
                             </div>
                             <div class="divider"></div>
                             <div class="join-content-body">
@@ -65,9 +65,8 @@
                 <div class="members-content">
                     <div class="content-head mt-3">
                         <% if (role=='admin' ) { %>
-                            <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);" onclick="exportCSV()">Export
-                                Data CSV</button>
-                            <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ Add</button>
+                            <button type="button" class="btn btn-light" style="border: 1px solid rgb(148, 148, 148);" onclick="exportCSV()"><%=L('members11', language, 'Export Data CSV') %></button>
+                            <button type="button" class="btn btn-primary" onclick="showAddMemberModal()">+ <%=L('members12', language, 'Add') %></button>
                             <% } %>
     
                     </div>
@@ -87,41 +86,41 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add new member</h4>
+                    <h4 class="modal-title"><%=L('members17', language, 'Add new member') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Email</label>
+                            <label class="mb-2"><%=L('members18', language, 'Email') %></label>
                             <input type="email" id="email" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">First Name</label>
+                            <label class="mb-2"><%=L('members19', language, 'First name') %></label>
                             <input type="text" id="first_name" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Last Name</label>
+                            <label class="mb-2"><%=L('members20', language, 'Last name') %></label>
                             <input type="text" id="last_name" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3" id="pass" style="display: none;">
-                            <label class="mb-2">Pass</label>
+                            <label class="mb-2"><%=L('members21', language, 'Pass') %></label>
                             <select name="pass_id" id="pass_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Role</label>
+                            <label class="mb-2"><%=L('members4', language, 'Role') %></label>
                             <select name="role" class="form-select" id="role">
-                                <option value="Student">Student</option>
-                                <option value="Coach">Coach</option>
-                                <option value="Admin">Admin</option>
+                                <option value="Student"><%=L('members6', language, 'Student') %></option>
+                                <option value="Coach"><%=L('members8', language, 'Coach') %></option>
+                                <option value="Admin"><%=L('members7', language, 'Admin') %></option>
                             </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="add_member_btn" class="btn btn-primary px-md-4"
-                        onclick="createMember()">Add</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        onclick="createMember()"><%=L('members12', language, 'Add') %></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('members25', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -131,49 +130,49 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit member</h4>
+                    <h4 class="modal-title"><%=L('members22', language, 'Edit member') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">First Name</label>
+                            <label class="mb-2"><%=L('members19', language, 'First Name') %></label>
                             <input type="text" id="new_first_name" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Last Name</label>
+                            <label class="mb-2"><%=L('members20', language, 'Last Name') %></label>
                             <input type="text" id="new_last_name" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Phone Number</label>
+                            <label class="mb-2"><%=L('members23', language, 'Phone Number') %></label>
                             <input type="text" id="new_phone_number" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3" id="new_pass" style="display: none;">
-                            <label class="mb-2">Pass</label>
+                            <label class="mb-2"><%=L('members21', language, 'Pass') %></label>
                             <select name="pass_id" id="new_pass_id" class="form-control"></select>
                         </div>
                         <div class="mb-3 mt-3" id="new_pass_status_block" style="display: none;">
-                            <label class="mb-2">Pass status</label>
+                            <label class="mb-2"><%=L('members24', language, 'Pass Status') %></label>
                             <select name="pass_status" id="new_pass_status" class="form-control">
-                                <option value="1">Active</option>
-                                <option value="0">Expired</option>
-                                <option value="2">Pending</option>
+                                <option value="1"><%=L('members14', language, 'Paid') %></option>
+                                <option value="0"><%=L('members15', language, 'Expired') %></option>
+                                <option value="2"><%=L('members16', language, 'Pending') %></option>
                             </select>
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2">Role</label>
+                            <label class="mb-2"><%=L('members4', language, 'Role') %></label>
                             <select name="role" class="form-select" id="new_role">
-                                <option value="student">Student</option>
-                                <option value="coach">Coach</option>
-                                <option value="admin">Admin</option>
+                                <option value="student"><%=L('members6', language, 'Student') %></option>
+                                <option value="coach"><%=L('members8', language, 'Coach') %></option>
+                                <option value="admin"><%=L('members7', language, 'Admin') %></option>
                             </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="edit_member_btn" class="btn btn-primary px-md-4"
-                        onclick="editMember()">Edit</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        onclick="editMember()"><%=L('members26', language, 'Edit') %></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('members25', language, 'Close') %></button>
                 </div>
             </div>
         </div>
@@ -183,16 +182,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete</h4>
+                    <h4 class="modal-title"><%=L('members27', language, 'Delete') %></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    You won't be able to revert this. Are you sure?
+                    <%=L('members28', language, "You won't be able to revert this. Are you sure?") %>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="delete_member_btn" class="btn btn-danger px-md-4"
-                        onclick="deleteMember()">Delete</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        onclick="deleteMember()"><%=L('members27', language, 'Delete') %></button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('members29', language, 'Cancel') %></button>
                 </div>
             </div>
         </div>
@@ -335,11 +334,12 @@
                                     <div class="d-flex gap-2 align-items-center">
                                         <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
                                       ${member.role == 'student' ? `<span class="badge  ${member.pass_status == '1' ? 'bg-success' : (member.pass_status == '0' ? 'bg-danger' : (member.pass_status == '2' ? 'bg-warning' : 'bg-primary'))}">
-                                            ${member.pass_status == '1' ? 'Paid' : (member.pass_status == '0' ? 'Expired' : (member.pass_status == '2' ? 'Pending' : 'No pass yet'))}
+                                            ${member.pass_status == '1' ? "<%=L('members14', language, 'Paid') %>" : (member.pass_status == '0' ? "<%=L('members15', language, 'Expired') %>" : (member.pass_status == '2' ? "<%=L('members16', language, 'Pending') %>" : "<%=L('members13', language, 'No pass yet') %>"))}
                                         </span>` : ''}  
                                     </div>
                                   
                                 </div>
+                                   <% if (role=='admin' ) { %>
                                 <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
                                     <div class="more_icon d-flex">
                                     <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
@@ -348,9 +348,10 @@
                                 </div>
                                 </button>
                                 <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#" onclick="showEditMemberModal('member-${i}')">Edit</a>
-                                <a class="dropdown-item" href="#" onclick="showDeleteMemberModal('member-${i}')">Delete</a>
+                                <a class="dropdown-item" href="#" onclick="showEditMemberModal('member-${i}')"><%=L('members26', language, 'Edit') %></a>
+                                <a class="dropdown-item" href="#" onclick="showDeleteMemberModal('member-${i}')"><%=L('members27', language, 'Delete') %></a>
                                 </div>
+                                   <% } %>
                             </div>`;
                         i++;
                         // Append the memberHTML to the "members" div
@@ -365,11 +366,15 @@
             });
         }
 
+        function exportCSV(){
+           window.location.href='/users/get-csv'
+        }
+
         function showRequests() {
             $.ajax({
                 url: '/joins/get-all', method: 'get', success: function (data) {
                     var requests_data = JSON.parse(data);
-                    var requestsHTML = requests_data.length == 0 ? 'No requests' : '';
+                    var requestsHTML = requests_data.length == 0 ? "<%=L('members10', language, 'No requests') %>" : '';
                     requests_data.forEach((request) => {
                         requestsHTML += `
                             <div class="join_request">
@@ -673,9 +678,6 @@
             });
         }
 
-        function exportCSV(){
-           window.location.href='/users/get-csv'
-        }
 
 
         function searchByName(ths) {

@@ -716,74 +716,6 @@ body {
     width: 100%;
 }
 
-.pass-info .pass {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    justify-content: center;
-    background-color: white;
-    border-radius: 5px;
-    padding: 20px 70px 12px;
-    width: 100%;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-}
-
-.pass-info .pass p,
-.pass-info .pass .pass-section,
-.pass-info .pass .pass-price,
-.pass-info .pass .pass-visits-number {
-    font-size: 16px;
-}
-
-.pass-info .pass .pass-price {
-    color: #0066FF;
-}
-
-.pass-info .pass::before {
-    content: "";
-    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
-    width: 100%;
-    height: 5px;
-    position: absolute;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    top: 0;
-    left: 0;
-}
-
-.pass-info .pass-status {
-    transition: color 0.3s ease-in-out;
-}
-
-.pass-info .pass.green::before {
-    background: linear-gradient(to bottom left, #408CFF, #00FFC2);
-}
-
-.pass-info .pass.orange::before {
-    background: linear-gradient(to bottom left, #FFA500, #FFD700);
-}
-
-.pass-info .pass.red::before {
-    background: linear-gradient(to bottom left, #FF5733, #FF774D)
-}
-
-.pass-info .pass .pass-status.green {
-    color: #4CAF50;
-}
-
-.pass-info .pass .pass-status.orange {
-    color: #FF9800;
-}
-
-.pass-info .pass .pass-status.red {
-    color: #F44336;
-}
-
-.personal-info textarea {
-    border: 1px solid black;
-}
-
 .file-button {
     border: none;
     background-color: transparent;
@@ -1783,7 +1715,7 @@ body {
 .passes-content-body {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 20px;
 }
 
@@ -1795,6 +1727,7 @@ body {
     background-color: white;
     border-radius: 5px;
     padding: 25px 20px 10px;
+    width: 253px;
 }
 
 .pass-section {
@@ -2137,7 +2070,14 @@ body {
         flex: none;
     }
 
-   
+    .statistics-content{
+        gap: 1;
+        padding: 10px;
+    }
+
+    .pass-card {
+        width: 80%;
+    }
 }
 
 @media (max-width: 1000px) {
@@ -2204,6 +2144,17 @@ body {
     .calendar-content .container .right .today-date {
         margin-top: 0;
     }
+    .statistics-content{
+        flex-direction: column;
+    }
+    .passes-statistics, .members-statistics{
+        width: 80% !important;
+    }
+    .passes-content-body {
+        flex-direction: column;
+        width: 80%;
+        margin: 24px auto !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -2263,6 +2214,9 @@ body {
 
     .calendar-content .container {
         max-width: 100%;
+    }
+    .passes-statistics, .members-statistics{
+        width: 99% !important;
     }
 }
 
@@ -2367,6 +2321,12 @@ body {
 
     .calendar-content .container .month {
         padding: 0;
+    }
+    .passes-statistics, .members-statistics{
+        width: 98% !important;
+    }
+    .passes-content-body {
+        width: 90%;
     }
 }
 

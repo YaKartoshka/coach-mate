@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <%=L('prof', language, 'Profile' ) %>
+        <%=L('prof1', language, 'Profile' ) %>
     </title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-  
+
 </head>
 
 <body>
@@ -36,6 +36,11 @@
                     <div class="password-tab">
                         <%=L('prof3', language, 'PASSWORD' ) %>
                     </div>
+                    <% if (role=='student' ) { %>
+                    <div class="pass-tab" style="display: none;">
+                        <%=L('prof30', language, 'PASS' ) %>
+                    </div>
+                    <% } %>
                 </div>
 
 
@@ -55,8 +60,6 @@
                                             placeholder="Change photo">
                                     </label>
                                 </div>
-                            </div>
-                            <div class="pass-info" id="pass-info">
                             </div>
 
                             <!-- <div class="panel-name mb-3 mt-4">
@@ -79,15 +82,15 @@
                                             <label class="mb-2">
                                                 <%=L('prof5', language, 'First name' ) %>
                                             </label>
-                                            <input type="text" class="form-control" id="first_name" placeholder="Toji"
+                                            <input type="text" class="form-control" id="first_name" placeholder=""
                                                 required>
                                         </div>
                                         <div class="lname mb-3 mt-3">
                                             <label class="mb-2">
                                                 <%=L('prof6', language, 'Last name' ) %>
                                             </label>
-                                            <input type="text" class="form-control" id="last_name"
-                                                placeholder="Fushiguro" required>
+                                            <input type="text" class="form-control" id="last_name" placeholder=""
+                                                required>
                                         </div>
                                     </div>
                                     <div class="email-phone">
@@ -95,14 +98,13 @@
                                             <label class="mb-2">
                                                 <%=L('prof7', language, 'Email' ) %>
                                             </label>
-                                            <input type="text" class="form-control" id="email"
-                                                placeholder="example@gmail.com" disabled>
+                                            <input type="text" class="form-control" id="email" placeholder="" disabled>
                                         </div>
                                         <div class="phone-number mb-3 mt-3">
                                             <label class="mb-2">
                                                 <%=L('prof8', language, 'Phone number' ) %>
                                             </label>
-                                            <input type="text" class="form-control" id="phone_number" placeholder="+7">
+                                            <input type="text" class="form-control" id="phone_number" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -198,7 +200,55 @@
                             </div>
                         </div>
                     </div>
+                    <div class="pass-content">
+
+                        <div class="pass-info"></div>
+
+                        <div class="personal-info">
+                            <div class="mb-3 mt-5">
+                                <p>
+                                    <%=L('prof31', language, 'Pass info' ) %>
+                                </p>
+                            </div>
+
+                            <div class="main-info">
+                                <div class="fname-lname">
+                                    <div class="fname mb-3 mt-3">
+                                        <label class="mb-2">
+                                            <%=L('prof32', language, 'Pass section' ) %>
+                                        </label>
+                                        <input type="text" class="form-control" id="pass_section" placeholder=""
+                                            disabled>
+                                    </div>
+                                    <div class="lname mb-3 mt-3">
+                                        <label class="mb-2">
+                                            <%=L('prof33', language, 'Pass price' ) %>
+                                        </label>
+                                        <input type="text" class="form-control" id="pass_price" placeholder="" disabled>
+                                    </div>
+                                </div>
+                                <div class="email-phone">
+                                    <div class="email mb-3 mt-3">
+                                        <label class="mb-2">
+                                            <%=L('prof34', language, 'Amount of visits' ) %>
+                                        </label>
+                                        <input type="text" class="form-control" id="amount_of_visits" placeholder=""
+                                            disabled>
+                                    </div>
+                                    <div class="phone-number mb-3 mt-3">
+                                        <label class="mb-2">
+                                            <%=L('prof35', language, 'Status' ) %>
+                                        </label>
+                                        <input type="text" class="form-control" id="status" placeholder=""
+                                            disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
             </div>
             <%- include('./components/links_bar.ejs.html') %>
     </main>
@@ -212,7 +262,7 @@
             loading(0);
         });
 
-   
+
         $(document).ready(function () {
             var currentUrl = window.location.pathname;
             $(".nav-bar ul li").each(function () {
@@ -265,6 +315,8 @@
             $.ajax({
                 url: '/users/get', method: 'get', success: function (data) {
                     var user = JSON.parse(data);
+                    var pass = JSON.parse(user.pass);
+
                     console.log(user)
                     $("#first_name").val(user.first_name);
                     $("#last_name").val(user.last_name);
@@ -274,31 +326,29 @@
                     $('#telegram_token').val(user.telegram_token)
                     let profile_src = !user.profile_img ? "./public/images/user_avatar.png" : user.profile_img;
                     $('#profile_img').attr('src', profile_src)
-
-                    var pass = JSON.parse(user.pass);
-                    var statusClass;
-                    var statusText;
-
+                    
+                    if(pass) $(".pass-tab").show(150)
+                    $("#pass_section").val(pass.pass_section);
+                    $("#pass_price").val(`${pass.pass_price}₸`);
+                    $("#amount_of_visits").val(pass.pass_visits_number);
                     if (user.pass_status == 1) {
-                        statusClass = 'green';
-                        statusText = 'Paid';
+                        $('#status').val('Paid');
                     } else if (user.pass_status == 2) {
-                        statusClass = 'orange';
-                        statusText = 'Waiting for payment';
+                        $('#status').val('Waiting for payment');
                     } else {
-                        statusClass = 'red';
-                        statusText = 'Not paid';
+                        $('#status').val('Not paid');
                     }
 
-                    var passDiv = `
-                <div class="pass ${statusClass}">
-                    <p class="pass-section">Pass section: ${pass.pass_section}</p>
-                    <p class="pass-price">Pass price: ${pass.pass_price}₸</p>
-                    <p class="pass-visits-number">Amount of visits: ${pass.pass_visits_number}</p>
-                    <p class="pass-status">Status: <span class="pass-status ${statusClass}">${statusText}</span></p> 
-                </div>
-            `;
-                    $('.pass-info').html(passDiv);
+
+            //         var passDiv = `
+            //     <div class="pass ${statusClass}">
+            //         <p class="pass-section">Pass section: ${pass.pass_section}</p>
+            //         <p class="pass-price">Pass price: ${pass.pass_section}₸</p>
+            //         <p class="pass-visits-number">Amount of visits: ${pass.pass_visits_number}</p>
+            //         <p class="pass-status">Status: <span class="pass-status ${statusClass}">${statusText}</span></p> 
+            //     </div>
+            // `;
+            //         $('.pass-info').html(passDiv);
 
                 }, error: function (err) {
                     console.log(err);
