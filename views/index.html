@@ -7,7 +7,23 @@
     <title><%=L('index1', language, 'News') %></title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-    
+    <style>
+        .content-body {
+            margin: 10px 0;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px; /* Width of the entire scrollbar */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #888; 
+            border-radius: 5px; 
+        }
+    </style>
 </head>
 
 <body>
@@ -179,7 +195,7 @@
                     globalNews = JSON.parse(data)
                     news_data.forEach((news) => {
                         var newsDiv = $("<div>").addClass("news");
-                        var image = $("<img>").attr("src", news.image_url ? news.image_url : '/public/images/Favicon.png').attr("alt", "");
+                        var image = $("<img>").attr("src", news.image_url ? news.image_url : '/public/images/default_news.png').attr("alt", "");
                         var newsTitle = $("<div>").addClass("news-title");
                         var title = $("<h3>").text(news.title).addClass("clickable-title");
                         // title.on('click', function () {

@@ -310,7 +310,7 @@
             $.ajax({
                 url: '/users/get-all',
                 method: 'get',
-                data: { roles: roles },
+                data: { roles: 'all' },
                 dataType: 'json',
                 success: function (members_data) {
                     globalMembers = members_data;
@@ -323,8 +323,8 @@
                     }
                     let i = 0;
                     members_data.forEach((member) => {
+                        if(roles == member.role || roles == 'all') {
                         let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
-
                         var memberHTML = `<div class="member"> 
                                 <div class="member-img"> 
                                     <img src='${profile_src}' alt="" width="50" height="50">
@@ -356,7 +356,7 @@
                         i++;
                         // Append the memberHTML to the "members" div
                         $('.members').append(memberHTML);
-
+                        }
                     });
                     loading(0);
 
@@ -686,6 +686,7 @@
             let i = 0;
             let membersHTML = ''
             globalMembers.forEach((member) => {
+               
                 let profile_src = !member.profile_img ? "./public/images/user_avatar.png" : member.profile_img;
                 if (member.first_name.includes(ths.value.trim()) || member.last_name.includes(ths.value.trim())) {
                     membersHTML += `<div class="member"> 
@@ -694,21 +695,27 @@
                                 </div>
                                 <div class="member-info">
                                     <h3>${member.first_name} ${member.last_name == null ? '' : member.last_name}</h3>
-                                    <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <h6>${member.role.charAt(0).toUpperCase() + member.role.slice(1).toLowerCase()}</h6>
+                                      ${member.role == 'student' ? `<span class="badge  ${member.pass_status == '1' ? 'bg-success' : (member.pass_status == '0' ? 'bg-danger' : (member.pass_status == '2' ? 'bg-warning' : 'bg-primary'))}">
+                                            ${member.pass_status == '1' ? "<%=L('members14', language, 'Paid') %>" : (member.pass_status == '0' ? "<%=L('members15', language, 'Expired') %>" : (member.pass_status == '2' ? "<%=L('members16', language, 'Pending') %>" : "<%=L('members13', language, 'No pass yet') %>"))}
+                                        </span>` : ''}  
+                                    </div>
+                                  
                                 </div>
-                                <% if (role=='admin' ) { %>
-                                    <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
-                                        <div class="more_icon d-flex">
-                                        <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
-                                        more_horiz
-                                        </span>
-                                    </div>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" onclick="showEditMemberModal('member-${i}')">Edit</a>
-                                    <a class="dropdown-item" href="#" onclick="showDeleteMemberModal('member-${i}')">Delete</a>
-                                    </div>
-                                <% } %>
+                                   <% if (role=='admin' ) { %>
+                                <button type="button" class="btn btn-light dropdown-toggle d-flex" data-bs-toggle="dropdown">
+                                    <div class="more_icon d-flex">
+                                    <span class="material-symbols-outlined" style="font-size: 25px; font-weight: 900;">
+                                    more_horiz
+                                    </span>
+                                </div>
+                                </button>
+                                <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="showEditMemberModal('member-${i}')"><%=L('members26', language, 'Edit') %></a>
+                                <a class="dropdown-item" href="#" onclick="showDeleteMemberModal('member-${i}')"><%=L('members27', language, 'Delete') %></a>
+                                </div>
+                                   <% } %>
                             </div>`;
                 }
 
