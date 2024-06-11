@@ -315,9 +315,8 @@
             $.ajax({
                 url: '/users/get', method: 'get', success: function (data) {
                     var user = JSON.parse(data);
-                    var pass = JSON.parse(user.pass);
+                    var pass = user.pass ? JSON.parse(user.pass) : '';
 
-                    console.log(user)
                     $("#first_name").val(user.first_name);
                     $("#last_name").val(user.last_name);
                     $("#email").val(user.email);
