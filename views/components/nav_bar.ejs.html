@@ -17,8 +17,10 @@
                     style="font-size: 25px; font-weight: 500;">event_list</span><%=L('nav_bar6', language, 'Events') %></a></li>
         <li><a href="/passes"><span class="material-symbols-outlined"
                     style="font-size: 25px; font-weight: 500;">confirmation_number</span><%=L('nav_bar7', language, 'Passes') %></a></li>
+                    <% if (role=='admin' ) { %>
         <li><a href="/statistics"><span class="material-symbols-outlined"
                     style="font-size: 25px; font-weight: 500;">analytics</span><%=L('nav_bar10', language, 'Statistics') %></a></li>
+                    <% } %>
         <li><a href="/competitions"><span class="material-symbols-outlined"
                     style="font-size: 25px; font-weight: 500;">trophy</span><%=L('nav_bar8', language, 'Competitions') %></a></li>
         <% } else {%>

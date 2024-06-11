@@ -4,20 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=L('passes1', language, 'Passes') %></title>
+    <title>
+        <%=L('passes1', language, 'Passes' ) %>
+    </title>
     <link rel="shortcut icon" href="../public/images/Favicon.png" type="image/x-icon">
     <%- include('./components/head.ejs.html') %>
-   
 </head>
 
 <body>
     <header>
-     
+
         <div class="logo d-flex align-items-center">
-                <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;" onclick="toggleMenu()">
-                    menu
-                </span>
-             
+            <span class="material-symbols-outlined btn btn-light px-2 py-0 me-3 burger-menu" style="display: none;"
+                onclick="toggleMenu()">
+                menu
+            </span>
+
             <a href="/"><img src="/public/images/CoachMate.png" alt=""></a>
         </div>
         <%- include('./components/profile_bar.ejs.html') %>
@@ -26,11 +28,15 @@
         <%- include('./components/nav_bar.ejs.html') %>
             <div class="passes-content">
                 <div class="passes-content-head">
-                    <h1><%=L('passes1', language, 'Passes') %></h1>
+                    <h1>
+                        <%=L('passes1', language, 'Passes' ) %>
+                    </h1>
                     <% if (role=='admin' ) { %>
                         <button data-bs-toggle="modal" onclick="showAddPassModal()" data-bs-target="#create_news-modal"
                             class="btn btn-primary d-flex pe-4 ps-4"><span class="material-symbols-outlined"
-                                style="font-size: 25px; font-weight: 700;">add</span><%=L('passes2', language, 'Add') %></button>
+                                style="font-size: 25px; font-weight: 700;">add</span>
+                            <%=L('passes2', language, 'Add' ) %>
+                        </button>
                         <% } %>
 
                 </div>
@@ -49,29 +55,40 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('passes3', language, 'Add new pass') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('passes3', language, 'Add new pass' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes4', language, 'Section name') %></label>
+                            <label class="mb-2">
+                                <%=L('passes4', language, 'Section name' ) %>
+                            </label>
                             <input type="text" id="pass_section" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes5', language, 'Price') %></label>
+                            <label class="mb-2">
+                                <%=L('passes5', language, 'Price' ) %>
+                            </label>
                             <input type="text" id="pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes6', language, 'Visits number') %></label>
+                            <label class="mb-2">
+                                <%=L('passes6', language, 'Visits number' ) %>
+                            </label>
                             <input type="text" id="pass_visits_number" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="add_pass_btn" class="btn btn-primary px-md-4"
-                        onclick="createPass()"><%=L('passes7', language, 'Add') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('passes8', language, 'Close') %></button>
+                    <button type="button" id="add_pass_btn" class="btn btn-primary px-md-4" onclick="createPass()">
+                        <%=L('passes7', language, 'Add' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('passes8', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -81,29 +98,40 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('passes9', language, 'Edit pass') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('passes9', language, 'Edit pass' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off">
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes4', language, 'Section name') %></label>
+                            <label class="mb-2">
+                                <%=L('passes4', language, 'Section name' ) %>
+                            </label>
                             <input type="text" id="new_pass_section" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes5', language, 'Price') %></label>
+                            <label class="mb-2">
+                                <%=L('passes5', language, 'Price' ) %>
+                            </label>
                             <input type="text" id="new_pass_price" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
-                            <label class="mb-2"><%=L('passes6', language, 'Visits number') %></label>
+                            <label class="mb-2">
+                                <%=L('passes6', language, 'Visits number' ) %>
+                            </label>
                             <input type="text" id="new_pass_visits_number" class="form-control" />
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="edit_pass_btn" class="btn btn-primary px-md-4"
-                        onclick="editPass()"><%=L('passes10', language, 'Edit') %></button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><%=L('passes8', language, 'Close') %></button>
+                    <button type="button" id="edit_pass_btn" class="btn btn-primary px-md-4" onclick="editPass()">
+                        <%=L('passes10', language, 'Edit' ) %>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <%=L('passes8', language, 'Close' ) %>
+                    </button>
                 </div>
             </div>
         </div>
@@ -113,22 +141,27 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><%=L('passes11', language, 'Delete') %></h4>
+                    <h4 class="modal-title">
+                        <%=L('passes11', language, 'Delete' ) %>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <%=L('passes12', language, "You won't be able to revert this. Are you sure") %>?
+                    <%=L('passes12', language, "You won't be able to revert this. Are you sure" ) %>?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="delete_pass_btn" class="btn btn-danger px-md-4"
-                        onclick="deletePass()"> <%=L('passes11', language, 'Delete') %></button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('passes13', language, 'Cancel') %></button>
+                    <button type="button" id="delete_pass_btn" class="btn btn-danger px-md-4" onclick="deletePass()">
+                        <%=L('passes11', language, 'Delete' ) %>
+                    </button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <%=L('passes13', language, 'Cancel' ) %>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-   
+
     <script type="text/javascript" src="https://s2.webapi.ai/chat-widget/uniq-chat.js"></script>
 
     <script>
@@ -229,7 +262,7 @@
             let pass_price = $('#pass_price').val().trim();
             let pass_visits_number = $('#pass_visits_number').val().trim();
 
-            if(!(pass_section && pass_price && pass_visits_number)) {
+            if (!(pass_section && pass_price && pass_visits_number)) {
                 $.ambiance({
                     message: "<%=L('passes15', language, 'Please fill in all fields') %>.",
                     type: "error",
@@ -242,14 +275,14 @@
             loading(2, el = '#add_pass_btn');
 
             $.ajax({
-                url: '/passes/create', 
-                method: 'post', 
+                url: '/passes/create',
+                method: 'post',
                 data: {
                     pass_section: pass_section,
                     pass_price: pass_price,
                     pass_visits_number: pass_visits_number
                 },
-                success: function(r) {
+                success: function (r) {
                     showPasses();
                     $('#pass_section').val('');
                     $('#pass_price').val('');
@@ -262,7 +295,7 @@
                         fade: true
                     });
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                 }
             });
@@ -283,7 +316,7 @@
             let pass_price = $('#new_pass_price').val().trim();
             let pass_visits_number = $('#new_pass_visits_number').val().trim();
 
-            if((!pass_section || !pass_price || !pass_visits_number)) {
+            if ((!pass_section || !pass_price || !pass_visits_number)) {
                 $.ambiance({
                     message: "<%=L('passes17', language, 'Please fill in all fields') %>.",
                     type: "error",
@@ -303,7 +336,7 @@
                     pass_visits_number: pass_visits_number
                 },
                 dataType: 'json',
-                success: function(res) {
+                success: function (res) {
                     if (res.r == 1) {
                         loading(20, el = '#edit_pass_btn');
                         $.ambiance({
@@ -314,7 +347,7 @@
                         loading(1);
                         showPasses();
                         loading(0);
-                    }  else {
+                    } else {
                         $.ambiance({
                             message: `<%=L('passes19', language, 'Error. Try again later') %>!`,
                             type: "error",
@@ -325,7 +358,7 @@
                     loading(20, el = '#edit_pass_btn');
 
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                 }
             });
@@ -356,7 +389,7 @@
                             fade: true
                         });
                         $(`#${globalPassIndex}`).remove();
-                    }  else {
+                    } else {
                         $.ambiance({
                             message: `<%=L('passes19', language, 'Error. Try again later') %>!`,
                             type: "error",

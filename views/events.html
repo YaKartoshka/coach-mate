@@ -217,7 +217,9 @@
                         style="display: none; "><%=L('events28', language, 'Save') %></button>
                     <button type="button" class="btn btn-success " onclick="showMembers()" id="show_members_btn"
                         style="display: none;"><%=L('events29', language, 'Show Members') %></button>
+                        <% if (role=='admin' ) { %>
                     <button type="button" class="btn btn-success" onclick="showNewMembers()" id="add_member_btn">+ <%=L('events30', language, 'Add Member') %></button>
+                    <% } %>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal"><%=L('events21', language, 'Close') %></button>
                 </div>
             </div>
@@ -416,9 +418,11 @@
                 membersHTML += `
                 <div class="member flex-fill" id="member-${i}">
                     <h3>${m.first_name} ${m.last_name}</h3>
+                     <% if (role=='admin' ) { %>
                     <button class="btn btn-danger material-symbols-outlined" style="scale: 0.75;" onclick="deleteMember('${m.id}', ${i})">
                         delete
                     </button>
+                     <% } %>
                 </div>
                 `
                 i++;
