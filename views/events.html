@@ -372,9 +372,10 @@
                                 fade: true,
                                 width: 400
                             });
+                            loading(20, el = "#add_event_btn");
                             return showEvents();
                         }
-                        loading(20, el = "#add_event_btn");
+                      
                     },
                     error: function (error) {
                         console.error("Error:", error);
