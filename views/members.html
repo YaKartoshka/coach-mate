@@ -541,8 +541,14 @@
             $('#new_pass_id').val(member_data.pass_id)
             $('#new_phone_number').val(member_data.phone_number);
             $('#new_role').val(member_data.role)
-
-            if (member_data.role != 'student') {
+           
+            if (member_data.role == 'student') {
+                $('#new_pass_status_block').show()
+            } else {
+                $('#new_pass_status_block').hide()
+            }
+            
+            if (!member_data.pass) {
                 $('#new_pass_status_block').hide()
             } else {
                 $('#new_pass_status_block').show()
@@ -559,12 +565,7 @@
                 }
             }
 
-            if (member_data.pass == '') {
-                $('#new_pass_status_block').hide();
-            } else {
-                $('#new_pass_status_block').show();
-            }
-
+         
             if (member_data.role.toLowerCase() == 'student') {
                 $('#new_pass').show();
             } else {
