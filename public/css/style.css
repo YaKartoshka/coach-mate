@@ -194,7 +194,7 @@ body {
     padding: 10px;
 }
 
-.ad-content {
+.additional-content {
     background-color: white;
     flex: 0.2;
     padding: 20px;
@@ -261,7 +261,7 @@ body {
         flex: 1;
     }
 
-    .ad-content {
+    .additional-content {
         width: 100%;
         flex: none;
     }
@@ -2132,7 +2132,7 @@ body {
         flex: 1;
     }
 
-    .ad-content {
+    .additional-content {
         width: 100%;
         flex: none;
     }
